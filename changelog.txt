@@ -1,0 +1,132 @@
+
+ ╔═════════════════════════════════════════╗
+ ║                                         ║
+ ║   pChart - a PHP Charting library       ║
+ ║                                         ║
+ ║   Version     : 2.0.10                  ║
+ ║   Made by     : Jean-Damien POGOLOTTI   ║
+ ║   Last Update : 04/01/11                ║
+ ║                                         ║
+ ╚═════════════════════════════════════════╝
+
+ 2.0.10 ───────────────────────────────────────────────────────────────────────
+
+  /!\ First public release.
+
+  o Fixed a bug in the normalize() function for VOID values.
+  o Updated the example rendering frontend.
+  o Updated the sandbox.
+
+
+ 2.0.9 ────────────────────────────────────────────────────────────────────────
+
+  o Added the sandbox.
+  o Added the getLegendSize() function.
+  o Added the SCALE_MODE_ADDALL_START0 scaling method.
+  o Fixed a bug in the normalize() function.
+  o Fixed a bug in the computeScale() function.
+
+ 2.0.8 ────────────────────────────────────────────────────────────────────────
+
+  o Corrected a bug in the drawThreshold() function. (thanks to mice32alpha)
+  o Added rendering options to the writeBounds() function.
+  o Enhanced the rendering of the drawRoundedFilledRectangle() function.
+  o Added the setSerieWeight() function to the pData class.
+  o Fixed a bug in the loadPalette() function.
+  o Added the 9 palette files. (/palettes)
+  o Fixed visual artifact in the drawGradientArea() function.
+
+
+ 2.0.7 ────────────────────────────────────────────────────────────────────────
+
+  o Fixed a cosmetic issue in the stacked area chart function.
+  o Bar chart with 0 values now appears as a 0 line.
+  o Zero values are not rendered anymore in stacked bar charts.
+  o Added the possibility to rotate X axis labels. (LabelRotation)
+  o Added rendering parameters for skipped X axis values :
+
+     $SkippedAxisTicks
+     $SkippedAxisR
+     $SkippedAxisG
+     $SkippedAxisB
+     $SkippedAxisAlpha
+     $SkippedTickR
+     $SkippedTickG
+     $SkippedTickB
+     $SkippedTickAlpha
+     $SkippedInnerTickWidth
+     $SkippedOuterTickWidth
+
+  o Added the ability to draw a background box around text (flat, rounded)
+  o Added the importFromCSV() method to the pData class.
+  o Fixed a bug in the min/max computing of the data series with VOID values.
+
+
+ 2.0.6 ────────────────────────────────────────────────────────────────────────
+
+  o Added setSliceColor() function to the pPie class.
+  o Added support for stacked area charts.
+  o Fixed an issue with 3D pie chart labelling.
+  o Fixed artifacts issues with the 3D pie hidden faces.
+  o Fixed a bug in the drawPolygon() function.
+  o Fixed a bug with automatic abscissa labelling.
+  o Rewritten the delayedLoaded script. (advice of mathbr for compatibility)
+
+
+ 2.0.5 ────────────────────────────────────────────────────────────────────────
+
+  o Added support for 3D pie charts.
+  o Enhanced the example rendering. (web)
+  o Added functionalities on radar charts (proposed by dani Huber)
+
+    - SkipLabels to skip any number of labels.
+    - LabelMiddle to center the labels between the slices.
+
+  o Fixed a bug with the palette management.
+  o Fixed an issue while displaying multiple-line legends.
+  o Added the delayed loader script in the examples.
+
+
+ 2.0.4 ────────────────────────────────────────────────────────────────────────
+
+  o Fixed issue with really small data series. (one value)
+  o Enhanced the example rendering. (batch + web)
+  o Added the autoOutput() rendering method.
+  o Made various minor fixes.
+
+
+ 2.0.3 ────────────────────────────────────────────────────────────────────────
+
+  o Added the autoOutput() function that determine if the picture should be
+    rendered with the Render() or Stroke() function based on the way the script
+    is called. (CLI or HTTPD)
+  o Added the getSum() function to the pData class.
+  o Added support for 2D pie charts :
+
+   - draw2DPie()
+   - drawPieLegend()
+
+  o Fixed angle issue in the drawArrowLabel function.
+  o While turning AA off, dashed line were not rendered (thanks to mice32alpha)
+
+
+ 2.0.2 ────────────────────────────────────────────────────────────────────────
+
+  o Fixing some notifications messages with the PHP5.3.x deprecated functions :
+
+   - split has been replaced by preg_split.
+   - ereg has been replaced by preg_match.
+
+  o Removed deprecated test with the in_array() function.
+
+
+ 2.0.1 ────────────────────────────────────────────────────────────────────────
+
+  o First public early adopter release.
+
+
+ 2.0.0 ────────────────────────────────────────────────────────────────────────
+
+  o Initial release of the v2.0.0 trunk. All primitive functions and some of
+    the charting functions have been created.
+
