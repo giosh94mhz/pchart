@@ -203,7 +203,7 @@
   </tr></table>
  </div>
 
- <div class="roundedCorner" id='tab2' style='display: none; margin-top: 30px; margin-left: 20px; width: 350px; height: 435px; background: #F0F0F0; padding: 10px; color: #667309; border: 1px solid #E0E0E0'>
+ <div class="roundedCorner" id='tab2' style='display: none; margin-top: 30px; margin-left: 20px; width: 350px; height: 455px; background: #F0F0F0; padding: 10px; color: #667309; border: 1px solid #E0E0E0'>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
    <td width='20'><img src='graphix/database_table.png' width='16' height='16' alt=''/></td>
    <td width='300'><b>Dataset definition</b></td>
@@ -277,27 +277,33 @@
   <table>
    <tr>
     <td width='40'></td>
-    <td width='90'><center>Axis 0</center></td>
-    <td width='90'><center>Axis 1</center></td>
-    <td width='90'><center>Axis 2</center></td>
+    <td width='90'><center><b>Axis 0</b></center></td>
+    <td width='90'><center><b>Axis 1</b></center></td>
+    <td width='90'><center><b>Axis 2</b></center></td>
    </tr>
    <tr>
     <td>Name</td>
-    <td><center><input type='text' id='d_axis0_name' value='1st axis' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-    <td><center><input type='text' id='d_axis1_name' value='2nd axis' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-    <td><center><input type='text' id='d_axis2_name' value='3rd axis' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+    <td><center><input type='text' id='d_axis0_name' value='1st axis' style='width: 76px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+    <td><center><input type='text' id='d_axis1_name' value='2nd axis' style='width: 76px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+    <td><center><input type='text' id='d_axis2_name' value='3rd axis' style='width: 76px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
    </tr>
    <tr>
     <td>Unit</td>
-    <td><center><input type='text' id='d_axis0_unit' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-    <td><center><input type='text' id='d_axis1_unit' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-    <td><center><input type='text' id='d_axis2_unit' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+    <td><center><input type='text' id='d_axis0_unit' style='width: 76px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+    <td><center><input type='text' id='d_axis1_unit' style='width: 76px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+    <td><center><input type='text' id='d_axis2_unit' style='width: 76px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
    </tr>
    <tr>
     <td>Position</td>
-    <td><center><select id='d_axis0_position' style='width: 55px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
-    <td><center><select id='d_axis1_position' style='width: 55px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
-    <td><center><select id='d_axis2_position' style='width: 55px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
+    <td><center><select id='d_axis0_position' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
+    <td><center><select id='d_axis1_position' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
+    <td><center><select id='d_axis2_position' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
+   </tr>
+   <tr>
+    <td>Format</td>
+    <td><center><select id='d_axis0_format' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxisformat(); ?></select></center></td>
+    <td><center><select id='d_axis1_format' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxisformat(); ?></select></center></td>
+    <td><center><select id='d_axis2_format' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxisformat(); ?></select></center></td>
    </tr>
   </table>
  </div>
@@ -658,5 +664,12 @@
    echo "<option value='TEXT_ALIGN_BOTTOMLEFT'>TEXT_ALIGN_BOTTOMLEFT</option>";
    echo "<option value='TEXT_ALIGN_BOTTOMMIDDLE'>TEXT_ALIGN_BOTTOMMIDDLE</option>";
    echo "<option value='TEXT_ALIGN_BOTTOMRIGHT'>TEXT_ALIGN_BOTTOMRIGHT</option>";
+  }
+
+ function listaxisformat()
+  {
+   echo "<option selected='selected' value='AXIS_FORMAT_DEFAULT'>DEFAULT</option>";
+   echo "<option value='AXIS_FORMAT_METRIC'>METRIC</option>";
+   echo "<option value='AXIS_FORMAT_CURRENCY'>CURRENCY</option>";
   }
 ?>

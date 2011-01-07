@@ -78,6 +78,11 @@
  $d_axis0_position	= $_SESSION["d_axis0_position"];
  $d_axis1_position	= $_SESSION["d_axis1_position"];
  $d_axis2_position	= $_SESSION["d_axis2_position"];
+
+ $d_axis0_format	= $_SESSION["d_axis0_format"];
+ $d_axis1_format	= $_SESSION["d_axis1_format"];
+ $d_axis2_format	= $_SESSION["d_axis2_format"];
+
  /* ------------------------------------------------------------------------ */
 
  /* -- Retrieve Scale configuration items ---------------------------------- */
@@ -191,6 +196,7 @@
  $Axis = "";
  if ( $d_serie1_enabled == "true" )
   {
+   $data0  = stripTail($data0);
    $Values = preg_split("/!/",right($data0,strlen($data0)-1));
    foreach($Values as $key => $Value)
     { if ( $Value == "" ) { $Value = VOID; } $myData->addPoints($Value,"Serie1"); }
@@ -216,6 +222,7 @@
 
  if ( $d_serie2_enabled == "true" )
   {
+   $data1  = stripTail($data1);
    $Values = preg_split("/!/",right($data1,strlen($data1)-1));
    foreach($Values as $key => $Value)
     { if ( $Value == "" ) { $Value = VOID; } $myData->addPoints($Value,"Serie2"); }
@@ -241,6 +248,7 @@
 
  if ( $d_serie3_enabled == "true" )
   {
+   $data2  = stripTail($data2);
    $Values = preg_split("/!/",right($data2,strlen($data2)-1));
    foreach($Values as $key => $Value)
     { if ( $Value == "" ) { $Value = VOID; } $myData->addPoints($Value,"Serie3"); }
@@ -266,7 +274,8 @@
 
  if ( $d_absissa_enabled == "true" )
   {
-   $Values = preg_split("/!/",right($absissa,strlen($absissa)-1));
+   $absissa = stripTail($absissa);
+   $Values  = preg_split("/!/",right($absissa,strlen($absissa)-1));
    foreach($Values as $key => $Value)
     { if ( $Value == "" ) { $Value = VOID; } $myData->addPoints($Value,"Absissa"); }
 
@@ -289,6 +298,9 @@
    if ( $d_axis0_position == "left" ) { $myData->setAxisPosition(0,AXIS_POSITION_LEFT); } else { $myData->setAxisPosition(0,AXIS_POSITION_RIGHT); }
    $myData->setAxisName(0,$d_axis0_name);
    $myData->setAxisUnit(0,$d_axis0_unit);
+
+   if ( $d_axis0_format == "AXIS_FORMAT_METRIC" )	{ $myData->setAxisDisplay(0,680004); }
+   if ( $d_axis0_format == "AXIS_FORMAT_CURRENCY" )	{ $myData->setAxisDisplay(0,680005,"$"); }
 
    if ( $Mode == "Source" )
     {
@@ -362,7 +374,7 @@
    else
     {
      echo dumpArray("Settings",$Settings);
-     echo '$myPicture->drawFilledRectangle(0,0,$g_width,$g_height,$Settings);'."\r\n\r\n";
+     echo '$myPicture->drawFilledRectangle(0,0,'.$g_width.','.$g_height.',$Settings);'."\r\n\r\n";
     }
   }
 
@@ -700,6 +712,29 @@
    $Result = left($Result,strlen($Result)-2).");\r\n";
 
    return($Result);
+  }
+
+ function stripTail($Values)
+  {
+   $Values = preg_split("/!/",right($Values,strlen($Values)-1));
+
+   $Temp = ""; $Result = "";
+   foreach($Values as $Key => $Value)
+    {
+     if ( $Value == "" )
+      { $Temp[] = VOID; }
+     else
+      {
+       if ( $Temp != "" ) { $Result = array_merge($Result,$Temp); }
+       $Result[] = $Value;
+       $Temp = "";
+      }
+    }
+
+   $Serialized = "!"; foreach($Result as $Key => $Value) { $Serialized = $Serialized.$Value."!"; }
+   $Serialized = left($Serialized,strlen($Serialized)-1);
+
+   return($Serialized);
   }
 
  function left($value,$NbChar)  

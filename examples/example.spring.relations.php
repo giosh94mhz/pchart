@@ -9,8 +9,16 @@
 
  /* Create the pChart object */
  $myPicture = new pImage(300,300);
- $myPicture->drawGradientArea(0,0,300,300,DIRECTION_HORIZONTAL,array("StartR"=>217,"StartG"=>250,"StartB"=>116,"EndR"=>181,"EndG"=>209,"EndB"=>27,"Alpha"=>100));
- $myPicture->drawGradientArea(0,0,300,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100));
+
+
+ /* Draw the background */
+ $Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
+ $myPicture->drawFilledRectangle(0,0,300,300,$Settings);
+
+ /* Overlay with a gradient */
+ $Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
+ $myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,$Settings);
+ $myPicture->drawGradientArea(0,0,300,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>100,"EndG"=>100,"EndB"=>100,"Alpha"=>80));
 
  /* Add a border to the picture */
  $myPicture->drawRectangle(0,0,299,299,array("R"=>0,"G"=>0,"B"=>0));

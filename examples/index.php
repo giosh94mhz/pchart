@@ -28,7 +28,7 @@
  <td width=87>&nbsp;<a class=smallLinkGrey href='delayedLoader/'>Delayed loader</a></td>
 </tr></table>
 
-<table><tr><td>
+<table><tr><td valign='top'>
 <div style='margin-top: 4px; border: 1px solid #D0D0D0; background-color: #FAFAFA; width: 220px; overflow: auto'>
 <table><tr>
  <td><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>

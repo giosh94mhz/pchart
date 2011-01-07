@@ -181,13 +181,17 @@
    d_axis1_position	= document.getElementById("d_axis1_position").options[document.getElementById("d_axis1_position").selectedIndex].value;
    d_axis2_position	= document.getElementById("d_axis2_position").options[document.getElementById("d_axis2_position").selectedIndex].value;
 
+   d_axis0_format	= document.getElementById("d_axis0_format").options[document.getElementById("d_axis0_format").selectedIndex].value;
+   d_axis1_format	= document.getElementById("d_axis1_format").options[document.getElementById("d_axis1_format").selectedIndex].value;
+   d_axis2_format	= document.getElementById("d_axis2_format").options[document.getElementById("d_axis2_format").selectedIndex].value;
 
    URL = "script/session.php?d_serie1_enabled="+d_serie1_enabled+"&d_serie2_enabled="+d_serie2_enabled+"&d_serie3_enabled="+d_serie3_enabled
         +"&d_absissa_enabled="+d_absissa_enabled+"&d_serie1_axis="+d_serie1_axis+"&d_serie2_axis="+d_serie2_axis+"&d_serie3_axis="+d_serie3_axis
         +"&data0="+data0+"&data1="+data1+"&data2="+data2+"&absissa="+absissa+"&d_axis0_name="+d_axis0_name+"&d_axis1_name="+d_axis1_name
         +"&d_axis2_name="+d_axis2_name+"&d_axis0_unit="+d_axis0_unit+"&d_axis1_unit="+d_axis1_unit+"&d_axis2_unit="+d_axis2_unit
         +"&d_axis0_position="+d_axis0_position+"&d_axis1_position="+d_axis1_position+"&d_axis2_position="+d_axis2_position
-        +"&d_normalize_enabled="+d_normalize_enabled+"&d_serie1_name="+d_serie1_name+"&d_serie2_name="+d_serie2_name+"&d_serie3_name="+d_serie3_name;
+        +"&d_normalize_enabled="+d_normalize_enabled+"&d_serie1_name="+d_serie1_name+"&d_serie2_name="+d_serie2_name+"&d_serie3_name="+d_serie3_name
+        +"&d_axis0_format="+d_axis0_format+"&d_axis1_format="+d_axis1_format+"&d_axis2_format="+d_axis2_format;
 
    push(URL,2);
   }
@@ -421,19 +425,19 @@
    Serie3Binding = document.getElementById("d_serie3_axis").options[document.getElementById("d_serie3_axis").selectedIndex].value;
 
    if ( (Serie1Binding != 0 || !Serie1Enabled) && (Serie2Binding != 0 || !Serie2Enabled) && (Serie3Binding != 0 || !Serie3Enabled) )
-    { disableItem("d_axis0_name"); disableItem("d_axis0_unit"); disableItem("d_axis0_position"); }
+    { disableItem("d_axis0_name"); disableItem("d_axis0_unit"); disableItem("d_axis0_position"); disableItem("d_axis0_format"); }
    else
-    { enableItem("d_axis0_name"); enableItem("d_axis0_unit"); enableItem("d_axis0_position"); }
+    { enableItem("d_axis0_name"); enableItem("d_axis0_unit"); enableItem("d_axis0_position"); enableItem("d_axis0_format"); }
 
    if ( (Serie1Binding != 1 || !Serie1Enabled) && (Serie2Binding != 1 || !Serie2Enabled) && (Serie3Binding != 1 || !Serie3Enabled) )
-    { disableItem("d_axis1_name"); disableItem("d_axis1_unit"); disableItem("d_axis1_position"); }
+    { disableItem("d_axis1_name"); disableItem("d_axis1_unit"); disableItem("d_axis1_position"); disableItem("d_axis1_format"); }
    else
-    { enableItem("d_axis1_name"); enableItem("d_axis1_unit"); enableItem("d_axis1_position"); }
+    { enableItem("d_axis1_name"); enableItem("d_axis1_unit"); enableItem("d_axis1_position"); enableItem("d_axis1_format"); }
 
    if ( (Serie1Binding != 2 || !Serie1Enabled) && (Serie2Binding != 2 || !Serie2Enabled) && (Serie3Binding != 2 || !Serie3Enabled) )
-    { disableItem("d_axis2_name"); disableItem("d_axis2_unit"); disableItem("d_axis2_position"); }
+    { disableItem("d_axis2_name"); disableItem("d_axis2_unit"); disableItem("d_axis2_position"); disableItem("d_axis2_format"); }
    else
-    { enableItem("d_axis2_name"); enableItem("d_axis2_unit"); enableItem("d_axis2_position"); }
+    { enableItem("d_axis2_name"); enableItem("d_axis2_unit"); enableItem("d_axis2_position"); enableItem("d_axis2_format"); }
 
    if ( Automatic )
     {

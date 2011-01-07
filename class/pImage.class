@@ -2,9 +2,9 @@
  /*
      pDraw - pChart core class
 
-     Version     : 2.0.10
+     Version     : 2.0.11
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 04/01/11
+     Last Update : 07/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -107,11 +107,11 @@
 
    /* Return the width of the picture */
    function getWidth()
-    { return($this->YSize); }
+    { return($this->XSize); }
 
    /* Return the heigth of the picture */
    function getHeight()
-    { return($this->XSize); }
+    { return($this->YSize); }
 
    /* Render the picture to a file */
    function render($FileName)

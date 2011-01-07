@@ -16,13 +16,13 @@
  $MyData->setAbscissa("Months");
 
  /* Create the pChart object */
- $myPicture = new pImage(800,300,$MyData);
- $myPicture->drawGradientArea(0,0,800,300,DIRECTION_VERTICAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100));
- $myPicture->drawGradientArea(0,0,800,300,DIRECTION_HORIZONTAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>20));
+ $myPicture = new pImage(700,230,$MyData);
+ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100));
+ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>20));
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
 
  /* Draw the scale  */
- $myPicture->setGraphArea(50,30,780,270);
+ $myPicture->setGraphArea(50,30,680,200);
  $myPicture->drawScale(array("CycleBackground"=>TRUE,"DrawSubTicks"=>TRUE,"GridR"=>0,"GridG"=>0,"GridB"=>0,"GridAlpha"=>10));
 
  /* Turn on shadow computing */ 
@@ -33,7 +33,7 @@
  $myPicture->drawBarChart($settings);
 
  /* Write the chart legend */
- $myPicture->drawLegend(650,12,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(580,12,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
  $myPicture->autoOutput("pictures/example.drawBarChart.shaded.png");

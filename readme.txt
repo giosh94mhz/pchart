@@ -3,9 +3,9 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.0.10                  ║
+ ║   Version     : 2.0.11                  ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 04/01/11                ║
+ ║   Last Update : 07/01/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
 

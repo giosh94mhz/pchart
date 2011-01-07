@@ -24,9 +24,9 @@
  $MyData->setAxisName(2,"Empty value");
 
  /* Associate a color to each axis */
- $MyData->setAxisColor(0,array("R"=>225,"G"=>200,"B"=>83));
- $MyData->setAxisColor(1,array("R"=>203,"G"=>225,"B"=>83));
- $MyData->setAxisColor(2,array("R"=>225,"G"=>160,"B"=>83));
+ $MyData->setAxisColor(0,array("R"=>102,"G"=>129,"B"=>63));
+ $MyData->setAxisColor(1,array("R"=>129,"G"=>72,"B"=>63));
+ $MyData->setAxisColor(2,array("R"=>63,"G"=>89,"B"=>129));
 
  /* Create the abscissa serie */
  $MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
@@ -35,9 +35,15 @@
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
- $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,array("StartR"=>180,"StartG"=>193,"StartB"=>91,"EndR"=>120,"EndG"=>137,"EndB"=>72,"Alpha"=>100));
- $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,array("StartR"=>180,"StartG"=>193,"StartB"=>91,"EndR"=>120,"EndG"=>137,"EndB"=>72,"Alpha"=>20));
- $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100));
+
+ /* Draw the background */
+ $Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
+ $myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+
+ /* Overlay with a gradient */
+ $Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
+ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
+ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80));
 
  /* Add a border to the picture */
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));

@@ -2,7 +2,7 @@ pChart - a PHP Charting library
 ===============================
 
 * Made by: **Jean-Damien POGOLOTTI**
-* Last Update: **04/01/11**
+* Last Update: **07/01/11**
 
 ```
  ┬

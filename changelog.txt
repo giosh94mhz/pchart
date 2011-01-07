@@ -3,11 +3,21 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.0.10                  ║
+ ║   Version     : 2.0.11                  ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 04/01/11                ║
+ ║   Last Update : 07/01/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
+
+ 2.0.11 ───────────────────────────────────────────────────────────────────────
+
+  o Added the AxisBoxRounded, AxisFontName, AxisFontSize parameters to the
+    radar and polar class.
+  o Fixed a bug with the axis labels of the radar charts using the STAR layout.
+  o Fixed a bug in the axis format computing.
+  o Added the axis format option in the sandbox system.
+  o Tuned the way the METRIC scales are displayed.
+  o Fixed a bug with the getWidth(), getHeight().(thanks to SandmanXC)
 
  2.0.10 ───────────────────────────────────────────────────────────────────────
 

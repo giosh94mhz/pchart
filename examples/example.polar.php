@@ -20,9 +20,14 @@
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
- $myPicture->drawGradientArea(0,0,500,230,DIRECTION_HORIZONTAL,array("StartR"=>220,"StartG"=>220,"StartB"=>220,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100));
- $RectangleSettings = array("R"=>180,"G"=>180,"B"=>180,"Alpha"=>100);
- $myPicture->drawFilledRectangle(500,0,700,230,$RectangleSettings);
+
+ /* Draw a solid background */
+ $Settings = array("R"=>179, "G"=>217, "B"=>91, "Dash"=>1, "DashR"=>199, "DashG"=>237, "DashB"=>111);
+ $myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+
+ /* Overlay some gradient areas */
+ $Settings = array("StartR"=>194, "StartG"=>231, "StartB"=>44, "EndR"=>43, "EndG"=>107, "EndB"=>58, "Alpha"=>50);
+ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
  $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100));
 
  /* Add a border to the picture */
@@ -36,19 +41,19 @@
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>10,"R"=>80,"G"=>80,"B"=>80));
 
  /* Enable shadow computing */ 
- $myPicture->setShadow(TRUE,array("X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
  /* Create the pRadar object */ 
  $SplitChart = new pRadar();
 
  /* Draw a polar chart */ 
  $myPicture->setGraphArea(10,25,340,225);
- $Options = array("BackgroundGradient"=>array("StartR"=>255,"StartG"=>255,"StartB"=>255,"StartAlpha"=>100,"EndR"=>207,"EndG"=>227,"EndB"=>125,"EndAlpha"=>50));
+ $Options = array("BackgroundGradient"=>array("StartR"=>255,"StartG"=>255,"StartB"=>255,"StartAlpha"=>100,"EndR"=>207,"EndG"=>227,"EndB"=>125,"EndAlpha"=>50), "FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6);
  $SplitChart->drawPolar($myPicture,$MyData,$Options);
 
  /* Draw a polar chart */ 
  $myPicture->setGraphArea(350,25,690,225);
- $Options = array("LabelPos"=>RADAR_LABELS_HORIZONTAL,"BackgroundGradient"=>array("StartR"=>255,"StartG"=>255,"StartB"=>255,"StartAlpha"=>50,"EndR"=>32,"EndG"=>109,"EndB"=>174,"EndAlpha"=>30),"AxisRotation"=>0,"DrawPoly"=>TRUE,"PolyAlpha"=>50);
+ $Options = array("LabelPos"=>RADAR_LABELS_HORIZONTAL,"BackgroundGradient"=>array("StartR"=>255,"StartG"=>255,"StartB"=>255,"StartAlpha"=>50,"EndR"=>32,"EndG"=>109,"EndB"=>174,"EndAlpha"=>30),"AxisRotation"=>0,"DrawPoly"=>TRUE,"PolyAlpha"=>50, "FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6);
  $SplitChart->drawPolar($myPicture,$MyData,$Options);
 
  /* Write the chart legend */ 

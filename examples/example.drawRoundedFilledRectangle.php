@@ -7,9 +7,15 @@
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230);
- $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,array("StartR"=>180,"StartG"=>193,"StartB"=>91,"EndR"=>120,"EndG"=>137,"EndB"=>72,"Alpha"=>100));
- $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,array("StartR"=>180,"StartG"=>193,"StartB"=>91,"EndR"=>120,"EndG"=>137,"EndB"=>72,"Alpha"=>20));
- $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100));
+
+ /* Draw the background */
+ $Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
+ $myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+
+ /* Overlay with a gradient */
+ $Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
+ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
+ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80));
 
  /* Add a border to the picture */
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
@@ -25,9 +31,15 @@
  $RectangleSettings = array("R"=>181,"G"=>209,"B"=>27,"Alpha"=>100);
  $myPicture->drawRoundedFilledRectangle(20,60,400,170,10,$RectangleSettings);
 
+ /* Enable shadow computing */
+ $myPicture->setShadow(FALSE);
+
  /* Draw a rounded filled rectangle */
  $RectangleSettings = array("R"=>209,"G"=>134,"B"=>27,"Alpha"=>30);
  $myPicture->drawRoundedFilledRectangle(30,30,200,200,10,$RectangleSettings);
+
+ /* Enable shadow computing */
+ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20));
 
  /* Draw a rounded filled rectangle */
  $RectangleSettings = array("R"=>209,"G"=>31,"B"=>27,"Alpha"=>100,"Surrounding"=>30);

@@ -2,9 +2,9 @@
  /*
      pDraw - class extension with drawing methods
 
-     Version     : 2.0.10
+     Version     : 2.0.11
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 04/01/11
+     Last Update : 07/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -363,6 +363,7 @@
      $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
      $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
      $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : -1;
+     $BorderAlpha	= isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : $Alpha;
      $Surrounding	= isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
      $Ticks		= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
      $NoAngle		= isset($Format["NoAngle"]) ? $Format["NoAngle"] : NULL;
@@ -442,7 +443,7 @@
       }
 
      if ( $BorderR != -1 )
-      $this->drawRectangle($X1,$Y1,$X2,$Y2,array("R"=>$BorderR,"G"=>$BorderG,"B"=>$BorderB,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"NoAngle"=>$NoAngle));
+      $this->drawRectangle($X1,$Y1,$X2,$Y2,array("R"=>$BorderR,"G"=>$BorderG,"B"=>$BorderB,"Alpha"=>$BorderAlpha,"Ticks"=>$Ticks,"NoAngle"=>$NoAngle));
 
      $this->Shadow = $RestoreShadow;
     }
@@ -1637,13 +1638,16 @@
 
        if ( $Mode == SCALE_MODE_ADDALL_START0 ) { $Data["Axis"][$AxisID]["Min"] = 0; }
 
-       $Scale   = $this->computeScale($Data["Axis"][$AxisID]["Min"],$Data["Axis"][$AxisID]["Max"],$MaxDivs,$Factors);
+       $Scale   = $this->computeScale($Data["Axis"][$AxisID]["Min"],$Data["Axis"][$AxisID]["Max"],$MaxDivs,$Factors,$AxisID);
 
        $Data["Axis"][$AxisID]["Margin"]    = $AxisParameter["Identity"] == AXIS_X ? $XMargin : $YMargin;
        $Data["Axis"][$AxisID]["ScaleMin"]  = $Scale["XMin"];
        $Data["Axis"][$AxisID]["ScaleMax"]  = $Scale["XMax"];
        $Data["Axis"][$AxisID]["Rows"]      = $Scale["Rows"];
        $Data["Axis"][$AxisID]["RowHeight"] = $Scale["RowHeight"];
+
+       if ( isset($Scale["Format"]) ) { $Data["Axis"][$AxisID]["Format"] = $Scale["Format"]; }
+
        if ( !isset($Data["Axis"][$AxisID]["Display"]) ) { $Data["Axis"][$AxisID]["Display"] = NULL; }
        if ( !isset($Data["Axis"][$AxisID]["Format"]) )  { $Data["Axis"][$AxisID]["Format"] = NULL; }
        if ( !isset($Data["Axis"][$AxisID]["Unit"]) )    { $Data["Axis"][$AxisID]["Unit"] = NULL; }
@@ -1976,9 +1980,6 @@
 
        if ( $Parameters["Identity"] == AXIS_Y )
         {
-         if ( ( $Parameters["ScaleMax"] - $Parameters["ScaleMin"] > 2000 ) ) 
-          $Parameters["Display"] = AXIS_FORMAT_METRIC;
-
          if ( $Pos == SCALE_POS_LEFTRIGHT )
           {
            if ( $Parameters["Position"] == AXIS_POSITION_LEFT )
@@ -2146,9 +2147,14 @@
     }
 
    /* Compute the best matching scale based on size & factors */
-   function computeScale($XMin,$XMax,$MaxDivs,$Factors)
+   function computeScale($XMin,$XMax,$MaxDivs,$Factors,$AxisID=0)
     {
      $ScaleHeight = abs(ceil($XMax)-floor($XMin));
+
+     if ( isset($this->DataSet->Data["Axis"][$AxisID]["Display"]) )
+      $Mode = $this->DataSet->Data["Axis"][$AxisID]["Display"];
+     else
+      $Mode = AXIS_FORMAT_DEFAULT;
 
      $Scale = "";
      if ( $XMin != $XMax )
@@ -2179,6 +2185,31 @@
 
        /* Return the results */
        $Scale["Rows"] = $Rows; $Scale["RowHeight"] = $RowHeight; $Scale["XMin"] = $XMin;  $Scale["XMax"] = $XMax;
+
+       /* Compute the needed decimals for the metric view to avoid repetition of the same X Axis labels */
+       if ( $Mode == AXIS_FORMAT_METRIC )
+        {
+         $Done = FALSE; $GoodDecimals = 0;
+         for($Decimals=0;$Decimals<=10;$Decimals++)
+          {
+           if ( !$Done )
+            {
+             $LastLabel = "zob"; $ScaleOK = TRUE;
+             for($i=0;$i<=$Rows;$i++)
+              {
+               $Value = $XMin + $i*$RowHeight;
+               $Label = $this->scaleFormat($Value,AXIS_FORMAT_METRIC,$Decimals);
+
+               if ( $LastLabel == $Label ) { $ScaleOK = FALSE; }
+               $LastLabel = $Label;
+              }
+             if ( $ScaleOK ) { $Done = TRUE; $GoodDecimals = $Decimals; }
+            }
+          }
+
+         $Scale["Format"] = $GoodDecimals;
+         //$this->DataSet->Data["Axis"][$AxisID]["Format"] = $GoodDecimals;
+        }
       }
      else
       {
@@ -2188,6 +2219,7 @@
        /* Return the results */
        $Scale["Rows"] = $Rows; $Scale["RowHeight"] = $RowHeight; $Scale["XMin"] = $XMin;  $Scale["XMax"] = $XMax;
       }
+
      return($Scale);
     }
 
@@ -2423,17 +2455,16 @@
       { if ( $Format == NULL ) { $Pattern = "H:i:s"; } else { $Pattern = $Format; } return(date($Pattern,$Value)); }
 
      if ( $Mode == AXIS_FORMAT_CURRENCY )
-      { return($Unit.number_format($Value,2)); }
+      { return($Format.number_format($Value,2)); }
 
      if ( $Mode == AXIS_FORMAT_METRIC )
       {
-       if ( $Unit != NULL ) { $Unit = " ".$Unit; }
        if (abs($Value) > 1000000000)
-        return(floor($Value/1000000000)."g".$Unit);
+        return(round($Value/1000000000,$Format)."g".$Unit);
        if (abs($Value) > 1000000)
-        return(floor($Value/1000000)."m".$Unit);
+        return(round($Value/1000000,$Format)."m".$Unit);
        elseif (abs($Value) >= 1000)
-        return(floor($Value/1000)."k".$Unit);
+        return(round($Value/1000,$Format)."k".$Unit);
        
       }
      return($Value.$Unit);
@@ -3199,8 +3230,7 @@
            $X = $this->GraphAreaX1 + $XMargin;
 
            if ( $AroundZero ) { $Y1 = $YZero; } else { $Y1 = $this->GraphAreaY2-1; }
-           if ( $XDivs == 0 ) { $XSize = ($this->GraphAreaX2-$this->GraphAreaX1)/4; } else { $XSize   = ($XStep / ($SeriesCount+$Interleave) ); }
-
+           if ( $XDivs == 0 ) { $XSize = ($this->GraphAreaX2-$this->GraphAreaX1)/($SeriesCount+$Interleave); } else { $XSize   = ($XStep / ($SeriesCount+$Interleave) ); }
            
            $XOffset = -($XSize*$SeriesCount)/2 + $CurrentSerie * $XSize;
            $this->DataSet->Data["Series"][$SerieName]["XOffset"] = $XOffset + $XSize / 2;
@@ -3246,8 +3276,8 @@
                 {
                  if ( $DisplayShadow ) { $this->Shadow = TRUE; }
 
-                 $Caption   = $this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit);
-                 $TxtPos    = $this->getTextBox(0,0,$DisplayFont,$DisplaySize,90,$Caption);
+                 $Caption    = $this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit);
+                 $TxtPos     = $this->getTextBox(0,0,$DisplayFont,$DisplaySize,90,$Caption);
                  $TxtHeight  = $TxtPos[0]["Y"] - $TxtPos[1]["Y"] + $TxtMargin;
 
                  if ( $DisplayPos == LABEL_POS_INSIDE && abs($TxtHeight) < abs($BarHeight) )
@@ -3278,10 +3308,10 @@
 
            if ( $XDivs == 0 ) { $YStep = 0; } else { $YStep = ($this->GraphAreaY2-$this->GraphAreaY1-$XMargin*2)/$XDivs; }
            
-           $Y     = $this->GraphAreaY1 + $XMargin;
+           $Y = $this->GraphAreaY1 + $XMargin;
 
            if ( $AroundZero ) { $X1 = $YZero; } else { $X1 = $this->GraphAreaX1+1; }
-           if ( $XDivs == 0 ) { $YSize = ($this->GraphAreaY2-$this->GraphAreaY1)/4; } else { $YSize   = ($YStep / ($SeriesCount+$Interleave) ); }
+           if ( $XDivs == 0 ) { $YSize = ($this->GraphAreaY2-$this->GraphAreaY1)/($SeriesCount+$Interleave); } else { $YSize   = ($YStep / ($SeriesCount+$Interleave) ); }
            
            $YOffset = -($YSize*$SeriesCount)/2 + $CurrentSerie * $YSize;
            $this->DataSet->Data["Series"][$SerieName]["XOffset"] = $YOffset + $YSize / 2;
