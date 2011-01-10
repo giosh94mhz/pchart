@@ -1,5 +1,5 @@
-<?php   
- /* @ 700x230 This example shows how to tune the scale by skipping labels. */
+<?php
+ /* @ 700x230 Drawing combo charts. */
 
  /* pChart library inclusions */
  include("../class/pData.class");
@@ -7,12 +7,11 @@
  include("../class/pImage.class");
 
  /* Create the pData object with some random values*/
- $MyData = new pData();  
- $MyData->addRandomValues("Probe 1",array("Values"=>30,"Min"=>0,"Max"=>4));
- $MyData->addRandomValues("Probe 2",array("Values"=>30,"Min"=>6,"Max"=>10));
- $MyData->addRandomValues("Probe 3",array("Values"=>30,"Min"=>12,"Max"=>16));
- $MyData->addRandomValues("Probe 4",array("Values"=>30,"Min"=>18,"Max"=>22));
- $MyData->setAxisName(0,"Probes");
+ $MyData = new pData(); 
+ $MyData->addPoints(array(30,24,32),"This year");
+ $MyData->addPoints(array(28,20,27),"Last year");
+ $MyData->addPoints(array("Year","Month","Day"),"Labels");
+ $MyData->setAbscissa("Labels");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
@@ -29,28 +28,37 @@
  /* Add a border to the picture */
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
  
- /* Write the picture title */ 
- $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6));
- $myPicture->drawText(10,13,"addRandomValues() :: assess your scales",array("R"=>255,"G"=>255,"B"=>255));
+/* Write the picture title */ 
+$myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6));
+ $myPicture->drawText(10,13,"Chart title",array("R"=>255,"G"=>255,"B"=>255));
 
  /* Draw the scale */
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
  $myPicture->setGraphArea(50,60,670,190);
  $myPicture->drawFilledRectangle(50,60,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
- $myPicture->drawScale(array("CycleBackground"=>TRUE,"LabelSkip"=>4,"DrawSubTicks"=>TRUE));
+ $myPicture->drawScale(array("CycleBackground"=>TRUE));
 
  /* Graph title */
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
- $myPicture->drawText(50,52,"Magnetic noise",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMLEFT));
+ $myPicture->drawText(50,52,"Chart subtitle",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMLEFT));
 
- /* Draw the data series */
+ /* Draw the bar chart chart */
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
+ $MyData->setSerieDrawable("Last year",FALSE);
+ $myPicture->drawBarChart();
+
+ /* Draw the line and plot chart */
+ $MyData->setSerieDrawable("Last year",TRUE);
+ $MyData->setSerieDrawable("This year",FALSE);
  $myPicture->drawSplineChart();
- $myPicture->setShadow(FALSE);
+ $myPicture->drawPlotChart();
+
+ /* Make sure all series are drawable before writing the scale */
+ $MyData->setSerieDrawable("This year",TRUE);
 
  /* Write the legend */
- $myPicture->drawLegend(475,50,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(540,35,array("Style"=>LEGEND_ROUND,"Alpha"=>20,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.addRandomValues.png");
+ $myPicture->autoOutput("pictures/example.a.png");
 ?>

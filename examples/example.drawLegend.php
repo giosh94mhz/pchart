@@ -11,6 +11,8 @@
  $MyData->addPoints(array(24,25,26,25,25),"My Serie 1");
  $MyData->addPoints(array(80,85,84,81,82),"My Serie 2");
  $MyData->addPoints(array(17,16,18,18,15),"My Serie 3");
+ $MyData->setSerieTicks("My Serie 1",4);
+ $MyData->setSerieWeight("My Serie 2",2);
  $MyData->setSerieDescription("My Serie 1","Temperature");
  $MyData->setSerieDescription("My Serie 2","Humidity\n(in percentage)");
  $MyData->setSerieDescription("My Serie 3","Pressure");
@@ -41,7 +43,7 @@
 
  /* Write a legend box */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/MankSans.ttf","FontSize"=>10,"R"=>30,"G"=>30,"B"=>30));
- $myPicture->drawLegend(230,60,array("BoxSize"=>4,"R"=>173,"G"=>163,"B"=>83,"Surrounding"=>20));
+ $myPicture->drawLegend(230,60,array("BoxSize"=>4,"R"=>173,"G"=>163,"B"=>83,"Surrounding"=>20,"Family"=>LEGEND_FAMILY_CIRCLE));
 
  /* Write a legend box */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>9,"R"=>80,"G"=>80,"B"=>80));
@@ -49,11 +51,11 @@
 
  /* Write a legend box */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6));
- $myPicture->drawLegend(70,150,array("Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(70,150,array("Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_CIRCLE));
 
  /* Write a legend box */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
- $myPicture->drawLegend(400,150,array("Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(400,150,array("Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL, "BoxWidth"=>30,"Family"=>LEGEND_FAMILY_LINE));
 
  /* Write a legend box */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6));

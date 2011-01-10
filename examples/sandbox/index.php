@@ -2,7 +2,7 @@
  /*
      index.php - Sandbox web frontend
 
-     Version     : 1.0.1
+     Version     : 1.0.3
      Made by     : Jean-Damien POGOLOTTI
      Last Update : 04/01/11
 
@@ -424,8 +424,16 @@
   <table><tr>
    <td width='60'>Chart family</td>
    <td><select id='c_family' onchange='checkChartSettings();'><?php echo listCharts(); ?></select></td>
-   <td>&nbsp;<input type='checkbox' id='c_display_values' /></td>
-   <td>&nbsp;display values</td>
+   <td>&nbsp;Break color</td>
+   <td>&nbsp;<input type='text' id='c_break_color' class='color' value='#EA371A' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("c_break_color","c_break_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><div id='c_break_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
+  </tr></table>
+  <table><tr>
+   <td width='60'>Settings : </td>
+   <td><input type='checkbox' id='c_display_values' /></td>
+   <td>&nbsp;Display values</td>
+   <td>&nbsp;<input type='checkbox' id='c_break' /></td>
+   <td>&nbsp;Don't break on VOID</td>
   </tr></table>
   <div style='background: #D2F5C1; padding: 4px; color: #667309; margin-top: 10px;'>
    <table><tr>
@@ -506,17 +514,21 @@
   </tr></table>
   <table><tr>
    <td width='50'>Orientation</td>
-   <td>&nbsp; <select id='l_orientation'><option value='LEGEND_VERTICAL'>LEGEND_VERTICAL</option><option value='LEGEND_HORIZONTAL' selected='selected'>LEGEND_HORIZONTAL</option></select></td>
+   <td>&nbsp; <select id='l_orientation' style='width: 160px;'><option value='LEGEND_VERTICAL'>LEGEND_VERTICAL</option><option value='LEGEND_HORIZONTAL' selected='selected'>LEGEND_HORIZONTAL</option></select></td>
    <td>&nbsp; Box size &nbsp;</td>
    <td><input type='text' id='l_box_size' value='5' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
   </tr></table>
   <table><tr>
    <td width='50'>Position</td>
-   <td>&nbsp; <select id='l_position' onclick='checkLegend();'><option value='CORNER_TOP_RIGHT'>CORNER_TOP_RIGHT</option><option value='CORNER_BOTTOM_RIGHT'>CORNER_BOTTOM_RIGHT</option><option value='Manual'>Manual</option></select></td>
+   <td>&nbsp; <select id='l_position' style='width: 160px;' onclick='checkLegend();'><option value='CORNER_TOP_RIGHT'>CORNER_TOP_RIGHT</option><option value='CORNER_BOTTOM_RIGHT'>CORNER_BOTTOM_RIGHT</option><option value='Manual'>Manual</option></select></td>
    <td>&nbsp; X &nbsp;</td>
    <td><input type='text' id='l_x' value='10' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td>&nbsp; Y &nbsp;</td>
    <td><input type='text' id='l_y' value='10' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+  </tr></table>
+  <table><tr>
+   <td width='50'>Layout</td>
+   <td>&nbsp; <select id='l_family' style='width: 160px;'><option value='LEGEND_SERIE_BOX'>LEGEND_SERIE_BOX</option><option value='LEGEND_FAMILY_CIRCLE'>LEGEND_FAMILY_CIRCLE</option><option value='LEGEND_FAMILY_LINE'>LEGEND_FAMILY_LINE</option></select></td>
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>

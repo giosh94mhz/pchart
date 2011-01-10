@@ -2,9 +2,9 @@
  /*
      pDraw - class extension with drawing methods
 
-     Version     : 2.0.11
+     Version     : 2.0.12
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 07/01/11
+     Last Update : 10/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -23,6 +23,7 @@
  define("SCALE_MODE_START0"		, 690202);
  define("SCALE_MODE_ADDALL"		, 690203);
  define("SCALE_MODE_ADDALL_START0"	, 690204);
+ define("SCALE_MODE_MANUAL"		, 690205);
 
  define("SCALE_SKIP_NONE"		, 690301);
  define("SCALE_SKIP_SAME"		, 690302);
@@ -58,6 +59,10 @@
 
  define("LEGEND_VERTICAL"		, 690901);
  define("LEGEND_HORIZONTAL"		, 690902);
+
+ define("LEGEND_FAMILY_BOX"		, 691051);
+ define("LEGEND_FAMILY_CIRCLE"		, 691052);
+ define("LEGEND_FAMILY_LINE"		, 691053);
 
  define("DISPLAY_AUTO"			, 691001);
  define("DISPLAY_MANUAL"		, 691002);
@@ -468,6 +473,7 @@
      $ShowC    = isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
      $Ticks    = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
      $PathOnly = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;
+     $Weight   = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
 
      $Cpt = NULL; $Mode = NULL; $Result = "";
      for($i=1;$i<=count($Coordinates)-1;$i++)
@@ -523,8 +529,8 @@
      $Segments	= isset($Format["Segments"]) ? $Format["Segments"] : NULL;
      $Ticks	= isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
      $NoDraw    = isset($Format["NoDraw"]) ? $Format["NoDraw"] : FALSE;
-     $PathOnly = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;
-
+     $PathOnly  = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;
+     $Weight    = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
      $DrawArrow		= isset($Format["DrawArrow"]) ? $Format["DrawArrow"] : FALSE;
      $ArrowSize		= isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 10;
      $ArrowRatio	= isset($Format["ArrowRatio"]) ? $Format["ArrowRatio"] : .5;
@@ -596,7 +602,7 @@
           { $ArrowS["X2"] = $LastX; $ArrowS["Y2"] = $LastY; $ArrowS["X1"] = $X; $ArrowS["Y1"] = $Y; }
 
          if ( $LastX != NULL && $LastY != NULL && !$PathOnly)
-          list($Cpt,$Mode) = $this->drawLine($LastX,$LastY,$X,$Y,array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Cpt"=>$Cpt,"Mode"=>$Mode));
+          list($Cpt,$Mode) = $this->drawLine($LastX,$LastY,$X,$Y,array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Cpt"=>$Cpt,"Mode"=>$Mode,"Weight"=>$Weight));
 
          /* Get the last segment */
          $ArrowE["X1"] = $LastX; $ArrowE["Y1"] = $LastY; $ArrowE["X2"] = $X; $ArrowE["Y2"] = $Y;
@@ -1399,12 +1405,15 @@
    /* Draw the legend of the active series */
    function drawLegend($X,$Y,$Format="")
     {
+     $Family	= isset($Format["Family"]) ? $Format["Family"] : LEGEND_FAMILY_BOX;
      $FontName	= isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
      $FontSize	= isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
      $FontR	= isset($Format["FontR"]) ? $Format["FontR"] : $this->FontColorR;
      $FontG	= isset($Format["FontG"]) ? $Format["FontG"] : $this->FontColorG;
      $FontB	= isset($Format["FontB"]) ? $Format["FontB"] : $this->FontColorB;
-     $BoxSize	= isset($Format["BoxSize"]) ? $Format["BoxSize"] : 5;
+     $BoxWidth	= isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 5;
+     $BoxHeight	= isset($Format["BoxHeight"]) ? $Format["BoxHeight"] : 5;
+     $XSpacing	= isset($Format["XSpacing"]) ? $Format["XSpacing"] : 5;
      $Margin	= isset($Format["Margin"]) ? $Format["Margin"] : 5;
      $R		= isset($Format["R"]) ? $Format["R"] : 200;
      $G		= isset($Format["G"]) ? $Format["G"] : 200;
@@ -1419,8 +1428,9 @@
 
      if ( $Surrounding != NULL ) { $BorderR = $R + $Surrounding; $BorderG = $G + $Surrounding; $BorderB = $B + $Surrounding; }
 
-     $YStep = max($this->FontSize,$BoxSize) + 5;
-     $XStep = $BoxSize + 5;
+     $YStep = max($this->FontSize,$BoxHeight) + 5;
+     $XStep = $BoxWidth + 5;
+     $XStep = $XSpacing;
 
      $Data = $this->DataSet->getData();
      $Boundaries = ""; $Boundaries["L"] = $X; $Boundaries["T"] = $Y; $Boundaries["R"] = 0; $Boundaries["B"] = 0; $vY = $Y; $vX = $X;
@@ -1430,14 +1440,14 @@
         {
          if ( $Mode == LEGEND_VERTICAL )
           {
-           $BoxArray = $this->getTextBox($vX+$BoxSize+4,$vY+$BoxSize/2,$FontName,$FontSize,0,$Serie["Description"]);
+           $BoxArray = $this->getTextBox($vX+$BoxWidth+4,$vY+$BoxHeight/2,$FontName,$FontSize,0,$Serie["Description"]);
 
-           if ( $Boundaries["T"] > $BoxArray[2]["Y"]+$BoxSize/2 ) { $Boundaries["T"] = $BoxArray[2]["Y"]+$BoxSize/2; }
+           if ( $Boundaries["T"] > $BoxArray[2]["Y"]+$BoxHeight/2 ) { $Boundaries["T"] = $BoxArray[2]["Y"]+$BoxHeight/2; }
            if ( $Boundaries["R"] < $BoxArray[1]["X"]+2 ) { $Boundaries["R"] = $BoxArray[1]["X"]+2; }
-           if ( $Boundaries["B"] < $BoxArray[1]["Y"]+2+$BoxSize/2 ) { $Boundaries["B"] = $BoxArray[1]["Y"]+2+$BoxSize/2; }
+           if ( $Boundaries["B"] < $BoxArray[1]["Y"]+2+$BoxHeight/2 ) { $Boundaries["B"] = $BoxArray[1]["Y"]+2+$BoxHeight/2; }
 
            $Lines = preg_split("/\n/",$Serie["Description"]);
-           $vY = $vY + max($this->FontSize*count($Lines),$BoxSize) + 5;
+           $vY = $vY + max($this->FontSize*count($Lines),$BoxHeight) + 5;
           }
          elseif ( $Mode == LEGEND_HORIZONTAL )
           {
@@ -1445,11 +1455,11 @@
            $Width = "";
            foreach($Lines as $Key => $Value)
             {
-             $BoxArray = $this->getTextBox($vX+$BoxSize+6,$Y+$BoxSize/2+(($YStep-3)*$Key),$FontName,$FontSize,0,$Value);
+             $BoxArray = $this->getTextBox($vX+$BoxWidth+6,$Y+$BoxHeight/2+(($YStep-3)*$Key),$FontName,$FontSize,0,$Value);
 
-             if ( $Boundaries["T"] > $BoxArray[2]["Y"]+$BoxSize/2 ) { $Boundaries["T"] = $BoxArray[2]["Y"]+$BoxSize/2; }
+             if ( $Boundaries["T"] > $BoxArray[2]["Y"]+$BoxHeight/2 ) { $Boundaries["T"] = $BoxArray[2]["Y"]+$BoxHeight/2; }
              if ( $Boundaries["R"] < $BoxArray[1]["X"]+2 ) { $Boundaries["R"] = $BoxArray[1]["X"]+2; }
-             if ( $Boundaries["B"] < $BoxArray[1]["Y"]+2+$BoxSize/2 ) { $Boundaries["B"] = $BoxArray[1]["Y"]+2+$BoxSize/2; }
+             if ( $Boundaries["B"] < $BoxArray[1]["Y"]+2+$BoxHeight/2 ) { $Boundaries["B"] = $BoxArray[1]["Y"]+2+$BoxHeight/2; }
 
              $Width[] = $BoxArray[1]["X"];
             }
@@ -1461,7 +1471,7 @@
      $vY=$vY-$YStep; $vX=$vX-$XStep;
 
      $TopOffset  = $Y - $Boundaries["T"];
-     if ( $Boundaries["B"]-($vY+$BoxSize) < $TopOffset ) { $Boundaries["B"] = $vY+$BoxSize+$TopOffset; }
+     if ( $Boundaries["B"]-($vY+$BoxHeight) < $TopOffset ) { $Boundaries["B"] = $vY+$BoxHeight+$TopOffset; }
 
      if ( $Style == LEGEND_ROUND )
       $this->drawRoundedFilledRectangle($Boundaries["L"]-$Margin,$Boundaries["T"]-$Margin,$Boundaries["R"]+$Margin,$Boundaries["B"]+$Margin,$Margin,array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"BorderR"=>$BorderR,"BorderG"=>$BorderG,"BorderB"=>$BorderB));
@@ -1474,16 +1484,31 @@
        if ( $Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"] )
         {
          $R = $Serie["Color"]["R"]; $G = $Serie["Color"]["G"]; $B = $Serie["Color"]["B"];
+         $Ticks = $Serie["Ticks"]; $Weight = $Serie["Weight"];
 
-         $this->drawFilledRectangle($X+1,$Y+1,$X+$BoxSize+1,$Y+$BoxSize+1,array("R"=>0,"G"=>0,"B"=>0,"Alpha"=>20));
-         $this->drawFilledRectangle($X,$Y,$X+$BoxSize,$Y+$BoxSize,array("R"=>$R,"G"=>$G,"B"=>$B,"Surrounding"=>20));
+         if ( $Family == LEGEND_FAMILY_BOX )
+          {
+           $this->drawFilledRectangle($X+1,$Y+1,$X+$BoxWidth+1,$Y+$BoxHeight+1,array("R"=>0,"G"=>0,"B"=>0,"Alpha"=>20));
+           $this->drawFilledRectangle($X,$Y,$X+$BoxWidth,$Y+$BoxHeight,array("R"=>$R,"G"=>$G,"B"=>$B,"Surrounding"=>20));
+          }
+         elseif ( $Family == LEGEND_FAMILY_CIRCLE )
+          {
+           $this->drawFilledCircle($X+1+$BoxWidth/2,$Y+1+$BoxHeight/2,min($BoxHeight/2,$BoxWidth/2),array("R"=>0,"G"=>0,"B"=>0,"Alpha"=>20));
+           $this->drawFilledCircle($X+$BoxWidth/2,$Y+$BoxHeight/2,min($BoxHeight/2,$BoxWidth/2),array("R"=>$R,"G"=>$G,"B"=>$B,"Surrounding"=>20));
+          }
+         elseif ( $Family == LEGEND_FAMILY_LINE )
+          {
+           $this->drawLine($X+1,$Y+1+$BoxHeight/2,$X+1+$BoxWidth,$Y+1+$BoxHeight/2,array("R"=>0,"G"=>0,"B"=>0,"Alpha"=>20,"Ticks"=>$Ticks,"Weight"=>$Weight));
+           $this->drawLine($X,$Y+$BoxHeight/2,$X+$BoxWidth,$Y+$BoxHeight/2,array("R"=>$R,"G"=>$G,"B"=>$B,"Ticks"=>$Ticks,"Weight"=>$Weight));
+          }
+
          if ( $Mode == LEGEND_VERTICAL )
           {
            $Lines = preg_split("/\n/",$Serie["Description"]);
            foreach($Lines as $Key => $Value)
-            $this->drawText($X+$BoxSize+4,$Y+$BoxSize/2+(($YStep-3)*$Key),$Value,array("R"=>$FontR,"G"=>$FontG,"B"=>$FontB,"Align"=>TEXT_ALIGN_MIDDLELEFT));
+            $this->drawText($X+$BoxWidth+4,$Y+$BoxHeight/2+(($YStep-3)*$Key),$Value,array("R"=>$FontR,"G"=>$FontG,"B"=>$FontB,"Align"=>TEXT_ALIGN_MIDDLELEFT));
 
-           $Y=$Y+max($this->FontSize*count($Lines),$BoxSize) + 5;
+           $Y=$Y+max($this->FontSize*count($Lines),$BoxHeight) + 5;
           }
          elseif ( $Mode == LEGEND_HORIZONTAL )
           {
@@ -1491,7 +1516,7 @@
            $Width = "";
            foreach($Lines as $Key => $Value)
             {
-             $BoxArray = $this->drawText($X+$BoxSize+4,$Y+$BoxSize/2+(($YStep-3)*$Key),$Value,array("R"=>$FontR,"G"=>$FontG,"B"=>$FontB,"Align"=>TEXT_ALIGN_MIDDLELEFT));
+             $BoxArray = $this->drawText($X+$BoxWidth+4,$Y+$BoxHeight/2+(($YStep-3)*$Key),$Value,array("R"=>$FontR,"G"=>$FontG,"B"=>$FontB,"Align"=>TEXT_ALIGN_MIDDLELEFT));
              $Width[] = $BoxArray[1]["X"];
             }
            $X=max($Width)+2+$XStep;
@@ -1507,7 +1532,8 @@
      $Pos		= isset($Format["Pos"]) ? $Format["Pos"] : SCALE_POS_LEFTRIGHT;
      $Mode		= isset($Format["Mode"]) ? $Format["Mode"] : SCALE_MODE_FLOATING;
      $MinDivHeight	= isset($Format["MinDivHeight"]) ? $Format["MinDivHeight"] : 20;
-     $Factors		= isset($Format["Factors"]) ? $Format["Factors"] : array(1,2,5);
+     $Factors		= isset($Format["Factors"]) ? $Format["Factors"] : array(1,2);
+     $ManualScale	= isset($Format["ManualScale"]) ? $Format["ManualScale"] : array("0"=>array("Min"=>-100,"Max"=>100));
      $XMargin		= isset($Format["XMargin"]) ? $Format["XMargin"] : AUTO;
      $YMargin		= isset($Format["YMargin"]) ? $Format["YMargin"] : 0;
      $ScaleSpacing	= isset($Format["ScaleSpacing"]) ? $Format["ScaleSpacing"] : 15;
@@ -1610,6 +1636,16 @@
 
          $Data["Axis"][$AxisID]["Min"] = $AxisMin-$AutoMargin; $Data["Axis"][$AxisID]["Max"] = $AxisMax+$AutoMargin;
          if ( $Mode == SCALE_MODE_START0 ) { $Data["Axis"][$AxisID]["Min"] = 0; }
+        }
+       elseif ( $Mode == SCALE_MODE_MANUAL )
+        {
+         if ( isset($ManualScale[$AxisID]["Min"]) && isset($ManualScale[$AxisID]["Max"]) )
+          {
+           $Data["Axis"][$AxisID]["Min"] = $ManualScale[$AxisID]["Min"];
+           $Data["Axis"][$AxisID]["Max"] = $ManualScale[$AxisID]["Max"];
+          }
+         else
+          { echo "Manual scale boundaries not set."; exit(); }
         }
        elseif ( $Mode == SCALE_MODE_ADDALL || $Mode == SCALE_MODE_ADDALL_START0 )
         {
@@ -1717,7 +1753,7 @@
          $this->setFontProperties(array("R"=>$FontColorRo,"G"=>$FontColorGo,"B"=>$FontColorBo));
         }
 
-       $LastValue = "w00t"; $ID = $LabelSkip+1;
+       $LastValue = "w00t"; $ID = 1;
        if ( $Parameters["Identity"] == AXIS_X )
         {
          if ( $Pos == SCALE_POS_LEFTRIGHT )
@@ -1753,7 +1789,7 @@
                 }
 
                $ID++; $Skipped = TRUE;
-               if ( (( $Value != $LastValue && $LabelingMethod == LABELING_DIFFERENT ) || $LabelingMethod == LABELING_ALL && ($ID % $LabelSkip == 1 || $LabelSkip == 1 ) ) && ( $Value != "" || $Value == 0 ))
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) )
                 {
                  $Bounds    = $this->drawText($XPos,$YPos+$OuterTickWidth+$YLabelOffset,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBottom = $YPos+$OuterTickWidth+2+($Bounds[0]["Y"]-$Bounds[2]["Y"]);
@@ -1815,7 +1851,7 @@
                 }
 
                $ID++; $Skipped = TRUE;
-               if ( (( $Value != $LastValue && $LabelingMethod == LABELING_DIFFERENT ) || $LabelingMethod == LABELING_ALL && ($ID % $LabelSkip == 1 || $LabelSkip == 1 ) ) && ( $Value != "" || $Value == 0 ))
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) )
                 {
                  $Bounds = $this->drawText($XPos,$YPos-$OuterTickWidth-$YLabelOffset,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBox = $YPos-$OuterTickWidth-2-($Bounds[0]["Y"]-$Bounds[2]["Y"]);
@@ -1880,7 +1916,7 @@
                 }
 
                $ID++; $Skipped = TRUE;
-               if ( (( $Value != $LastValue && $LabelingMethod == LABELING_DIFFERENT ) || $LabelingMethod == LABELING_ALL && ($ID % $LabelSkip == 1 || $LabelSkip == 1 ) ) && ( $Value != "" || $Value == 0 ))
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) )
                 {
                  $Bounds  = $this->drawText($XPos-$OuterTickWidth+$XLabelOffset,$YPos,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBox  = $XPos-$OuterTickWidth-2-($Bounds[1]["X"]-$Bounds[0]["X"]);
@@ -1942,7 +1978,7 @@
                 }
 
                $ID++; $Skipped = TRUE;
-               if ( (( $Value != $LastValue && $LabelingMethod == LABELING_DIFFERENT ) || $LabelingMethod == LABELING_ALL && ($ID % $LabelSkip == 1 || $LabelSkip == 1 ) ) && ( $Value != "" || $Value == 0 ))
+               if ( $this->isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip) )
                 {
                  $Bounds   = $this->drawText($XPos+$OuterTickWidth+$XLabelOffset,$YPos,$Value,array("Angle"=>$LabelRotation,"Align"=>$LabelAlign));
                  $TxtBox   = $XPos+$OuterTickWidth+2+($Bounds[1]["X"]-$Bounds[0]["X"]);
@@ -2146,6 +2182,16 @@
       }
     }
 
+   function isValidLabel($Value,$LastValue,$LabelingMethod,$ID,$LabelSkip)
+    {
+     if ( $LabelingMethod == LABELING_DIFFERENT && $Value != $LastValue ) { return(TRUE); }
+     if ( $LabelingMethod == LABELING_DIFFERENT && $Value == $LastValue ) { return(FALSE); }
+     if ( $LabelingMethod == LABELING_ALL && $LabelSkip == 1 ) { return(TRUE); }
+     if ( $LabelingMethod == LABELING_ALL && ($ID+$LabelSkip) % ($LabelSkip+1) != 1 ) { return(FALSE); }
+
+     return(TRUE);
+    }
+
    /* Compute the best matching scale based on size & factors */
    function computeScale($XMin,$XMax,$MaxDivs,$Factors,$AxisID=0)
     {
@@ -2208,7 +2254,6 @@
           }
 
          $Scale["Format"] = $GoodDecimals;
-         //$this->DataSet->Data["Axis"][$AxisID]["Format"] = $GoodDecimals;
         }
       }
      else
@@ -2716,6 +2761,11 @@
    /* Draw a spline chart */
    function drawSplineChart($Format=NULL)
     {
+     $BreakVoid		= isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : TRUE;
+     $VoidTicks		= isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
+     $BreakR		= isset($Format["BreakR"]) ? $Format["BreakR"] : 234;
+     $BreakG		= isset($Format["BreakG"]) ? $Format["BreakG"] : 55;
+     $BreakB		= isset($Format["BreakB"]) ? $Format["BreakB"] : 26;
      $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
      $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
      $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
@@ -2729,7 +2779,13 @@
       {
        if ( $Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"] )
         {
-         $R = $Serie["Color"]["R"]; $G = $Serie["Color"]["G"]; $B = $Serie["Color"]["B"]; $Alpha = $Serie["Color"]["Alpha"]; $Ticks = $Serie["Ticks"];
+         $R = $Serie["Color"]["R"]; $G = $Serie["Color"]["G"]; $B = $Serie["Color"]["B"]; $Alpha = $Serie["Color"]["Alpha"]; $Ticks = $Serie["Ticks"]; $Weight = $Serie["Weight"];
+
+         if ( $BreakR == NULL )
+          $BreakSettings = array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$VoidTicks);
+         else
+          $BreakSettings = array("R"=>$BreakR,"G"=>$BreakG,"B"=>$BreakB,"Alpha"=>$Alpha,"Ticks"=>$VoidTicks,"Weight"=>$Weight);
+
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
          $AxisID	= $Serie["Axis"];
@@ -2748,19 +2804,28 @@
            $Force = $XStep / 5;
 
            if ( !is_array($PosArray) ) { $Value = $PosArray; $PosArray = ""; $PosArray[0] = $Value; }
+           $LastGoodY = NULL; $LastGoodX = NULL; $LastX = 1; $LastY = 1;
            foreach($PosArray as $Key => $Y)
             {
              if ( $DisplayValues ) 
               $this->drawText($X,$Y-$DisplayOffset,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 	
-             if ( $Y == VOID )
-              { $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks)); $WayPoints = ""; }
-             else
+             if ( $Y == VOID && $LastY != NULL )
+              { $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight)); $WayPoints = ""; }
+
+             if ( $Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid )
+              { $this->drawLine($LastGoodX,$LastGoodY,$X,$Y,$BreakSettings); }
+
+             if ( $Y != VOID )
               $WayPoints[] = array($X,$Y);
 
+             if ( $Y != VOID ) { $LastGoodY = $Y; $LastGoodX = $X; }
+             if ( $Y == VOID ) { $Y = NULL; }
+
+             $LastX = $X; $LastY = $Y;
              $X = $X + $XStep;
             }
-           $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks));
+           $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight));
           }
          else
           {
@@ -2769,19 +2834,28 @@
            $Force = $YStep / 5;
 
            if ( !is_array($PosArray) ) { $Value = $PosArray; $PosArray = ""; $PosArray[0] = $Value; }
+           $LastGoodY = NULL; $LastGoodX = NULL; $LastX = 1; $LastY = 1;
            foreach($PosArray as $Key => $X)
             {
              if ( $DisplayValues ) 
               $this->drawText($X+$DisplayOffset,$Y,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("Angle"=>270,"R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
-             if ( $X == VOID )
-              { $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks)); $WayPoints = ""; }
-             else
+             if ( $X == VOID && $LastX != NULL )
+              { $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight)); $WayPoints = ""; }
+
+             if ( $X != VOID && $LastX == NULL && $LastGoodX != NULL && !$BreakVoid )
+              { $this->drawLine($LastGoodX,$LastGoodY,$X,$Y,$BreakSettings); }
+
+             if ( $X != VOID )
               $WayPoints[] = array($X,$Y);
 
+             if ( $X != VOID ) { $LastGoodX = $X; $LastGoodY = $Y; }
+             if ( $X == VOID ) { $X = NULL; }
+
+             $LastX = $X; $LastY = $Y;
              $Y = $Y + $YStep;
             }
-           $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks));
+           $this->drawSpline($WayPoints,array("Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight));
           }
         }
       }
@@ -2948,9 +3022,15 @@
         }
       }
     }
+
    /* Draw a line chart */
    function drawLineChart($Format=NULL)
     {
+     $BreakVoid		= isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : TRUE;
+     $VoidTicks		= isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
+     $BreakR		= isset($Format["BreakR"]) ? $Format["BreakR"] : 234;
+     $BreakG		= isset($Format["BreakG"]) ? $Format["BreakG"] : 55;
+     $BreakB		= isset($Format["BreakB"]) ? $Format["BreakB"] : 26;
      $DisplayValues	= isset($Format["DisplayValues"]) ? $Format["DisplayValues"] : FALSE;
      $DisplayOffset	= isset($Format["DisplayOffset"]) ? $Format["DisplayOffset"] : 2;
      $DisplayColor	= isset($Format["DisplayColor"]) ? $Format["DisplayColor"] : DISPLAY_MANUAL;
@@ -2965,6 +3045,12 @@
        if ( $Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"] )
         {
          $R = $Serie["Color"]["R"]; $G = $Serie["Color"]["G"]; $B = $Serie["Color"]["B"]; $Alpha = $Serie["Color"]["Alpha"]; $Ticks = $Serie["Ticks"]; $Weight = $Serie["Weight"];
+
+         if ( $BreakR == NULL )
+          $BreakSettings = array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$VoidTicks,"Weight"=>$Weight);
+         else
+          $BreakSettings = array("R"=>$BreakR,"G"=>$BreakG,"B"=>$BreakB,"Alpha"=>$Alpha,"Ticks"=>$VoidTicks,"Weight"=>$Weight);
+
          if ( $DisplayColor == DISPLAY_AUTO ) { $DisplayR = $R; $DisplayG = $G; $DisplayB = $B; }
 
          $AxisID	= $Serie["Axis"];
@@ -2979,9 +3065,10 @@
          if ( $Data["Orientation"] == SCALE_POS_LEFTRIGHT )
           {
            if ( $XDivs == 0 ) { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1)/4; } else { $XStep = ($this->GraphAreaX2-$this->GraphAreaX1-$XMargin*2)/$XDivs; }
-           $X     = $this->GraphAreaX1 + $XMargin; $LastX = NULL; $LastY = NULL;
+           $X = $this->GraphAreaX1 + $XMargin; $LastX = NULL; $LastY = NULL;
 
            if ( !is_array($PosArray) ) { $Value = $PosArray; $PosArray = ""; $PosArray[0] = $Value; }
+           $LastGoodY = NULL; $LastGoodX = NULL;
            foreach($PosArray as $Key => $Y)
             {
              if ( $DisplayValues && $Serie["Data"][$Key] != VOID ) 
@@ -2990,10 +3077,14 @@
                $this->drawText($X,$Y-$Offset-$Weight,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>$Align));
               }
 
-             if ( $Y == VOID )
-              { $Y = NULL; }
-             elseif ( $LastX != NULL && $LastY != NULL )
+             if ( $Y != VOID && $LastX != NULL && $LastY != NULL )
               $this->drawLine($LastX,$LastY,$X,$Y,array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight));
+
+             if ( $Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid )
+              { $this->drawLine($LastGoodX,$LastGoodY,$X,$Y,$BreakSettings); $LastGoodY = NULL; }
+
+             if ( $Y != VOID ) { $LastGoodY = $Y; $LastGoodX = $X; }
+             if ( $Y == VOID ) { $Y = NULL; }
 
              $LastX = $X; $LastY = $Y;
              $X = $X + $XStep;
@@ -3002,18 +3093,23 @@
          else
           {
            if ( $XDivs == 0 ) { $YStep = ($this->GraphAreaY2-$this->GraphAreaY1)/4; } else { $YStep = ($this->GraphAreaY2-$this->GraphAreaY1-$XMargin*2)/$XDivs; }
-           $Y     = $this->GraphAreaY1 + $XMargin; $LastX = NULL; $LastY = NULL;
+           $Y = $this->GraphAreaY1 + $XMargin; $LastX = NULL; $LastY = NULL;
 
            if ( !is_array($PosArray) ) { $Value = $PosArray; $PosArray = ""; $PosArray[0] = $Value; }
+           $LastGoodY = NULL; $LastGoodX = NULL;
            foreach($PosArray as $Key => $X)
             {
              if ( $DisplayValues && $Serie["Data"][$Key] != VOID ) 
               { $this->drawText($X+$DisplayOffset+$Weight,$Y,$this->scaleFormat($Serie["Data"][$Key],$Mode,$Format,$Unit),array("Angle"=>270,"R"=>$DisplayR,"G"=>$DisplayG,"B"=>$DisplayB,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE)); }
 
-             if ( $X == VOID )
-              { $X = NULL; }
-             elseif ( $LastX != NULL && $LastY != NULL )
+             if ( $X != VOID && $LastX != NULL && $LastY != NULL )
               $this->drawLine($LastX,$LastY,$X,$Y,array("R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight));
+
+             if ( $X != VOID && $LastX == NULL && $LastGoodY != NULL && !$BreakVoid )
+              { $this->drawLine($LastGoodX,$LastGoodY,$X,$Y,$BreakSettings); $LastGoodY = NULL; }
+
+             if ( $X != VOID ) { $LastGoodY = $Y; $LastGoodX = $X; }
+             if ( $X == VOID ) { $X = NULL; }
 
              $LastX = $X; $LastY = $Y;
              $Y = $Y + $YStep;

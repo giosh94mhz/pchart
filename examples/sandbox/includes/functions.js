@@ -247,6 +247,8 @@
 
    c_family			= document.getElementById("c_family").options[document.getElementById("c_family").selectedIndex].value;
    c_display_values		= document.getElementById("c_display_values").checked;
+   c_break_color		= document.getElementById("c_break_color").value;
+   c_break			= document.getElementById("c_break").checked;
 
    c_plot_size			= document.getElementById("c_plot_size").value;
    c_border_size		= document.getElementById("c_border_size").value;
@@ -264,7 +266,7 @@
    URL = "script/session.php?c_family="+c_family+"&c_display_values="+c_display_values+"&c_plot_size="+c_plot_size+"&c_border_size="+c_border_size+"&c_border_enabled="+c_border_enabled
         +"&c_bar_classic="+c_bar_classic+"&c_bar_rounded="+c_bar_rounded+"&c_bar_gradient="+c_bar_gradient+"&c_around_zero1="+c_around_zero1
         +"&c_transparency="+c_transparency+"&c_forced_transparency="+c_forced_transparency+"&c_around_zero2="+c_around_zero2
-        +"&Seed="+Math.random(100);
+        +"&c_break="+c_break+"&c_break_color="+c_break_color;
 
    push(URL,4);
   }
@@ -289,6 +291,8 @@
    l_position		= document.getElementById("l_position").options[document.getElementById("l_position").selectedIndex].value;
    l_x			= document.getElementById("l_x").value;
    l_y			= document.getElementById("l_y").value;
+
+   l_family		= document.getElementById("l_family").options[document.getElementById("l_family").selectedIndex].value;
 
    t_enabled		= document.getElementById("t_enabled").checked;
 
@@ -315,7 +319,7 @@
         +"&l_margin="+l_margin+"&l_alpha="+l_alpha+"&l_format="+l_format+"&l_orientation="+l_orientation+"&l_box_size="+l_box_size
         +"&t_enabled="+t_enabled+"&t_value="+t_value+"&t_axis="+t_axis+"&t_color="+t_color+"&t_alpha="+t_alpha+"&t_ticks="+t_ticks
         +"&t_caption="+t_caption+"&t_box="+t_box+"&t_caption_enabled="+t_caption_enabled+"&l_position="+l_position+"&l_x="+l_x+"&l_y="+l_y
-        +"&p_template="+p_template;
+        +"&p_template="+p_template+"&l_family="+l_family;
 
    push(URL,5);
   }
@@ -342,6 +346,7 @@
    applyColor("s_subticks_color","s_subticks_color_show");
    applyColor("l_font_color","l_font_color_show");
    applyColor("t_color","t_color_show");
+   applyColor("c_break_color","c_break_color_show");
   }
 
  function applyColor(SourceID,TargetID)

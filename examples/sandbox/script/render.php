@@ -17,6 +17,8 @@
 
  if ( !isset($_GET["Mode"]) ) { $Mode = "Render"; } else { $Mode = $_GET["Mode"]; }
 
+ $Constants = readConstantFile();
+
  /* -- Retrieve General configuration items -------------------------------- */
  $g_width		= $_SESSION["g_width"];
  $g_height		= $_SESSION["g_height"];
@@ -120,6 +122,8 @@
  /* -- Retrieve Chart configuration items ---------------------------------- */
  $c_family		= $_SESSION["c_family"];
  $c_display_values	= $_SESSION["c_display_values"];
+ $c_break_color		= $_SESSION["c_break_color"];
+ $c_break		= $_SESSION["c_break"];
 
  $c_plot_size		= $_SESSION["c_plot_size"];
  $c_border_size		= $_SESSION["c_border_size"];
@@ -152,6 +156,8 @@
  $l_position		= $_SESSION["l_position"];
  $l_x			= $_SESSION["l_x"];
  $l_y			= $_SESSION["l_y"];
+
+ $l_family		= $_SESSION["l_family"];
  /* ------------------------------------------------------------------------ */
 
  /* -- Retrieve Threshold configuration items ------------------------------ */
@@ -209,7 +215,7 @@
     {
      $Data = "";
      foreach($Values as $key => $Value)
-      { if ( $Value == "" ) { $Value = "VOID"; } $Data = $Data.",".$Value; }
+      { if ( $Value == "" || $Value == VOID ) { $Value = "VOID"; } $Data = $Data.",".toString($Value); }
      $Data = right($Data,strlen($Data)-1);
 
      echo '$myData->addPoints(array('.$Data.'),"Serie1");'."\r\n";
@@ -235,7 +241,7 @@
     {
      $Data = "";
      foreach($Values as $key => $Value)
-      { if ( $Value == "" ) { $Value = "VOID"; } $Data = $Data.",".$Value; }
+      { if ( $Value == "" ) { $Value = "VOID"; } $Data = $Data.",".toString($Value); }
      $Data = right($Data,strlen($Data)-1);
 
      echo '$myData->addPoints(array('.$Data.'),"Serie2");'."\r\n";
@@ -261,7 +267,7 @@
     {
      $Data = "";
      foreach($Values as $key => $Value)
-      { if ( $Value == "" ) { $Value = "VOID"; } $Data = $Data.",".$Value; }
+      { if ( $Value == "" ) { $Value = "VOID"; } $Data = $Data.",".toString($Value); }
      $Data = right($Data,strlen($Data)-1);
 
      echo '$myData->addPoints(array('.$Data.'),"Serie3");'."\r\n";
@@ -285,7 +291,7 @@
     {
      $Data = "";
      foreach($Values as $key => $Value)
-      { if ( $Value == "" ) { $Value = "VOID"; } $Data = $Data.",".$Value; }
+      { if ( $Value == "" ) { $Value = "VOID"; } $Data = $Data.",".toString($Value); }
      $Data = right($Data,strlen($Data)-1);
 
      echo '$myData->addPoints(array('.$Data.'),"Absissa");'."\r\n";
@@ -424,7 +430,7 @@
    list($R,$G,$B) = extractColors($g_title_color);
 
    $TextSettings = array("Align"=>getTextAlignCode($g_title_align),"R"=>$R,"G"=>$G,"B"=>$B);
-   if ( $g_title_box == "true" ) { $TextSettings["DrawBox"] = TRUE; $TextSettings["BoxRounded"] = TRUE; $TextSettings["BoxAlpha"] = 70; }
+   if ( $g_title_box == "true" ) { $TextSettings["DrawBox"] = TRUE; $TextSettings["BoxAlpha"] = 30; }
 
    if ( $Mode == "Render" )
     $myPicture->drawText($g_title_x,$g_title_y,$g_title,$TextSettings);
@@ -469,7 +475,7 @@
  if ( $s_x_skip	!= 0 ) { $Settings["LabelSkip"] = $s_x_skip; }
  if ( $s_cycle_enabled == "true" ) { $Settings["CycleBackground"] = TRUE; }
  if ( $s_arrows_enabled == "true" ) { $Settings["DrawArrows"] = TRUE; }
- if ( $s_grid_x_enabled == "true" ) { $Settings["DrawXLines"] = TRUE; } else { $Settings["DrawXLines"] = FALSE; }
+ if ( $s_grid_x_enabled == "true" ) { $Settings["DrawXLines"] = TRUE; } else { $Settings["DrawXLines"] = 0; }
  if ( $s_subticks_enabled == "true" )
   { $Settings["DrawSubTicks"] = TRUE; $Settings["SubTickR"] = $SubTickR; $Settings["SubTickG"] = $SubTickG; $Settings["SubTickB"] = $SubTickB; $Settings["SubTickAlpha"] = $s_subticks_alpha;}
  if ( $s_automargin_enabled == "false" ) 
@@ -512,6 +518,16 @@
 
  if ( $c_family == "line" )
   {
+   if ( $c_break == "true" )
+    {
+     list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
+
+     $Config["BreakVoid"] = 0;
+     $Config["BreakR"] = $BreakR;
+     $Config["BreakG"] = $BreakG;
+     $Config["BreakB"] = $BreakB;
+    }
+
    if ( $Mode == "Render" )
     $myPicture->drawLineChart($Config);
    else
@@ -523,6 +539,16 @@
 
  if ( $c_family == "spline" )
   {
+   if ( $c_break == "true" )
+    {
+     list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
+
+     $Config["BreakVoid"] = 0;
+     $Config["BreakR"] = $BreakR;
+     $Config["BreakG"] = $BreakG;
+     $Config["BreakB"] = $BreakB;
+    }
+
    if ( $Mode == "Render" )
     $myPicture->drawSplineChart($Config);
    else
@@ -614,7 +640,7 @@
   
    if ( isset($myData->Data["Axis"][$t_axis]) ) { $Config["AxisID"] = $t_axis; }
 
-   if ( $t_ticks == "true" ) { $Config["Tick"] = 2; }
+   if ( $t_ticks == "true" ) { $Config["Ticks"] = 4; } else { $Config["Ticks"] = 0; }
 
    if ( $t_caption_enabled == "true" )
     {
@@ -653,6 +679,9 @@
 
    if ( $l_orientation == "LEGEND_VERTICAL" )   { $Config["Mode"] = 690901; }
    if ( $l_orientation == "LEGEND_HORIZONTAL" ) { $Config["Mode"] = 690902; }
+
+   if ( $l_family == "LEGEND_FAMILY_CIRCLE" ) { $Config["Family"] = 691052; }
+   if ( $l_family == "LEGEND_FAMILY_LINE" ) { $Config["Family"] = 691053; }
 
    $Size = $myPicture->getLegendSize($Config);
    if ( $l_position == "CORNER_TOP_RIGHT" )
@@ -707,12 +736,23 @@
 
    $Result = '$'.$Name." = array(";
    foreach ($Values as $Key => $Value)
-    { $Result = $Result.chr(34).$Key.chr(34)."=>".$Value.", "; }
+    { $Result = $Result.chr(34).$Key.chr(34)."=>".translate($Value).", "; }
 
    $Result = left($Result,strlen($Result)-2).");\r\n";
 
    return($Result);
   }
+
+ function translate($Value)
+  {
+   global $Constants;
+
+   if ( isset($Constants[$Value]))
+    return($Constants[$Value]);
+   else
+    return($Value);
+  }
+
 
  function stripTail($Values)
   {
@@ -725,7 +765,11 @@
       { $Temp[] = VOID; }
      else
       {
-       if ( $Temp != "" ) { $Result = array_merge($Result,$Temp); }
+       if ( $Temp != "" && $Result != "" )
+        { $Result = array_merge($Result,$Temp); }
+       elseif( $Temp != "" && $Result == "" )
+        { $Result = $Temp; }
+
        $Result[] = $Value;
        $Temp = "";
       }
@@ -735,6 +779,34 @@
    $Serialized = left($Serialized,strlen($Serialized)-1);
 
    return($Serialized);
+  }
+
+ function readConstantFile()
+  {
+   $FileName = "../includes/constants.txt";
+
+   $handle = @fopen($FileName, "r");
+   if ($handle)
+    {
+     $Result = "";
+     while (($buffer = fgets($handle, 4096)) !== false)
+      {
+       $Values = preg_split("/,/",$buffer);
+       $Result[$Values[0]] = $Values[1];
+      }
+     fclose($handle);
+     return($Result);
+    }
+   else
+    { return(array("VOID"=>"0.12345")); }
+  }
+
+ function toString($Value)
+  {
+   if ( is_numeric($Value) || $Value == "VOID")
+    return($Value);
+   else
+    return(chr(34).$Value.chr(34));
   }
 
  function left($value,$NbChar)  

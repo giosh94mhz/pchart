@@ -3,11 +3,20 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.0.11                  ║
+ ║   Version     : 2.0.12                  ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 07/01/11                ║
+ ║   Last Update : 10/01/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
+
+ 2.0.12 ───────────────────────────────────────────────────────────────────────
+
+  o Added missing points (VOID) handling for line & spline charts.
+  o Added customisation options to the drawLegend() function.
+  o Various additions and enhancements in the sandbox.
+  o Added the weight series support to the drawSplineChart() function.
+  o Added the SCALE_MODE_MANUAL scaling method.
+
 
  2.0.11 ───────────────────────────────────────────────────────────────────────
 
@@ -18,6 +27,7 @@
   o Added the axis format option in the sandbox system.
   o Tuned the way the METRIC scales are displayed.
   o Fixed a bug with the getWidth(), getHeight().(thanks to SandmanXC)
+
 
  2.0.10 ───────────────────────────────────────────────────────────────────────
 
