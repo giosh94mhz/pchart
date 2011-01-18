@@ -2,9 +2,9 @@
  /*
      pDraw - class to manipulate data arrays
 
-     Version     : 2.0.12
+     Version     : 2.0.13
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 10/01/11
+     Last Update : 18/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -416,19 +416,21 @@
           $Factor = $Factor + abs($Value);
         }
 
-       if ( $Factor == 0 ) { $Factor = 1; }
-       $Factor = $NormalizationFactor / $Factor;
-
-       foreach ($SelectedSeries as $Key => $SerieName )
+       if ( $Factor != 0 )
         {
-         $Value = $this->Data["Series"][$SerieName]["Data"][$i];
+         $Factor = $NormalizationFactor / $Factor;
 
-         if ( $Value != VOID && $Factor != $NormalizationFactor )
-          $this->Data["Series"][$SerieName]["Data"][$i] = round(abs($Value)*$Factor,$Round);
-         elseif ( $Value == VOID  )
-          $this->Data["Series"][$SerieName]["Data"][$i] = VOID;
-         elseif ( $Factor == $NormalizationFactor )
-          $this->Data["Series"][$SerieName]["Data"][$i] = $NormalizationFactor;
+         foreach ($SelectedSeries as $Key => $SerieName )
+          {
+           $Value = $this->Data["Series"][$SerieName]["Data"][$i];
+
+           if ( $Value != VOID && $Factor != $NormalizationFactor )
+            $this->Data["Series"][$SerieName]["Data"][$i] = round(abs($Value)*$Factor,$Round);
+           elseif ( $Value == VOID || $Value == 0 )
+            $this->Data["Series"][$SerieName]["Data"][$i] = VOID;
+           elseif ( $Factor == $NormalizationFactor )
+            $this->Data["Series"][$SerieName]["Data"][$i] = $NormalizationFactor;
+          }
         }
       }
 

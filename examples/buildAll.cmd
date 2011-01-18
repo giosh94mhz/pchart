@@ -24,7 +24,7 @@ ECHO     The PHP binaries (%PHPVersion%) have been located in your system PATH
 ECHO.
 ECHO. >resources\errors.log
 
-SET /P Var="   Progress : "<NUL
+REM SET /P Var="   Progress : "<NUL
 
 FOR %%f IN (*.*) DO (
    set t=%%f

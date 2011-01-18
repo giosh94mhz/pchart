@@ -2,9 +2,9 @@
  /*
      render.php - Sandbox rendering engine
 
-     Version     : 1.0.1
+     Version     : 1.0.4
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 04/01/11
+     Last Update : 18/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -26,6 +26,7 @@
 
  $g_aa			= $_SESSION["g_aa"];
  $g_shadow		= $_SESSION["g_shadow"];
+ $g_transparent		= $_SESSION["g_transparent"];
 
  $g_title_enabled	= $_SESSION["g_title_enabled"];
  $g_title		= $_SESSION["g_title"];
@@ -174,7 +175,14 @@
  $t_box			= $_SESSION["t_box"];
  $t_caption_enabled	= $_SESSION["t_caption_enabled"];
  /* ------------------------------------------------------------------------ */
- 
+
+ /* -- Retrieve slope chart configuration items ---------------------------- */
+ $sl_enabled		= $_SESSION["sl_enabled"];
+ $sl_shaded		= $_SESSION["sl_shaded"];
+ $sl_caption_enabled	= $_SESSION["sl_caption_enabled"];
+ $sl_caption_line	= $_SESSION["sl_caption_line"];
+ /* ------------------------------------------------------------------------ */
+
  /* -- Retrieve color configuration items ---------------------------------- */
  $p_template		= $_SESSION["p_template"];
  /* ------------------------------------------------------------------------ */
@@ -353,11 +361,19 @@
   }
 
  if ( $Mode == "Render" )
-  $myPicture = new pImage($g_width,$g_height,$myData);
+  {
+   if ( $g_transparent == "true" )
+    $myPicture = new pImage($g_width,$g_height,$myData,TRUE);
+   else
+    $myPicture = new pImage($g_width,$g_height,$myData);
+  }
  else
   {
    $myPicture = new pImage($g_width,$g_height,$myData);
-   echo '$myPicture = new pImage('.$g_width.','.$g_height.',$myData);'."\r\n";
+   if ( $g_transparent == "true" )
+    echo '$myPicture = new pImage('.$g_width.','.$g_height.',$myData,TRUE);'."\r\n";
+   else
+    echo '$myPicture = new pImage('.$g_width.','.$g_height.',$myData);'."\r\n";
   }
 
  if ( $g_aa == "false" )
@@ -701,6 +717,26 @@
     }
   }
 
+ if ( $sl_enabled == "true" )
+  {
+   $Config = "";
+   $Config["CaptionMargin"] = 10;
+   $Config["CaptionWidth"]  = 10;
+
+   if ( $sl_shaded == "true" ) { $Config["ShadedSlopeBox"] = TRUE; }
+   if ( $sl_caption_enabled != "true" ) { $Config["Caption"] = FALSE; }
+   if ( $sl_caption_line == "true" ) { $Config["CaptionLine"] =TRUE; }
+
+   if ( $Mode == "Render" )
+    $myPicture->drawDerivative($Config);
+   else
+    {
+     echo "\r\n";
+     echo dumpArray("Config",$Config);
+     echo '$myPicture->drawDerivative($Config);'."\r\n";
+    }
+  }
+
  if ( $Mode == "Render" )
   $myPicture->stroke();
  else
@@ -732,7 +768,7 @@
 
  function dumpArray($Name,$Values)
   {
-   if ( $Values == "" ) { return('$'.$Name.' = ""'."\r\n"); }
+   if ( $Values == "" ) { return('$'.$Name.' = "";'."\r\n"); }
 
    $Result = '$'.$Name." = array(";
    foreach ($Values as $Key => $Value)

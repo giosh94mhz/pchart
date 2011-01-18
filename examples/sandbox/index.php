@@ -2,9 +2,9 @@
  /*
      index.php - Sandbox web frontend
 
-     Version     : 1.0.3
+     Version     : 1.0.4
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 04/01/11
+     Last Update : 18/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -111,14 +111,16 @@
    <td><input type='text' id='g_width' value='700' style='width: 30px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' onkeyup='doLayout();' /></td>
    <td>&nbsp;&nbsp; Height &nbsp;</td>
    <td><input type='text' id='g_height' value='230' style='width: 30px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' onkeyup='doLayout();' /></td>
-   <td>&nbsp;&nbsp; <input type='checkbox' id='g_border' checked='checked' /></td>
-   <td>with a border</td>
+   <td>&nbsp;&nbsp;<input type='checkbox' id='g_transparent' /></td>
+   <td>Transparent background</td>
   </tr></table>
   <table><tr>
    <td><input type='checkbox' id='g_aa' checked='checked' /></td>
    <td>Turn on antialiasing</td>
    <td>&nbsp;&nbsp;<input type='checkbox' id='g_shadow' checked='checked' /></td>
-   <td>Enable general shadow</td>
+   <td>Enable shadow</td>
+   <td>&nbsp;&nbsp; <input type='checkbox' id='g_border' checked='checked' /></td>
+   <td>with a border</td>
   </tr></table>
   <table><tr>
    <td><input type='checkbox' id='g_autopos' checked='checked' onclick='toggleAuto();' /></td>
@@ -567,7 +569,23 @@
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/application_form.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/shape_flip_vertical.png' width='16' height='16' alt=''/></td>
+   <td width='240'><b>Slope chart</b></td>
+   <td width='20'><input type='checkbox' id='sl_enabled' onclick='doLayout();' /></td>
+   <td width='38'>Enabled</td>
+  </tr></table>
+  <table><tr>
+   <td>&nbsp; <input type='checkbox' id='sl_shaded' checked='checked' /></td>
+   <td>&nbsp;Shaded&nbsp;</td>
+   <td>&nbsp; <input type='checkbox' id='sl_caption_enabled' checked='checked' /></td>
+   <td>&nbsp;With caption &nbsp;</td>
+   <td>&nbsp; <input type='checkbox' id='sl_caption_line' checked='checked' /></td>
+   <td>&nbsp;Use line as caption &nbsp;</td>
+  </tr></table>
+  <br/>
+
+  <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
+   <td width='20'><img src='graphix/color_swatch.png' width='16' height='16' alt=''/></td>
    <td width='300'><b>Palette</b></td>
   </tr></table>
   <br/>

@@ -2,7 +2,7 @@ pChart - a PHP Charting library
 ===============================
 
 * Made by: **Jean-Damien POGOLOTTI**
-* Last Update: **10/01/11**
+* Last Update: **18/01/11**
 
 ```
  ┬
@@ -13,6 +13,7 @@ pChart - a PHP Charting library
  │   │
  │   ├─ pBarcode39.class	Class to draw Code 39 barcodes.
  │   ├─ pBarcode128.class	Class to draw Code 128 barcodes.
+ │   ├─ pBubble.class		Class to draw bubble charts.
  │   ├─ pCache.class		Class enable chart caching functionalities.
  │   ├─ pData.class		Class to manipulate chart data.
  │   ├─ pDraw.class		Extended drawing functions.

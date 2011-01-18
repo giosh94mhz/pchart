@@ -3,11 +3,26 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.0.12                  ║
+ ║   Version     : 2.0.13                  ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 10/01/11                ║
+ ║   Last Update : 18/01/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
+
+ 2.0.13 ───────────────────────────────────────────────────────────────────────
+
+  o Modified the drawScale() function to get the best visual factors.
+  o Added the BorderAlpha parameter to the drawFilledCircle() function.
+  o Shipped more examples.
+  o Fixed a bug in the normalize() function and 0 Values.
+  o Finally implemented the setSeriePicture() output.
+  o Added the bubble class extension.
+  o Added the possibility to have a transparent background to the generated
+    pictures keeping the alpha channels (thanks to georgi.m)
+  o Updated the sandbox to support transparent background.
+  o Added the drawDerivative() function to draw curve slope factor.
+  o Additional Minor fixes.
+
 
  2.0.12 ───────────────────────────────────────────────────────────────────────
 

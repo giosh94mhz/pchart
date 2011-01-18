@@ -2,9 +2,9 @@
  /*
      session.php - Sandbox sesson manager
 
-     Version     : 1.0.1
+     Version     : 1.0.4
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 04/01/11
+     Last Update : 18/01/11
 
      This file can be distributed under the license you can find at :
 

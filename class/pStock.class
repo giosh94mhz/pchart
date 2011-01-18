@@ -2,9 +2,9 @@
  /*
      pStock - class to draw stock charts
 
-     Version     : 2.0.12
+     Version     : 2.0.13
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 10/01/11
+     Last Update : 18/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -19,6 +19,7 @@
  class pStock
   {
    var $pChartObject;
+   var $pDataObject;
 
    /* Class creator */
    function __construct($pChartObject,$pDataObject)

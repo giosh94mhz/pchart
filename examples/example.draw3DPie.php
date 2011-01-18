@@ -17,7 +17,7 @@
  $MyData->setAbscissa("Labels");
 
  /* Create the pChart object */
- $myPicture = new pImage(700,230,$MyData);
+ $myPicture = new pImage(700,230,$MyData,TRUE);
 
  /* Draw a solid background */
  $Settings = array("R"=>173, "G"=>152, "B"=>217, "Dash"=>1, "DashR"=>193, "DashG"=>172, "DashB"=>237);

@@ -62,6 +62,15 @@
  $myPicture->drawFilledRectangle(1,200,698,228,array("Alpha"=>30,"R"=>255,"G"=>255,"B"=>255));
  $myPicture->drawLegend(10,208,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
+ /* Define series icons */
+ $MyData->setSeriePicture("My Serie 1","resources/application_view_list.png");
+ $MyData->setSeriePicture("My Serie 2","resources/application_view_tile.png");
+ $MyData->setSeriePicture("My Serie 3","resources/chart_bar.png");
+
+ /* Write a legend box */ 
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
+ $myPicture->drawLegend(540,50,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_VERTICAL));
+
  /* Render the picture (choose the best way) */
  $myPicture->autoOutput("pictures/example.drawLegend.png");
 ?>

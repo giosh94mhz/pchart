@@ -1,9 +1,9 @@
  /*
      functions.js - Sandbox JS
 
-     Version     : 1.0.1
+     Version     : 1.0.4
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 04/01/11
+     Last Update : 18/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -102,6 +102,7 @@
    g_border  = document.getElementById("g_border").checked;
    g_aa      = document.getElementById("g_aa").checked;
    g_shadow  = document.getElementById("g_shadow").checked;
+   g_transparent = document.getElementById("g_transparent").checked;
    g_autopos = document.getElementById("g_autopos").checked;
 
    g_title_enabled      = document.getElementById("g_title_enabled").checked;
@@ -135,7 +136,7 @@
     +"&g_title_y="+g_title_y+"&g_title_color="+g_title_color+"&g_title_font="+g_title_font+"&g_title_font_size="+g_title_font_size+"&g_title_box="+g_title_box
     +"&g_solid_enabled="+g_solid_enabled+"&g_solid_color="+g_solid_color+"&g_solid_dashed="+g_solid_dashed
     +"&g_gradient_enabled="+g_gradient_enabled+"&g_gradient_start="+g_gradient_start+"&g_gradient_end="+g_gradient_end
-    +"&g_gradient_direction="+g_gradient_direction+"&g_gradient_alpha="+g_gradient_alpha
+    +"&g_gradient_direction="+g_gradient_direction+"&g_gradient_alpha="+g_gradient_alpha+"&g_transparent="+g_transparent
     +"&Seed="+Math.random(100);
 
    push(URL,1);
@@ -309,6 +310,11 @@
    t_box		= document.getElementById("t_box").checked;
    t_caption_enabled	= document.getElementById("t_caption_enabled").checked;
 
+   sl_enabled		= document.getElementById("sl_enabled").checked;
+   sl_shaded		= document.getElementById("sl_shaded").checked;
+   sl_caption_enabled	= document.getElementById("sl_caption_enabled").checked;
+   sl_caption_line	= document.getElementById("sl_caption_line").checked;
+
    p_template		= document.getElementById("p_template").options[document.getElementById("p_template").selectedIndex].value;
 
    if ( t_axis0 ) { t_axis = 0; }
@@ -319,7 +325,8 @@
         +"&l_margin="+l_margin+"&l_alpha="+l_alpha+"&l_format="+l_format+"&l_orientation="+l_orientation+"&l_box_size="+l_box_size
         +"&t_enabled="+t_enabled+"&t_value="+t_value+"&t_axis="+t_axis+"&t_color="+t_color+"&t_alpha="+t_alpha+"&t_ticks="+t_ticks
         +"&t_caption="+t_caption+"&t_box="+t_box+"&t_caption_enabled="+t_caption_enabled+"&l_position="+l_position+"&l_x="+l_x+"&l_y="+l_y
-        +"&p_template="+p_template+"&l_family="+l_family;
+        +"&p_template="+p_template+"&l_family="+l_family+"&sl_enabled="+sl_enabled+"&sl_shaded="+sl_shaded+"&sl_caption_enabled="+sl_caption_enabled
+        +"&sl_caption_line="+sl_caption_line;
 
    push(URL,5);
   }
@@ -429,6 +436,11 @@
    Serie2Binding = document.getElementById("d_serie2_axis").options[document.getElementById("d_serie2_axis").selectedIndex].value;
    Serie3Binding = document.getElementById("d_serie3_axis").options[document.getElementById("d_serie3_axis").selectedIndex].value;
 
+   Series = 0;
+   if ( Serie1Enabled ) { Series++; }
+   if ( Serie2Enabled ) { Series++; }
+   if ( Serie3Enabled ) { Series++; }
+
    if ( (Serie1Binding != 0 || !Serie1Enabled) && (Serie2Binding != 0 || !Serie2Enabled) && (Serie3Binding != 0 || !Serie3Enabled) )
     { disableItem("d_axis0_name"); disableItem("d_axis0_unit"); disableItem("d_axis0_position"); disableItem("d_axis0_format"); }
    else
@@ -446,6 +458,7 @@
 
    if ( Automatic )
     {
+     sl_enabled  = document.getElementById("sl_enabled").checked;
      g_width     = document.getElementById("g_width").value;
      g_height    = document.getElementById("g_height").value;
      s_direction = document.getElementById("s_direction").options[document.getElementById("s_direction").selectedIndex].value;
@@ -467,10 +480,12 @@
        leftMargin = leftOffset + 40 * leftSeries;
        width = g_width - leftMargin - 40 * rightSeries - rightOffset;
 
+       if ( sl_enabled ) { BottomOffset = Series*15; } else { BottomOffset = 0; }
+
        document.getElementById("s_x").value = leftMargin;
        document.getElementById("s_y").value = 50;
        document.getElementById("s_width").value = width;
-       document.getElementById("s_height").value = g_height - 50 - 40;
+       document.getElementById("s_height").value = g_height - 50 - 40 - BottomOffset;
       }
      else
       {
@@ -480,9 +495,11 @@
        topMargin = topOffset + 30 * leftSeries;
        height = g_height - topMargin - 30 * rightSeries - bottomOffset;
 
+       if ( sl_enabled ) { RightOffset = Series*15; } else { RightBottomOffset = 0; }
+
        document.getElementById("s_x").value = 70;
        document.getElementById("s_y").value = topMargin;
-       document.getElementById("s_width").value = g_width - 70 - 40;
+       document.getElementById("s_width").value = g_width - 70 - 40 - RightOffset;
        document.getElementById("s_height").value = height;
       }
     }
