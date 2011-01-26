@@ -2,7 +2,7 @@
  /*
      render.php - Sandbox rendering engine
 
-     Version     : 1.0.4
+     Version     : 1.1.0
      Made by     : Jean-Damien POGOLOTTI
      Last Update : 18/01/11
 
@@ -189,17 +189,17 @@
 
 
  /* pChart library inclusions */
- include("../../../class/pData.class");
- include("../../../class/pDraw.class");
- include("../../../class/pImage.class");
+ include("../../../class/pData.class.php");
+ include("../../../class/pDraw.class.php");
+ include("../../../class/pImage.class.php");
 
  $myData = new pData();
  if ( $Mode == "Source" )
   {
    echo "&lt;?php\r\n";
-   echo 'include("class/pData.class");'."\r\n";
-   echo 'include("class/pDraw.class");'."\r\n";
-   echo 'include("class/pImage.class");'."\r\n";
+   echo 'include("class/pData.class.php");'."\r\n";
+   echo 'include("class/pDraw.class.php");'."\r\n";
+   echo 'include("class/pImage.class.php");'."\r\n";
    echo "\r\n";
    echo '$myData = new pData();'."\r\n";
   }
@@ -553,6 +553,27 @@
     }
   }
 
+ if ( $c_family == "step" )
+  {
+   if ( $c_break == "true" )
+    {
+     list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
+
+     $Config["BreakVoid"] = 0;
+     $Config["BreakR"] = $BreakR;
+     $Config["BreakG"] = $BreakG;
+     $Config["BreakB"] = $BreakB;
+    }
+
+   if ( $Mode == "Render" )
+    $myPicture->drawStepChart($Config);
+   else
+    {
+     echo dumpArray("Config",$Config);
+     echo '$myPicture->drawStepChart($Config);'."\r\n";
+    }
+  }
+
  if ( $c_family == "spline" )
   {
    if ( $c_break == "true" )
@@ -600,6 +621,20 @@
     {
      echo dumpArray("Config",$Config);
      echo '$myPicture->drawAreaChart($Config);'."\r\n";
+    }
+  }
+
+ if ( $c_family == "fstep" )
+  {
+   if ( $c_forced_transparency == "true" ) { $Config["ForceTransparency"] = $c_transparency; }
+   if ( $c_around_zero2 == "true" ) { $Config["AroundZero"] = TRUE; } else { $Config["AroundZero"] = FALSE; }
+
+   if ( $Mode == "Render" )
+    $myPicture->drawFilledStepChart($Config);
+   else
+    {
+     echo dumpArray("Config",$Config);
+     echo '$myPicture->drawFilledStepChart($Config);'."\r\n";
     }
   }
 
@@ -701,9 +736,9 @@
 
    $Size = $myPicture->getLegendSize($Config);
    if ( $l_position == "CORNER_TOP_RIGHT" )
-    { $l_y = $l_margin + 10; $l_x = $g_width - $Size["Width"] - 10; }
+    { $l_y = $l_margin + 10; $l_x = $g_width - $Size["Width"] - 10 + $l_margin; }
    if ( $l_position == "CORNER_BOTTOM_RIGHT" )
-    { $l_y = $g_height - $Size["Height"] - 10; $l_x = $g_width - $Size["Width"] - 10; }
+    { $l_y = $g_height - $Size["Height"] - 10 + $l_margin; $l_x = $g_width - $Size["Width"] - 10 + $l_margin; }
 
    if ( $Mode == "Render" )
     $myPicture->drawLegend($l_x,$l_y,$Config);

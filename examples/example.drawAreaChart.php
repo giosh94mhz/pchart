@@ -1,10 +1,10 @@
 <?php   
- /* @ 700x230 AreaCharts drawing example. */
+ /* CAT:Area Chart */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();  

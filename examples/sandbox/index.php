@@ -2,7 +2,7 @@
  /*
      index.php - Sandbox web frontend
 
-     Version     : 1.0.4
+     Version     : 1.1.0
      Made by     : Jean-Damien POGOLOTTI
      Last Update : 18/01/11
 
@@ -661,9 +661,11 @@
    echo "<option value='plot'>Plot chart</option>";
    echo "<option value='line'>Line chart</option>";
    echo "<option value='spline' selected='selected'>Spline chart</option>";
+   echo "<option value='step'>Step chart</option>";
    echo "<option value='bar'>Bar chart</option>";
    echo "<option value='area'>Area chart</option>";
    echo "<option value='fspline'>Filled spline chart &nbsp;&nbsp;&nbsp;&nbsp;</option>";
+   echo "<option value='fstep'>Filled step chart</option>";
    echo "<option value='sbar'>Stacked bar chart</option>";
    echo "<option value='sarea'>Stacked area chart</option>";
   }

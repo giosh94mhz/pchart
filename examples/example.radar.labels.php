@@ -1,15 +1,15 @@
 <?php   
- /* @ 300x300 Radar bar chart and tunned labels drawing example. */
+ /* CAT:Polar and radars */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pRadar.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pRadar.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();   
- $MyData->addPoints(array(2,2,10,10,4,4,15,15,2,2,10,10,4,4,15,15,2,2,10,10,4,4,15,15),"ScoreA");  
+ $MyData->addPoints(array(4,4,10,10,4,4,15,15,4,4,10,10,4,4,15,15,4,4,10,10,4,4,15,15),"ScoreA");  
  $MyData->setSerieDescription("ScoreA","Application A");
  $MyData->setPalette("ScoreA",array("R"=>150,"G"=>5,"B"=>217));
 

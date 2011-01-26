@@ -2,7 +2,7 @@
  /*
      session.php - Sandbox sesson manager
 
-     Version     : 1.0.4
+     Version     : 1.1.0
      Made by     : Jean-Damien POGOLOTTI
      Last Update : 18/01/11
 

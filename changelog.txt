@@ -3,11 +3,43 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.0.13                  ║
+ ║   Version     : 2.1.0                   ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 18/01/11                ║
+ ║   Last Update : 26/01/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
+
+ 2.1.0 ────────────────────────────────────────────────────────────────────────
+
+  o Renamed the .class files to .class.php.
+  o Create the pScatter class.
+  o Added the ScatterPlotChart() charting method.
+  o Added the ScatterLineChart() charting method.
+  o Added the ScatterSplineChart() charting method.
+  o Added the DrawScatterLegend() function.
+  o Added the getScatterLegendSize() function.
+  o Added the following function to the pData class :
+
+    - setScatterSerie()
+    - setScatterSerieDescription()
+    - setScatterSeriePicture()
+    - setScatterSerieDrawable()
+    - setScatterSerieTicks()
+    - setScatterSerieWeight()
+    - setScatterSerieColor()
+
+  o Added a Forces config. array to drawSpline() function to allow parametric
+    forces. (used by the scatter spline algorithm)
+  o Added Floating0Serie & Floating0Value options to the drawBarChart function.
+  o Added the Draw0Line option to the drawBarChart function.
+  o Added support for line and filled step charts.
+  o Fixed a visual artifact in the drawGradient() function.
+  o Fixed a visual artifact in the drawRoundedFilledRectangle() function.
+  o Fixed a visual artifact in the drawRadar() function.
+  o Rewritten the example index page.
+  o Added the Floating parameter to the scaling functions.
+  o Added the drawBestFit() and drawScatterBestFit() math functions.
+
 
  2.0.13 ───────────────────────────────────────────────────────────────────────
 

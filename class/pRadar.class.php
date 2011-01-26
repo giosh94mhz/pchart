@@ -2,9 +2,9 @@
  /*
      pRadar - class to draw radar charts
 
-     Version     : 2.0.13
+     Version     : 2.1.0
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 18/01/11
+     Last Update : 26/01/11
 
      This file can be distributed under the license you can find at :
 
@@ -78,7 +78,7 @@
      $X2		= $Object->GraphAreaX2;
      $Y2		= $Object->GraphAreaY2;
 
-     if ( $AxisBoxRounded ) { $DrawAxisValues = TRUE; }
+     // if ( $AxisBoxRounded ) { $DrawAxisValues = TRUE; }
 
      /* Cancel default tick length if ticks not enabled */
      if ( $DrawTicks == FALSE ) { $TicksLength = 0; }
@@ -197,7 +197,7 @@
       {
        for($j=1;$j<=$Segments;$j++)
         {
-         for($i=0;$i<=360;$i=$i+(360/$Points))
+         for($i=0;$i<360;$i=$i+(360/$Points))
           {
            $EdgeX1 = cos(deg2rad($i+$AxisRotation)) * ($EdgeHeight/$Segments)*$j + $CenterX;
            $EdgeY1 = sin(deg2rad($i+$AxisRotation)) * ($EdgeHeight/$Segments)*$j + $CenterY;
@@ -256,7 +256,7 @@
 
      /* Axis lines */
      $ID = 0;
-     for($i=0;$i<=360;$i=$i+(360/$Points))
+     for($i=0;$i<360;$i=$i+(360/$Points))
       {
        $EdgeX = cos(deg2rad($i+$AxisRotation)) * ($EdgeHeight+$TicksLength) + $CenterX;
        $EdgeY = sin(deg2rad($i+$AxisRotation)) * ($EdgeHeight+$TicksLength) + $CenterY;

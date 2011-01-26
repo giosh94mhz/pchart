@@ -1,11 +1,11 @@
 <?php   
- /* @ 700x230 Splitted path chart drawing example. */
+ /* CAT:Split chart */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pSplit.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pSplit.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230);

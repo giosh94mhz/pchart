@@ -1,11 +1,11 @@
 <?php   
- /* @ 600x310 This demontrates how to build a complex label with barcodes. */
+ /* CAT:Barcode */
 
  /* pChart library inclusions */
- include("../class/pDraw.class");
- include("../class/pBarcode39.class");
- include("../class/pBarcode128.class");
- include("../class/pImage.class");
+ include("../class/pDraw.class.php");
+ include("../class/pBarcode39.class.php");
+ include("../class/pBarcode128.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the pChart object */
  $myPicture = new pImage(600,310);

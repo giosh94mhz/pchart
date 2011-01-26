@@ -1,11 +1,11 @@
 <?php   
- /* @ 700x230 Drawing 2D Pie charts. */
+ /* CAT:Pie charts */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pPie.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pPie.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();   

@@ -1,8 +1,8 @@
 <?php   
- /* @ ! pData class example. */
+ /* CAT:Misc */
 
  /* pChart library inclusions */
- include("../class/pData.class");
+ include("../class/pData.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();  

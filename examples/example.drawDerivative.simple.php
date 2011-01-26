@@ -1,10 +1,10 @@
 <?php   
- /* @ 700x230 Line chart drawing example. */
+ /* CAT:Mathematical */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();  
@@ -23,10 +23,11 @@
  /* Set the default font */ 
  $myPicture->setFontProperties(array("R"=>0,"G"=>0,"B"=>0,"FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
 
- /* Draw the scale and the 1st chart */
+ /* Define the chart area */
  $myPicture->setGraphArea(50,40,680,170);
 
- $scaleSettings = array("GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE,"XMargin"=>1);
+ /* Draw the scale */
+ $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"GridR"=>100,"GridG"=>100,"GridB"=>100,"GridAlpha"=>15);
  $myPicture->drawScale($scaleSettings);
 
  /* Draw the chart */

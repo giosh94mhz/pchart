@@ -1,15 +1,14 @@
 <?php   
- /* @ 300x300 Spring chart : Relations drawing example. */
+ /* CAT:Spring chart */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pSpring.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pSpring.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the pChart object */
  $myPicture = new pImage(300,300);
-
 
  /* Draw the background */
  $Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);

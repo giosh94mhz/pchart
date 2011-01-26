@@ -1,11 +1,11 @@
 <?php
- /* @ 700x230 Basic stock chart drawing example. */
+ /* CAT:Stock chart */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
- include("../class/pStock.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
+ include("../class/pStock.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();  

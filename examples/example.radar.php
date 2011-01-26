@@ -1,18 +1,20 @@
 <?php   
- /* @ 700x230 Radar bar chart drawing example. */
+ /* CAT:Polar and radars */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pRadar.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pRadar.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();   
  $MyData->addPoints(array(40,20,15,10,8,4),"ScoreA");  
  $MyData->addPoints(array(8,10,12,20,30,15),"ScoreB"); 
+ $MyData->addPoints(array(4,8,16,32,16,8),"ScoreC"); 
  $MyData->setSerieDescription("ScoreA","Application A");
  $MyData->setSerieDescription("ScoreB","Application B");
+ $MyData->setSerieDescription("ScoreC","Application C");
 
  /* Define the absissa serie */
  $MyData->addPoints(array("Size","Speed","Reliability","Functionalities","Ease of use","Weight"),"Labels");
@@ -47,18 +49,18 @@
  $SplitChart = new pRadar();
 
  /* Draw a radar chart */ 
- $myPicture->setGraphArea(10,25,340,225);
+ $myPicture->setGraphArea(10,25,300,225);
  $Options = array("Layout"=>RADAR_LAYOUT_STAR,"BackgroundGradient"=>array("StartR"=>255,"StartG"=>255,"StartB"=>255,"StartAlpha"=>100,"EndR"=>207,"EndG"=>227,"EndB"=>125,"EndAlpha"=>50), "FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6);
  $SplitChart->drawRadar($myPicture,$MyData,$Options);
 
  /* Draw a radar chart */ 
- $myPicture->setGraphArea(350,25,690,225);
+ $myPicture->setGraphArea(390,25,690,225);
  $Options = array("Layout"=>RADAR_LAYOUT_CIRCLE,"LabelPos"=>RADAR_LABELS_HORIZONTAL,"BackgroundGradient"=>array("StartR"=>255,"StartG"=>255,"StartB"=>255,"StartAlpha"=>50,"EndR"=>32,"EndG"=>109,"EndB"=>174,"EndAlpha"=>30), "FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6);
  $SplitChart->drawRadar($myPicture,$MyData,$Options);
 
  /* Write the chart legend */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
- $myPicture->drawLegend(270,205,array("Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(235,205,array("Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
  $myPicture->autoOutput("pictures/example.radar.png");

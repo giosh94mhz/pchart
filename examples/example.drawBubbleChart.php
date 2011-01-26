@@ -1,11 +1,11 @@
 <?php
- /* @ 700x230 bubble chart drawing example. */
+ /* CAT:Bubble chart */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
- include("../class/pBubble.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
+ include("../class/pBubble.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();  

@@ -1,10 +1,10 @@
 <?php   
- /* @ 700x230 This example shows how to tune the scale by skipping labels. */
+ /* CAT:Misc */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the pData object with some random values*/
  $MyData = new pData();  

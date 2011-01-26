@@ -5,13 +5,14 @@
  <title>pChart 2.x - examples rendering</title>
  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
  <style>
-  body { background-color: #F0F0F0; font-family: tahoma; font-size: 14px; height: 100%; overflow: auto;}
-  table   { margin: 0px; padding: 0px; border: 0px; }
-  tr   { margin: 0px; padding: 0px; border: 0px; }
-  td   { font-family: tahoma; font-size: 11px; margin: 0px; padding: 0px; border: 0px; }
-  a.smallLinkGrey:link    { text-decoration: none; color: #6A6A6A; }
-  a.smallLinkGrey:visited { text-decoration: none; color: #6A6A6A; }
-  a.smallLinkGrey:hover   { text-decoration: underline; color: #6A6A6A; }
+  body       { background-color: #F0F0F0; font-family: tahoma; font-size: 14px; height: 100%; overflow: auto;}
+  table      { margin: 0px; padding: 0px; border: 0px; }
+  tr         { margin: 0px; padding: 0px; border: 0px; }
+  td         { font-family: tahoma; font-size: 11px; margin: 0px; padding: 0px; border: 0px; }
+  div.folder { cursor: hand; cursor: pointer; }
+  a.smallLinkGrey:link     { text-decoration: none; color: #6A6A6A; }
+  a.smallLinkGrey:visited  { text-decoration: none; color: #6A6A6A; }
+  a.smallLinkGrey:hover    { text-decoration: underline; color: #6A6A6A; }
   a.smallLinkBlack:link    { text-decoration: none; color: #000000; }
   a.smallLinkBlack:visited { text-decoration: none; color: #000000; }
   a.smallLinkBlack:hover   { text-decoration: underline; color: #000000; }
@@ -19,27 +20,22 @@
 </head>
 <body>
 
-<table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; margin-bottom: 10px;'><tr>
- <td width=16><img src='resources/application_view_tile.png' width=16 height=16 alt=''/></td>
- <td width=87>&nbsp;<b>Examples</b></td>
- <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
- <td width=87>&nbsp;<a class=smallLinkGrey href='sandbox/'>Sandbox</a></td>
- <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
- <td width=87>&nbsp;<a class=smallLinkGrey href='delayedLoader/'>Delayed loader</a></td>
-</tr></table>
-
-<table><tr><td valign='top'>
-<div style='margin-top: 4px; border: 1px solid #D0D0D0; background-color: #FAFAFA; width: 220px; overflow: auto'>
-<table><tr>
- <td><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
- <td>&nbsp;/examples</td>
-</tr></table>
-<table noborder cellpadding=0 cellspacing=0>
 <?php
+ /* Files that we don't want to see in the tree */
  $Exclusion = array(".","..","index.php","buildAll.cmd","pictures","resources","delayedLoader","sandbox");
 
+ /* Determine the current package version */
+ $FileHandle  = fopen("../readme.txt", "r");
+ for ($i=0; $i<=5; $i++) { $buffer = fgets($FileHandle, 4096); }
+ fclose($FileHandle);
+ $Values  = preg_split("/:/",$buffer);
+ $Values  = preg_split("/ /",$Values[1]);
+ $Version = strip_tags($Values[1]);
+
+ /* Build a list of the examples & categories */
  $DirectoryHandle = opendir(".");
   {
+   $Tree = "";
    while (($FileName = readdir($DirectoryHandle)) !== false)
    {
     if ( !in_array($FileName,$Exclusion))
@@ -49,61 +45,142 @@
       $buffer      = fgets($FileHandle, 4096);
       fclose($FileHandle);
 
-      $Description = str_replace("/* @","",$buffer);
-      $Description = str_replace("*/","",$Description);
-      $Values      = preg_split("/[\s]+/",$Description);
-
-      if ( isset($Values[1]) ) { $Size = $Values[1]; } else { $Size = "?"; }
-
-      $Description = right($Description,strlen($Description)-strlen($Size)-2);
+      if ( preg_match("/CAT:/",$buffer) )
+       {
+        $Categorie = str_replace(" /* CAT:","",$buffer);
+        $Categorie = str_replace("*/","",$Categorie);
+        $Categorie = trim($Categorie);
+       }
+      else
+       { $Categorie = "z_root"; }
 
       $FileShortName = str_replace("example.","",$FileName);
       $FileShortName = str_replace(".php","",$FileShortName);
       $FileShortName = trim($FileShortName);
 
-      $FileSize = filesize($FileName);
-
-      if ( $Size != "!" )
-       {
-        echo " <tr valign=middle>\r\n";
-        echo "  <td><img src='resources/dash-explorer.png' width=16 height=20 alt=''/></td>\r\n";
-        echo "  <td><img src='resources/folder.png' width=16 height=16 alt=''/></td>\r\n";
-        echo "  <td>&nbsp;<a class=smallLinkGrey href='#' onclick='render(".chr(34).$FileName.chr(34).");'>".$FileShortName."</a></td>\r\n";
-        echo " </tr>";
-       }
+      $Tree[$Categorie][]=array("FileName"=>$FileName,"FileShortName"=>$FileShortName);
      }
    }
   closedir($DirectoryHandle);
- }
+
+  ksort($Tree);
 ?>
-</table>
-</div>
-</td><td width=10></td><td valign='top' style='padding-top: 5px; font-size: 12px;'>
-Rendering area
 
-<br/><br/>
-
-<div style='display:table-cell; padding: 10px; border: 1px dashed #C0C0C0; vertical-align: middle; overflow: auto; background-image: url("resources/dash.png");'>
-<div style='font-size: 10px;' id=render>
- <table><tr><td><img src='resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to render it!</td></tr></table>
-</div>
-</div>
+<table style='border: 2px solid #FFFFFF;'><tr><td>
+<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 362px;'>&nbsp;Navigation</div>
+<table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; border-top: 1px solid #FFFFFF;'><tr>
+ <td width=16><img src='resources/application_view_tile.png' width=16 height=16 alt=''/></td>
+ <td width=100>&nbsp;<b>Examples</b></td>
+ <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
+ <td width=100>&nbsp;<a class=smallLinkGrey href='sandbox/'>Sandbox</a></td>
+ <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
+ <td width=100>&nbsp;<a class=smallLinkGrey href='delayedLoader/'>Delayed loader</a></td>
+</tr></table>
+</td></tr></table>
 
 <br/>
-Source area
+<table><tr><td valign='top'>
+
+<table style='border: 2px solid #FFFFFF;'><tr><td>
+<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 222px;'>&nbsp;Release <?php echo $Version; ?></div>
+<div style='border: 3px solid #D0D0D0; border-top: 1px solid #FFFFFF; background-color: #FAFAFA; width: 220px; overflow: auto'>
+<div style='padding: 1px; padding-bottom: 3px; color: #000000; background-color:#D0D0D0;'>
+ <table><tr>
+  <td><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
+  <td>&nbsp;Examples folder contents</td>
+ </tr></table>
+</div>
+<?php
+  $ID = 1; if ( isset($Tree["z_root"]) ) { $ID = 2; }
+  foreach($Tree as $Key => $Elements)
+   {
+    if ( $ID == count($Tree) ) { $Icon = "dash-explorer-last.png"; $SubIcon = "dash-explorer-blank.png"; } else { $Icon = "dash-explorer.png"; $SubIcon = "dash-explorer-noleaf.png"; }
+    if ( $Key != "z_root" )
+     {
+      echo "<table  noborder cellpadding=0 cellspacing=0>\r\n";
+      echo " <tr valign=middle>\r\n";
+      echo "  <td><img src='resources/".$Icon."' width=16 height=20 alt=''/></td>\r\n";
+      echo "  <td><img src='resources/folder.png' width=16 height=16 alt=''/></td>\r\n";
+      echo "  <td><div class=folder id='".$Key."_main' onclick='showHideMenu(".chr(34).$Key.chr(34).");'>&nbsp;".$Key."</div></td>\r\n";
+      echo " </tr>\r\n";
+      echo "</table>\r\n";
+
+      echo "<table id='".$Key."' style='display: none;' noborder cellpadding=0 cellspacing=0><tr>\r\n";
+      foreach($Elements as $SubKey => $Element)
+       {
+        $FileName      = $Element["FileName"];
+        $FileShortName = $Element["FileShortName"];
+
+        if ( $SubKey == count($Elements)-1 ) { $Icon = "dash-explorer-last.png"; } else { $Icon = "dash-explorer.png"; }
+
+        echo " <tr valign=middle>\r\n";
+        echo "  <td><img src='resources/".$SubIcon."' width=16 height=20 alt=''/></td>\r\n";
+        echo "  <td><img src='resources/".$Icon."' width=16 height=20 alt=''/></td>\r\n";
+        echo "  <td><img src='resources/application_view_tile.png' width=16 height=16 alt=''/></td>\r\n";
+        echo "  <td>&nbsp;<a class=smallLinkGrey href='#' onclick='render(".chr(34).$FileName.chr(34).");'>".$FileShortName."</a></td>\r\n";
+        echo " </tr>\r\n";
+       }
+      echo "</table>\r\n";
+
+     }
+    $ID++;
+   }
+ }
+?>
+</div>
+</td></tr></table>
+
+</td><td width=20></td><td valign='top' style='padding-top: 5px; font-size: 12px;'>
+
+<table><tr>
+ <td><img src='resources/chart_bar.png' width=16 height=16 alt=''/></td>
+ <td>&nbsp;Rendering area</td>
+</tr></table>
+
+<div style='display:table-cell; padding: 10px; border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("resources/dash.png");'>
+ <div style='font-size: 10px;' id=render>
+  <table><tr><td><img src='resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to render it!</td></tr></table>
+ </div>
+</div>
+
 <br/><br/>
 
-<div style='display:table-cell; padding: 10px; border: 1px dashed #C0C0C0; vertical-align: middle; overflow: auto; background-image: url("resources/dash.png");'>
-<div style='font-size: 10px;' id=source style='width: 700px;'>
- <table><tr><td><img src='resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to get its source!</td></tr></table>
-</div>
+<table><tr>
+ <td><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
+ <td>&nbsp;Source area</td>
+</tr></table>
+
+<div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("resources/dash.png");'>
+ <div style='font-size: 10px;' id=source style='width: 700px;'>
+  <table><tr><td><img src='resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to get its source!</td></tr></table>
+ </div>
 </div>
 
 </td></tr></table>
 </body>
 <script>
- URL = "";
- SourceURL = "";
+ URL        = "";
+ SourceURL  = "";
+ LastOpened = "";
+
+ function showHideMenu(Element)
+  {
+   status = document.getElementById(Element).style.display;
+   if ( status == "none" )
+    {
+     if ( LastOpened != "" && LastOpened != Element ) { showHideMenu(LastOpened); }
+
+     document.getElementById(Element).style.display = "inline";
+     document.getElementById(Element+"_main").style.fontWeight = "bold";
+     LastOpened = Element;
+    }
+   else
+    {
+     document.getElementById(Element).style.display = "none";
+     document.getElementById(Element+"_main").style.fontWeight = "normal";
+     LastOpened = "";
+    }
+  }
 
  function render(PictureName)
   {

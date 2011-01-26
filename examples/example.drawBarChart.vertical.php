@@ -1,10 +1,10 @@
 <?php   
- /* @ 500x500 Vertical bar chart drawing example. */
+ /* CAT:Bar Chart */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();  

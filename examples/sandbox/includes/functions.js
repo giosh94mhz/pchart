@@ -1,7 +1,7 @@
  /*
      functions.js - Sandbox JS
 
-     Version     : 1.0.4
+     Version     : 1.1.0
      Made by     : Jean-Damien POGOLOTTI
      Last Update : 18/01/11
 
@@ -377,7 +377,7 @@
    if ( ChartFamily == "bar" || ChartFamily == "sbar" )
     { enableRadio("c_bar_classic"); enableRadio("c_bar_rounded"); enableRadio("c_bar_gradient"); enableCheck("c_around_zero1"); }
 
-   if ( ChartFamily == "fspline" || ChartFamily == "area" || ChartFamily == "sarea" )
+   if ( ChartFamily == "fspline" || ChartFamily == "area" || ChartFamily == "sarea" || ChartFamily == "fstep" )
     { enableItem("c_transparency"); enableCheck("c_forced_transparency"); enableCheck("c_around_zero2"); checkAreaChart(); }
 
    if ( Automatic )

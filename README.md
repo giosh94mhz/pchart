@@ -2,7 +2,7 @@ pChart - a PHP Charting library
 ===============================
 
 * Made by: **Jean-Damien POGOLOTTI**
-* Last Update: **18/01/11**
+* Last Update: **26/01/11**
 
 ```
  ┬
@@ -19,6 +19,7 @@ pChart - a PHP Charting library
  │   ├─ pDraw.class		Extended drawing functions.
  │   ├─ pImage.class		Core drawing functions.
  │   ├─ pPie.class		Class to draw pie charts.
+ │   ├─ pScatter.class		Class to draw scatter charts.
  │   ├─ pSplit.class		Class to draw split path charts.
  │   ├─ pSpring.class		Class to draw spring charts.
  │   └─ pStock.class		Class to draw stock charts.

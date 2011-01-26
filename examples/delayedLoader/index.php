@@ -16,14 +16,19 @@
 </head>
 <body onscroll="scrollEvent();" onload="loaderInit();">
 
- <table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; margin-bottom: 10px;'><tr>
-  <td width=16><img src='../resources/application_view_tile.png' width=16 height=16 alt=''/></td>
-  <td width=87>&nbsp;<a class=smallLink href='../'>Examples</a></td>
-  <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-  <td width=77>&nbsp;<a class=smallLink href='../sandbox/'>Sandbox</a></td>
-  <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-  <td width=97>&nbsp;<b>Delayed loader</b></td>
- </tr></table>
+ <table style='border: 2px solid #FFFFFF;'><tr><td>
+  <div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 361px;'>&nbsp;Navigation</div>
+  <table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; border-top: 1px solid #FFFFFF;'><tr>
+   <td width=16><img src='../resources/application_view_tile.png' width=16 height=16 alt=''/></td>
+   <td width=95>&nbsp;<a class=smallLink href='../'>Examples</a></td>
+   <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
+   <td width=95>&nbsp;<a class=smallLink href='../sandbox/'>Sandbox</a></td>
+   <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
+   <td width=95>&nbsp;<b>Delayed loader</b></td>
+  </tr></table>
+ </td></tr></table>
+
+ <br/>
 
  <div class=txt>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna

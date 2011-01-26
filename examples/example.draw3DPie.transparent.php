@@ -1,11 +1,11 @@
 <?php   
- /* @ 240,180 Drawing 3D Pie charts with transparent background. */
+ /* CAT:Pie charts */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pPie.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pPie.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();   
@@ -32,9 +32,9 @@
  $PieChart->draw3DPie(120,90,array("Radius"=>100,"DataGapAngle"=>10,"DataGapRadius"=>6,"Border"=>TRUE));
 
  /* Write the legend box */ 
- $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6,"R"=>255,"G"=>255,"B"=>255));
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6,"R"=>0,"G"=>0,"B"=>0));
  $PieChart->drawPieLegend(140,160,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.draw3DPie.png");
+ $myPicture->autoOutput("pictures/example.draw3DPie.transparent.png");
 ?>

@@ -1,10 +1,10 @@
 <?php
- /* @ 700x230 Really basic code. */
+ /* CAT:Misc */
 
  /* Include all the classes */ 
- include("../class/pDraw.class"); 
- include("../class/pImage.class"); 
- include("../class/pData.class");
+ include("../class/pDraw.class.php"); 
+ include("../class/pImage.class.php"); 
+ include("../class/pData.class.php");
 
  /* Create your dataset object */ 
  $myData = new pData(); 

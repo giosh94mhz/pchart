@@ -17,7 +17,7 @@ td.topMenu   { font-family: tahoma; font-size: 11px; }
 
 div.roundedCorner { font-size: 10px; }
 
-div.topMenu { border: 1px solid #FEFEFE; background-color: #EAEAEA; cursor: pointer; cursor: hand;}
+div.topMenu { border: 1px solid #FEFEFE; background-color: #EAEAEA; cursor: hand; cursor: pointer; }
 
 input
  {

@@ -1,11 +1,11 @@
 <?php
- /* @ ! Demonstrates the use of the pCache class. */
+ /* CAT:Misc */
 
  /* Include all the classes */ 
- include("../class/pDraw.class"); 
- include("../class/pImage.class"); 
- include("../class/pData.class");
- include("../class/pCache.class");
+ include("../class/pDraw.class.php"); 
+ include("../class/pImage.class.php"); 
+ include("../class/pData.class.php");
+ include("../class/pCache.class.php");
 
  /* Create your dataset object */ 
  $myData = new pData(); 

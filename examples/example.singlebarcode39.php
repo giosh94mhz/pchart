@@ -1,10 +1,10 @@
 <?php   
- /* @ various Single barcode 39 drawing example. */
+ /* CAT:Barcode */
 
  /* pChart library inclusions */
- include("../class/pDraw.class");
- include("../class/pBarcode39.class");
- include("../class/pImage.class");
+ include("../class/pDraw.class.php");
+ include("../class/pBarcode39.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the barcode 39 object */
  $Barcode = new pBarcode39("../");

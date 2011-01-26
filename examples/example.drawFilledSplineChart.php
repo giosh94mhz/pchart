@@ -1,10 +1,10 @@
 <?php   
- /* @ 847x304 Filled spline chart drawing example. */
+ /* CAT:Spline chart */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
  $MyData = new pData();

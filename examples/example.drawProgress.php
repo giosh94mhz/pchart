@@ -1,9 +1,9 @@
 <?php   
- /* @ 700x230 Progress bars drawing example. */
+ /* CAT:Progress bars */
 
  /* pChart library inclusions */
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230);

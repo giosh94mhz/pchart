@@ -1,9 +1,9 @@
 <?php
- /* @ 550x160 Text alignement methods */
+ /* CAT:Misc */
 
  /* pChart library inclusions */
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the pChart object */
  $myPicture = new pImage(550,175);

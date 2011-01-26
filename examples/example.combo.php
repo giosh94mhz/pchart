@@ -1,10 +1,10 @@
 <?php
- /* @ 700x230 Drawing combo charts. */
+ /* CAT:Misc */
 
  /* pChart library inclusions */
- include("../class/pData.class");
- include("../class/pDraw.class");
- include("../class/pImage.class");
+ include("../class/pData.class.php");
+ include("../class/pDraw.class.php");
+ include("../class/pImage.class.php");
 
  /* Create the pData object with some random values*/
  $MyData = new pData(); 
@@ -28,17 +28,18 @@
  /* Add a border to the picture */
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
  
-/* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6));
+ /* Write the picture title */ 
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6));
  $myPicture->drawText(10,13,"Chart title",array("R"=>255,"G"=>255,"B"=>255));
 
  /* Draw the scale */
- $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
  $myPicture->setGraphArea(50,60,670,190);
  $myPicture->drawFilledRectangle(50,60,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
  $myPicture->drawScale(array("CycleBackground"=>TRUE));
 
  /* Graph title */
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
  $myPicture->drawText(50,52,"Chart subtitle",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMLEFT));
 
@@ -54,11 +55,11 @@ $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontS
  $myPicture->drawPlotChart();
 
  /* Make sure all series are drawable before writing the scale */
- $MyData->setSerieDrawable("This year",TRUE);
+ $MyData->drawAll();
 
  /* Write the legend */
- $myPicture->drawLegend(540,35,array("Style"=>LEGEND_ROUND,"Alpha"=>20,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(580,35,array("Style"=>LEGEND_ROUND,"Alpha"=>20,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.a.png");
+ $myPicture->autoOutput("pictures/example.combo.png");
 ?>
