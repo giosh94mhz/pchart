@@ -48,10 +48,10 @@
  $PieChart->draw2DPie(120,125,array("SecondPass"=>FALSE));
 
  /* Draw an AA pie chart */ 
- $PieChart->draw2DPie(340,125,array("DrawLabels"=>TRUE,"Border"=>TRUE));
+ $PieChart->draw2DPie(340,125,array("DrawLabels"=>TRUE,"LabelStacked"=>TRUE,"Border"=>TRUE));
 
  /* Draw a splitted pie chart */ 
- $PieChart->draw2DPie(560,125,array("DataGapAngle"=>10,"DataGapRadius"=>6,"Border"=>TRUE,"BorderR"=>255,"BorderG"=>255,"BorderB"=>255));
+ $PieChart->draw2DPie(560,125,array("WriteValues"=>PIE_VALUE_PERCENTAGE,"DataGapAngle"=>10,"DataGapRadius"=>6,"Border"=>TRUE,"BorderR"=>255,"BorderG"=>255,"BorderB"=>255));
 
  /* Write the legend */
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));

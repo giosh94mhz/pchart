@@ -23,7 +23,7 @@
  if ( $myCache->isInCache($ChartHash))
   {
    /* If we have it, get the picture from the cache! */
-   $myCache->saveFromCache($ChartHash,"pictures/example.cache.png");
+   $myCache->autoOutput($ChartHash,"pictures/example.cache.png");
   }
  else
   {
@@ -51,6 +51,6 @@
    $myCache->writeToCache($ChartHash,$myPicture);
 
    /* Render the picture */
-   $myPicture->render("pictures/example.cache.png");
+   $myPicture->autoOutput("pictures/example.cache.png");
   }
 ?>

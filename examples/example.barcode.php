@@ -8,8 +8,7 @@
  include("../class/pImage.class.php");
 
  /* Create the pChart object */
- $myPicture = new pImage(600,310);
- $myPicture->drawFilledRectangle(0,0,600,310,array("R"=>240,"G"=>240,"B"=>240));
+ $myPicture = new pImage(600,310,NULL,TRUE);
 
  /* Draw the rounded box */
  $myPicture->setShadow(TRUE,array("X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30));  

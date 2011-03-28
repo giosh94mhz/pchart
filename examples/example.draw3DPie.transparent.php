@@ -29,7 +29,7 @@
  $myPicture->setShadow(TRUE,array("X"=>3,"Y"=>3,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
  /* Draw a splitted pie chart */ 
- $PieChart->draw3DPie(120,90,array("Radius"=>100,"DataGapAngle"=>10,"DataGapRadius"=>6,"Border"=>TRUE));
+ $PieChart->draw3DPie(120,90,array("Radius"=>100,"DataGapAngle"=>12,"DataGapRadius"=>10,"Border"=>TRUE));
 
  /* Write the legend box */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6,"R"=>0,"G"=>0,"B"=>0));

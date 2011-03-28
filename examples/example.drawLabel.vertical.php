@@ -1,5 +1,5 @@
 <?php   
- /* CAT:Bar Chart */
+ /* CAT:Labels */
 
  /* pChart library inclusions */
  include("../class/pData.class.php");
@@ -13,7 +13,6 @@
  $MyData->addPoints(array("Firefox","Chrome","Internet Explorer","Opera","Safari","Mozilla","SeaMonkey","Camino","Lunascape"),"Browsers");
  $MyData->setSerieDescription("Browsers","Browsers");
  $MyData->setAbscissa("Browsers");
- $MyData->setAbscissaName("Browsers");
 
  /* Create the pChart object */
  $myPicture = new pImage(500,500,$MyData);
@@ -23,7 +22,7 @@
 
  /* Draw the chart scale */ 
  $myPicture->setGraphArea(100,30,480,480);
- $myPicture->drawScale(array("CycleBackground"=>TRUE,"DrawSubTicks"=>TRUE,"GridR"=>0,"GridG"=>0,"GridB"=>0,"GridAlpha"=>10,"Pos"=>SCALE_POS_TOPBOTTOM)); // 
+ $myPicture->drawScale(array("CycleBackground"=>TRUE,"DrawSubTicks"=>TRUE,"GridR"=>0,"GridG"=>0,"GridB"=>0,"GridAlpha"=>10,"Pos"=>SCALE_POS_TOPBOTTOM));
 
  /* Turn on shadow computing */ 
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
@@ -44,6 +43,9 @@
  /* Write the legend */ 
  $myPicture->drawLegend(570,215,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
+ /* Write a label over the chart */
+ $myPicture->writeLabel("Hits",array(1,4));
+
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawBarChart.palette.png");
+ $myPicture->autoOutput("pictures/example.drawBarChart.vertical.png");
 ?>

@@ -10,7 +10,7 @@
  /* Create and populate the pData object */
  $MyData = new pData();  
  $MyData->addPoints(array(34,55,15,62,38,42),"Probe1");
- $MyData->addPoints(array(5,10,8,9,15,10),"Probe1Weight");
+ $MyData->addPoints(array(5,30,20,9,15,10),"Probe1Weight");
  $MyData->addPoints(array(5,10,-5,-1,0,-10),"Probe2");
  $MyData->addPoints(array(6,10,14,10,14,6),"Probe2Weight");
  $MyData->setSerieDescription("Probe1","This year");
@@ -18,6 +18,7 @@
  $MyData->setAxisName(0,"Current stock");
  $MyData->addPoints(array("Apple","Banana","Orange","Lemon","Peach","Strawberry"),"Product");
  $MyData->setAbscissa("Product");
+ $MyData->setAbscissaName("Selected Products");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
@@ -47,7 +48,7 @@
  $myBubbleChart->bubbleScale($bubbleDataSeries,$bubbleWeightSeries);
 
  /* Draw the bubble chart */
- $myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries);
+ $myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries,array("ForceAlpha"=>50));
 
  /* Write the chart legend */
  $myPicture->drawLegend(570,13,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));

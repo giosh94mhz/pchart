@@ -22,7 +22,7 @@ FOR /F "tokens=1,2 delims= " %%G IN ('php -v') DO (
 :render
 ECHO     The PHP binaries (%PHPVersion%) have been located in your system PATH
 ECHO.
-ECHO. >resources\errors.log
+ECHO Processing examples : >resources\errors.log
 
 REM SET /P Var="   Progress : "<NUL
 
@@ -30,6 +30,7 @@ FOR %%f IN (*.*) DO (
    set t=%%f
    if !t:~-3! == php (
      SET /P Var=þ<NUL
+     ECHO %%f >>resources\errors.log
      php -q "%~dp0%%f" 1>NUL 2>>resources\errors.log
     )
 )

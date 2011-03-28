@@ -2,9 +2,9 @@
  /*
      pDraw - class to manipulate data arrays
 
-     Version     : 2.1.0
+     Version     : 2.1.1
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 26/01/11
+     Last Update : 28/03/11
 
      This file can be distributed under the license you can find at :
 
@@ -14,28 +14,36 @@
  */
 
  /* Axis configuration */
- define("AXIS_FORMAT_DEFAULT"	, 680001);
- define("AXIS_FORMAT_TIME"	, 680002);
- define("AXIS_FORMAT_DATE"	, 680003);
- define("AXIS_FORMAT_METRIC"	, 680004);
- define("AXIS_FORMAT_CURRENCY"	, 680005);
+ define("AXIS_FORMAT_DEFAULT"		, 680001);
+ define("AXIS_FORMAT_TIME"		, 680002);
+ define("AXIS_FORMAT_DATE"		, 680003);
+ define("AXIS_FORMAT_METRIC"		, 680004);
+ define("AXIS_FORMAT_CURRENCY"		, 680005);
 
  /* Axis position */
- define("AXIS_POSITION_LEFT"	, 681001);
- define("AXIS_POSITION_RIGHT"	, 681002);
- define("AXIS_POSITION_TOP"	, 681001);
- define("AXIS_POSITION_BOTTOM"	, 681002);
+ define("AXIS_POSITION_LEFT"		, 681001);
+ define("AXIS_POSITION_RIGHT"		, 681002);
+ define("AXIS_POSITION_TOP"		, 681001);
+ define("AXIS_POSITION_BOTTOM"		, 681002);
+
+ /* Families of data points */
+ define("SERIE_SHAPE_FILLEDCIRCLE"	, 681011);
+ define("SERIE_SHAPE_FILLEDTRIANGLE"	, 681012);
+ define("SERIE_SHAPE_FILLEDSQUARE"	, 681013);
+ define("SERIE_SHAPE_CIRCLE"		, 681014);
+ define("SERIE_SHAPE_TRIANGLE"		, 681015);
+ define("SERIE_SHAPE_SQUARE"		, 681016);
 
  /* Axis position */
- define("AXIS_X"		, 682001);
- define("AXIS_Y"		, 682002);
+ define("AXIS_X"			, 682001);
+ define("AXIS_Y"			, 682002);
 
  /* Define value limits */
- define("ABSOLUTE_MIN"          , -10000000000000);
- define("ABSOLUTE_MAX"          , 10000000000000);
+ define("ABSOLUTE_MIN"          	, -10000000000000);
+ define("ABSOLUTE_MAX"          	, 10000000000000);
 
  /* Replacement to the PHP NULL keyword */
- define("VOID"                  , 0.12345);
+ define("VOID"                  	, 0.123456789);
 
  /* pData class definition */
  class pData
@@ -91,24 +99,30 @@
     { $Result = ""; foreach($Values as $Key => $Value) { if ( $Value != VOID ) { $Result[] = $Value; } } return($Result); }
 
    /* Return the number of values contained in a given serie */
-   function getSerieCount($Serie=NULL)
+   function getSerieCount($Serie)
     { if (isset($this->Data["Series"][$Serie]["Data"])) { return(sizeof($this->Data["Series"][$Serie]["Data"])); } else { return(0); } }
 
    /* Remove a serie from the pData object */
-   function removeSerie($Serie=NULL)
-    { if (isset($this->Data["Series"][$Serie])) { unset($this->Data["Series"][$Serie]); } }
+   function removeSerie($Series)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if (isset($this->Data["Series"][$Serie])) { unset($this->Data["Series"][$Serie]); } }
+    }
 
    /* Return a value from given serie & index */
    function getValueAt($Serie,$Index=0)
     { if (isset($this->Data["Series"][$Serie]["Data"][$Index])) { return($this->Data["Series"][$Serie]["Data"][$Index]); } else { return(NULL); } }
 
    /* Return the values array */
-   function getValues($Serie=NULL)
+   function getValues($Serie)
     { if (isset($this->Data["Series"][$Serie]["Data"])) { return($this->Data["Series"][$Serie]["Data"]); } else { return(NULL); } }
 
    /* Reverse the values in the given serie */
-   function reverseSerie($Serie=NULL)
-    { if (isset($this->Data["Series"][$Serie]["Data"])) { $this->Data["Series"][$Serie]["Data"] = array_reverse($this->Data["Series"][$Serie]["Data"]); } }
+   function reverseSerie($Series)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if (isset($this->Data["Series"][$Serie]["Data"])) { $this->Data["Series"][$Serie]["Data"] = array_reverse($this->Data["Series"][$Serie]["Data"]); } }
+    }
 
    /* Return the sum of the serie values */
    function getSum($Serie)
@@ -123,19 +137,35 @@
     { if (isset($this->Data["Series"][$Serie]["Min"])) { return($this->Data["Series"][$Serie]["Min"]); } else { return(NULL); } }
 
    /* Set the description of a given serie */
-   function setSerieDescription($Serie=NULL,$Description="My serie")
-    { if (isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Description"] = $Description; } }
+   function setSerieShape($Series,$Shape=SERIE_SHAPE_FILLEDCIRCLE)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if (isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Shape"] = $Shape; } }
+    }
+
+   /* Set the description of a given serie */
+   function setSerieDescription($Series,$Description="My serie")
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if (isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Description"] = $Description; } }
+    }
 
    /* Set a serie as "drawable" while calling a rendering function */
-   function setSerieDrawable($Serie=NULL ,$Drawable=TRUE)
-    { if (isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["isDrawable"] = $Drawable; } }
+   function setSerieDrawable($Series,$Drawable=TRUE)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if (isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["isDrawable"] = $Drawable; } }
+    }
 
    /* Set the icon associated to a given serie */
-   function setSeriePicture($Serie=NULL,$Picture=NULL)
-    { if (isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Picture"] = $Picture; } }
+   function setSeriePicture($Series,$Picture=NULL)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if (isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Picture"] = $Picture; } }
+    }
 
    /* Set the name of the X Axis */
-   function setXAxisName($Name=NULL)
+   function setXAxisName($Name)
     { $this->Data["XAxisName"] = $Name; }
 
    /* Set the display mode of the  X Axis */
@@ -149,6 +179,10 @@
    /* Set the serie that will be used as abscissa */
    function setAbscissa($Serie)
     { if (isset($this->Data["Series"][$Serie])) { $this->Data["Abscissa"] = $Serie; } }
+
+   /* Set the name of the abscissa axis */
+   function setAbscissaName($Name)
+    { $this->Data["AbscissaName"] = $Name; }
 
    /* Create a scatter group specifyin X and Y data series */
    function setScatterSerie($SerieX,$SerieY,$ID=0)
@@ -164,7 +198,7 @@
 
    /* Set a scatter serie as "drawable" while calling a rendering function */
    function setScatterSerieDrawable($ID ,$Drawable=TRUE)
-    { if (isset($this->Data["ScatterSeries"][ID]) ) { $this->Data["ScatterSeries"][ID]["isDrawable"] = $Drawable; } }
+    { if (isset($this->Data["ScatterSeries"][$ID]) ) { $this->Data["ScatterSeries"][$ID]["isDrawable"] = $Drawable; } }
 
    /* Define if a scatter serie should be draw with ticks */
    function setScatterSerieTicks($ID,$Width=0)
@@ -219,7 +253,10 @@
    function getSerieAverage($Serie)
     {
      if ( isset($this->Data["Series"][$Serie]) )
-      return(array_sum($this->Data["Series"][$Serie]["Data"])/sizeof($this->Data["Series"][$Serie]["Data"]));
+      {
+       $SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+       return(array_sum($SerieData)/sizeof($SerieData));
+      }
      else
       return(NULL);
     }
@@ -313,49 +350,78 @@
     { if ( isset($this->Data["Axis"][$AxisID] ) ) { $this->Data["Axis"][$AxisID]["Identity"] = $Identity; } }
 
    /* Associate one data serie with one axis */
-   function setSerieOnAxis($Serie,$AxisID)
+   function setSerieOnAxis($Series,$AxisID)
     {
-     $PreviousAxis = $this->Data["Series"][$Serie]["Axis"];
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie)
+      {
+       $PreviousAxis = $this->Data["Series"][$Serie]["Axis"];
 
-     /* Create missing axis */
-     if ( !isset($this->Data["Axis"][$AxisID] ) )
-      { $this->Data["Axis"][$AxisID]["Position"] = AXIS_POSITION_LEFT; $this->Data["Axis"][$AxisID]["Identity"] = AXIS_Y;}
+       /* Create missing axis */
+       if ( !isset($this->Data["Axis"][$AxisID] ) )
+        { $this->Data["Axis"][$AxisID]["Position"] = AXIS_POSITION_LEFT; $this->Data["Axis"][$AxisID]["Identity"] = AXIS_Y;}
 
-     $this->Data["Series"][$Serie]["Axis"] = $AxisID;
+       $this->Data["Series"][$Serie]["Axis"] = $AxisID;
 
-     /* Cleanup unused axis */
-     $Found = FALSE;
-     foreach($this->Data["Series"] as $SerieName => $Values) { if ( $Values["Axis"] == $PreviousAxis ) { $Found = TRUE; } }
-     if (!$Found) { unset($this->Data["Axis"][$PreviousAxis]); }
+       /* Cleanup unused axis */
+       $Found = FALSE;
+       foreach($this->Data["Series"] as $SerieName => $Values) { if ( $Values["Axis"] == $PreviousAxis ) { $Found = TRUE; } }
+       if (!$Found) { unset($this->Data["Axis"][$PreviousAxis]); }
+      }
     }
 
    /* Define if a serie should be draw with ticks */
-   function setSerieTicks($Serie,$Width=0)
-    { if ( isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Ticks"] = $Width; } }
+   function setSerieTicks($Series,$Width=0)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if ( isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Ticks"] = $Width; } }
+    }
 
-  /* Define if a serie should be draw with a special weight */
-   function setSerieWeight($Serie,$Weight=0)
-    { if ( isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Weight"] = $Weight; } }
+   /* Define if a serie should be draw with a special weight */
+   function setSerieWeight($Series,$Weight=0)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $Serie) { if ( isset($this->Data["Series"][$Serie]) ) { $this->Data["Series"][$Serie]["Weight"] = $Weight; } }
+    }
+
+   /* Returns the palette of the given serie */
+   function getSeriePalette($Serie)
+    {
+     if ( !isset($this->Data["Series"][$Serie]) ) { return(NULL); }
+
+     $Result = "";
+     $Result["R"] = $this->Data["Series"][$Serie]["Color"]["R"];
+     $Result["G"] = $this->Data["Series"][$Serie]["Color"]["G"];
+     $Result["B"] = $this->Data["Series"][$Serie]["Color"]["B"];
+     $Result["Alpha"] = $this->Data["Series"][$Serie]["Color"]["Alpha"];
+
+     return($Result);
+    }
 
    /* Set the color of one serie */
-   function setPalette($Serie,$Format=NULL)
+   function setPalette($Series,$Format=NULL)
     {
-     $R	    = isset($Format["R"]) ? $Format["R"] : 0;
-     $G	    = isset($Format["G"]) ? $Format["G"] : 0;
-     $B	    = isset($Format["B"]) ? $Format["B"] : 0;
-     $Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
 
-     if ( isset($this->Data["Series"][$Serie]) )
+     foreach($Series as $Key => $Serie)
       {
-       $OldR = $this->Data["Series"][$Serie]["Color"]["R"]; $OldG = $this->Data["Series"][$Serie]["Color"]["G"]; $OldB = $this->Data["Series"][$Serie]["Color"]["B"];
-       $this->Data["Series"][$Serie]["Color"]["R"] = $R;
-       $this->Data["Series"][$Serie]["Color"]["G"] = $G;
-       $this->Data["Series"][$Serie]["Color"]["B"] = $B;
-       $this->Data["Series"][$Serie]["Color"]["Alpha"] = $Alpha;
+       $R	    = isset($Format["R"]) ? $Format["R"] : 0;
+       $G	    = isset($Format["G"]) ? $Format["G"] : 0;
+       $B	    = isset($Format["B"]) ? $Format["B"] : 0;
+       $Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
 
-       /* Do reverse processing on the internal palette array */
-       foreach ($this->Palette as $Key => $Value)
-        { if ($Value["R"] == $OldR && $Value["G"] == $OldG && $Value["B"] == $OldB) { $this->Palette[$Key]["R"] = $R; $this->Palette[$Key]["G"] = $G; $this->Palette[$Key]["B"] = $B; $this->Palette[$Key]["Alpha"] = $Alpha;} }
+       if ( isset($this->Data["Series"][$Serie]) )
+        {
+         $OldR = $this->Data["Series"][$Serie]["Color"]["R"]; $OldG = $this->Data["Series"][$Serie]["Color"]["G"]; $OldB = $this->Data["Series"][$Serie]["Color"]["B"];
+         $this->Data["Series"][$Serie]["Color"]["R"] = $R;
+         $this->Data["Series"][$Serie]["Color"]["G"] = $G;
+         $this->Data["Series"][$Serie]["Color"]["B"] = $B;
+         $this->Data["Series"][$Serie]["Color"]["Alpha"] = $Alpha;
+
+         /* Do reverse processing on the internal palette array */
+         foreach ($this->Palette as $Key => $Value)
+          { if ($Value["R"] == $OldR && $Value["G"] == $OldG && $Value["B"] == $OldB) { $this->Palette[$Key]["R"] = $R; $this->Palette[$Key]["G"] = $G; $this->Palette[$Key]["B"] = $B; $this->Palette[$Key]["Alpha"] = $Alpha;} }
+        }
       }
     }
 
@@ -429,6 +495,7 @@
      $this->Data["Series"][$Serie]["Axis"]		= 0;
      $this->Data["Series"][$Serie]["Ticks"]		= 0;
      $this->Data["Series"][$Serie]["Weight"]		= 0;
+     $this->Data["Series"][$Serie]["Shape"]		= SERIE_SHAPE_FILLEDCIRCLE;
 
      if ( isset($this->Palette[$ID]) )
       $this->Data["Series"][$Serie]["Color"] = $this->Palette[$ID];
@@ -538,6 +605,10 @@
    function getData()
     { return($this->Data); }
 
+   /* Save a palette element */
+   function savePalette($ID,$Color)
+    { $this->Palette[$ID] = $Color; }
+
    /* Return the palette of the series */
    function getPalette()
     { return($this->Palette); }
@@ -545,8 +616,18 @@
    /* Called by the scaling algorithm to save the config */
    function saveAxisConfig($Axis) { $this->Data["Axis"]=$Axis; }
 
+   /* Save the Y Margin if set */
+   function saveYMargin($Value) { $this->Data["YMargin"]=$Value; }
+
+   /* Save extended configuration to the pData object */
+   function saveExtendedData($Tag,$Values) { $this->Data["Extended"][$Tag]=$Values; }
+
    /* Called by the scaling algorithm to save the orientation of the scale */
    function saveOrientation($Orientation) { $this->Data["Orientation"]=$Orientation; }
+
+   /* Convert a string to a single elements array */
+   function convertToArray($Value)
+    { $Values = ""; $Values[] = $Value; return($Values); }
 
    /* Class string wrapper */
    function __toString()

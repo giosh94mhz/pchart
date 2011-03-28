@@ -56,7 +56,7 @@
  $myPicture->setShadow(TRUE,array("X"=>3,"Y"=>3,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
  /* Draw a splitted pie chart */ 
- $PieChart->draw3DPie(560,125,array("DataGapAngle"=>10,"DataGapRadius"=>6,"Border"=>TRUE));
+ $PieChart->draw3DPie(560,125,array("WriteValues"=>TRUE,"DataGapAngle"=>10,"DataGapRadius"=>6,"Border"=>TRUE));
 
  /* Write the legend */
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));

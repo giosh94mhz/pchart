@@ -8,6 +8,7 @@
 
  /* Create and populate the pData object */
  $MyData = new pData();  
+ $MyData->loadPalette("../palettes/blind.color",TRUE);
  $MyData->addPoints(array(150,220,300,250,420,200,300,200,100),"Server A");
  $MyData->addPoints(array(140,0,340,300,320,300,200,100,50),"Server B");
  $MyData->setAxisName(0,"Hits");

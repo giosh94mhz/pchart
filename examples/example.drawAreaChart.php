@@ -61,5 +61,5 @@
  $myPicture->drawLegend(510,205,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawAreaChart.png");
+ $myPicture->autoOutput("pictures/example.drawAreaChart.png"); 
 ?>

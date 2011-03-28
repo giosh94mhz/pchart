@@ -1,5 +1,5 @@
-<?php
- /* CAT:Bar Chart */
+<?php   
+ /* CAT:Labels */
 
  /* pChart library inclusions */
  include("../class/pData.class.php");
@@ -7,12 +7,12 @@
  include("../class/pImage.class.php");
 
  /* Create and populate the pData object */
- $MyData = new pData();  
- $MyData->addPoints(array(-4,VOID,VOID,12,8,3),"Probe 1");
- $MyData->addPoints(array(3,12,15,8,5,-5),"Probe 2");
- $MyData->addPoints(array(2,0,5,18,19,22),"Probe 3");
- $MyData->setSerieTicks("Probe 2",4);
+ $MyData = new pData(); 
+ $MyData->loadPalette("../palettes/autumn.color",TRUE);
+ $MyData->addPoints(array(4,12,15,8,5,-5),"Probe 1");
+ $MyData->addPoints(array(7,2,4,14,8,3),"Probe 2");
  $MyData->setAxisName(0,"Temperatures");
+ $MyData->setAxisUnit(0,"°C");
  $MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
  $MyData->setSerieDescription("Labels","Months");
  $MyData->setAbscissa("Labels");
@@ -34,32 +34,38 @@
  
  /* Write the picture title */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Silkscreen.ttf","FontSize"=>6));
- $myPicture->drawText(10,13,"drawBarChart() - draw a bar chart",array("R"=>255,"G"=>255,"B"=>255));
+ $myPicture->drawText(10,13,"drawLabel() - Write labels over your charts",array("R"=>255,"G"=>255,"B"=>255));
 
  /* Write the chart title */ 
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
- $myPicture->drawText(250,55,"Average temperature",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+ $myPicture->drawText(155,55,"Average temperature",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
  /* Draw the scale and the 1st chart */
- $myPicture->setGraphArea(60,60,450,190);
- $myPicture->drawFilledRectangle(60,60,450,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
- $myPicture->drawScale(array("DrawSubTicks"=>TRUE));
- $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+ $myPicture->setGraphArea(60,60,670,190);
+ $myPicture->drawFilledRectangle(60,60,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
- $myPicture->drawBarChart(array("DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"Rounded"=>TRUE,"Surrounding"=>30));
- $myPicture->setShadow(FALSE);
-
- /* Draw the scale and the 2nd chart */
- $myPicture->setGraphArea(500,60,670,190);
- $myPicture->drawFilledRectangle(500,60,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
- $myPicture->drawScale(array("Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE));
+ $myPicture->drawScale(array("DrawSubTicks"=>TRUE));
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
  $myPicture->drawBarChart();
  $myPicture->setShadow(FALSE);
 
  /* Write the chart legend */
- $myPicture->drawLegend(510,205,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(600,210,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+
+ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
+
+ /* Write a label over the chart */
+ $myPicture->writeLabel("Probe 1",0);
+
+ /* Write a label over the chart */
+ $LabelSettings = array("TitleMode"=>LABEL_TITLE_BACKGROUND,"DrawSerieColor"=>FALSE,"TitleR"=>255,"TitleG"=>255,"TitleB"=>255);
+ $myPicture->writeLabel("Probe 1",5,$LabelSettings);
+
+ /* Write a label over the chart */
+ $LabelSettings = array("OverrideTitle"=>"Multiple series","DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleR"=>255,"TitleG"=>255,"TitleB"=>255);
+ $myPicture->writeLabel(array("Probe 1","Probe 2"),4,$LabelSettings);
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawBarChart.png");
+ $myPicture->autoOutput("pictures/example.drawLabel.png");
 ?>

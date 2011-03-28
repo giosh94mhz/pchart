@@ -3,15 +3,41 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.1.0                   ║
+ ║   Version     : 2.1.1                   ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 26/01/11                ║
+ ║   Last Update : 28/03/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
 
+ 2.1.1 ────────────────────────────────────────────────────────────────────────
+
+  o Created the pIndicator class.
+  o Created the pSurface class.
+  o Added the drawLabel() function.
+  o Added the writeScatterLabel() function.
+  o Added the writeBubbleLabel() function.
+  o Added the ForceAlpha parameter to the buble chart.
+  o Added the LabelStacked parameter to the 2D and 3D pie charts.
+  o Added 2D ring chart support to the pPie class extension.
+  o Added 3D ring chart support to the pPie class extension.
+  o Added the autoOutput() method to the pCache class.
+  o Added some NULL value tests.
+  o Added the setSerieShape() function to the pData class.
+  o Added the setAbscissaName() function to the pData class.
+  o Fixed a bug in the getAverage() function.
+  o Changed the VOID constant from 0.12345 to 0.123456789.
+  o Fixed a bug with the number of decimals in the METRIC scale.
+  o Fixed a visual bug with reversed bar chart labelling.
+  o Added the ValuePosition & ValuePadding parameters to the pie charts.
+  o Added the WriteValue parameters to the 2D pie charts.
+  o Added the getSeriePalette() function to the pData class.
+  o pData methods can now accept array of serie parameters.
+  o Fixed a bug in the scatter spline chart VOID values handling.
+
  2.1.0 ────────────────────────────────────────────────────────────────────────
 
-  o Renamed the .class files to .class.php.
+  /!\ Renamed the .class files to .class.php.
+
   o Create the pScatter class.
   o Added the ScatterPlotChart() charting method.
   o Added the ScatterLineChart() charting method.

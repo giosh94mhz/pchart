@@ -1,5 +1,5 @@
 <?php
- /* CAT:Misc */
+ /* CAT:Combo */
 
  /* pChart library inclusions */
  include("../class/pData.class.php");

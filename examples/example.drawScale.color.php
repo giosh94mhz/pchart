@@ -32,6 +32,7 @@
  $MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
  $MyData->setSerieDescription("Labels","My labels");
  $MyData->setAbscissa("Labels");
+ $MyData->setAbscissaName("Months");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
@@ -61,7 +62,7 @@
  $myPicture->drawFilledRectangle(90,60,660,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
 
  /* Draw the scale */
- $myPicture->drawScale(array("DrawYLines"=>array(0),"Pos"=>SCALE_POS_LEFTRIGHT));
+ $myPicture->drawScale(array("LabelSkip"=>1,"DrawYLines"=>array(0),"Pos"=>SCALE_POS_LEFTRIGHT));
 
  /* Render the picture (choose the best way) */
  $myPicture->autoOutput("pictures/example.drawScale.color.png");

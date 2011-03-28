@@ -2,9 +2,9 @@
  /*
      pBarcode128 - class to create barcodes (128B)
 
-     Version     : 2.1.0
+     Version     : 2.1.1
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 26/01/11
+     Last Update : 28/03/11
 
      This file can be distributed under the license you can find at :
 

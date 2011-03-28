@@ -2,9 +2,9 @@
  /*
      pScatter - class to draw scatter charts
 
-     Version     : 2.1.0
+     Version     : 2.1.1
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 26/01/11
+     Last Update : 28/03/11
 
      This file can be distributed under the license you can find at :
 
@@ -395,34 +395,37 @@
 
      foreach($Data["ScatterSeries"] as $Key => $Series)
       {
-       $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
-       $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
-
-       if ( isset($Series["Picture"]) && $Series["Picture"] != "" )
-        { $Picture = $Series["Picture"]; list($PicWidth,$PicHeight,$PicType) = $this->pChartObject->getPicInfo($Picture); }
-       else
-        { $Picture = NULL; }
-
-       $PosArrayX = $this->getPosArray($SerieValuesX,$SerieXAxis);
-       if ( !is_array($PosArrayX) ) { $Value = $PosArrayX; $PosArrayX = ""; $PosArrayX[0] = $Value; }
-       $PosArrayY = $this->getPosArray($SerieValuesY,$SerieYAxis);
-       if ( !is_array($PosArrayY) ) { $Value = $PosArrayY; $PosArrayY = ""; $PosArrayY[0] = $Value; }
-
-       $Color = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
-
-       foreach($PosArrayX as $Key => $Value)
+       if ( $Series["isDrawable"] == TRUE )
         {
-         $X = $Value; $Y = $PosArrayY[$Key];
+         $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
+         $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
 
-         if ( $X != VOID && $Y != VOID )
+         if ( isset($Series["Picture"]) && $Series["Picture"] != "" )
+          { $Picture = $Series["Picture"]; list($PicWidth,$PicHeight,$PicType) = $this->pChartObject->getPicInfo($Picture); }
+         else
+          { $Picture = NULL; }
+
+         $PosArrayX = $this->getPosArray($SerieValuesX,$SerieXAxis);
+         if ( !is_array($PosArrayX) ) { $Value = $PosArrayX; $PosArrayX = ""; $PosArrayX[0] = $Value; }
+         $PosArrayY = $this->getPosArray($SerieValuesY,$SerieYAxis);
+         if ( !is_array($PosArrayY) ) { $Value = $PosArrayY; $PosArrayY = ""; $PosArrayY[0] = $Value; }
+
+         $Color = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
+
+         foreach($PosArrayX as $Key => $Value)
           {
-           if ( $Picture == NULL )
+           $X = $Value; $Y = $PosArrayY[$Key];
+
+           if ( $X != VOID && $Y != VOID )
             {
-             if ( $PlotBorder ) { $this->pChartObject->drawFilledCircle($X,$Y,$PlotSize+$BorderSize,$BorderColor); }
-             $this->pChartObject->drawFilledCircle($X,$Y,$PlotSize,$Color);
+             if ( $Picture == NULL )
+              {
+               if ( $PlotBorder ) { $this->pChartObject->drawFilledCircle($X,$Y,$PlotSize+$BorderSize,$BorderColor); }
+               $this->pChartObject->drawFilledCircle($X,$Y,$PlotSize,$Color);
+              }
+             else
+              { $this->pChartObject->drawFromPicture($PicType,$Picture,$X-$PicWidth/2,$Y-$PicHeight/2); }
             }
-           else
-            { $this->pChartObject->drawFromPicture($PicType,$Picture,$X-$PicWidth/2,$Y-$PicHeight/2); }
           }
         }
       }
@@ -437,29 +440,32 @@
      /* Parse all the series to draw */
      foreach($Data["ScatterSeries"] as $Key => $Series)
       {
-       $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
-       $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
-       $Ticks  = $Series["Ticks"];
-       $Weight = $Series["Weight"];
-
-       $PosArrayX = $this->getPosArray($SerieValuesX,$SerieXAxis);
-       if ( !is_array($PosArrayX) ) { $Value = $PosArrayX; $PosArrayX = ""; $PosArrayX[0] = $Value; }
-       $PosArrayY = $this->getPosArray($SerieValuesY,$SerieYAxis);
-       if ( !is_array($PosArrayY) ) { $Value = $PosArrayY; $PosArrayY = ""; $PosArrayY[0] = $Value; }
-
-       $Color = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
-       if ( $Ticks != 0 )  { $Color["Ticks"]  = $Ticks; }
-       if ( $Weight != 0 ) { $Color["Weight"] = $Weight; }
-
-       $LastX = VOID; $LastY = VOID;
-       foreach($PosArrayX as $Key => $Value)
+       if ( $Series["isDrawable"] == TRUE )
         {
-         $X = $Value; $Y = $PosArrayY[$Key];
+         $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
+         $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
+         $Ticks  = $Series["Ticks"];
+         $Weight = $Series["Weight"];
 
-         if ( $X != VOID && $Y != VOID && $LastX != VOID && $LastY != VOID)
-          $this->pChartObject->drawLine($LastX,$LastY,$X,$Y,$Color);
+         $PosArrayX = $this->getPosArray($SerieValuesX,$SerieXAxis);
+         if ( !is_array($PosArrayX) ) { $Value = $PosArrayX; $PosArrayX = ""; $PosArrayX[0] = $Value; }
+         $PosArrayY = $this->getPosArray($SerieValuesY,$SerieYAxis);
+         if ( !is_array($PosArrayY) ) { $Value = $PosArrayY; $PosArrayY = ""; $PosArrayY[0] = $Value; }
 
-         $LastX = $X; $LastY = $Y;
+         $Color = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
+         if ( $Ticks != 0 )  { $Color["Ticks"]  = $Ticks; }
+         if ( $Weight != 0 ) { $Color["Weight"] = $Weight; }
+
+         $LastX = VOID; $LastY = VOID;
+         foreach($PosArrayX as $Key => $Value)
+          {
+           $X = $Value; $Y = $PosArrayY[$Key];
+
+           if ( $X != VOID && $Y != VOID && $LastX != VOID && $LastY != VOID)
+            $this->pChartObject->drawLine($LastX,$LastY,$X,$Y,$Color);
+
+           $LastX = $X; $LastY = $Y;
+          }
         }
       }
     }
@@ -472,37 +478,39 @@
 
      foreach($Data["ScatterSeries"] as $Key => $Series)
       {
-       $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
-       $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
-       $Ticks  = $Series["Ticks"];
-       $Weight = $Series["Weight"];
-
-       $PosArrayX = $this->getPosArray($SerieValuesX,$SerieXAxis);
-       if ( !is_array($PosArrayX) ) { $Value = $PosArrayX; $PosArrayX = ""; $PosArrayX[0] = $Value; }
-       $PosArrayY = $this->getPosArray($SerieValuesY,$SerieYAxis);
-       if ( !is_array($PosArrayY) ) { $Value = $PosArrayY; $PosArrayY = ""; $PosArrayY[0] = $Value; }
-
-       $SplineSettings = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
-       if ( $Ticks != 0 )  { $SplineSettings["Ticks"]  = $Ticks; }
-       if ( $Weight != 0 ) { $SplineSettings["Weight"] = $Weight; }
-
-       $LastX = VOID; $LastY = VOID; $WayPoints = ""; $Forces = "";
-       foreach($PosArrayX as $Key => $Value)
+       if ( $Series["isDrawable"] == TRUE )
         {
-         $X = $Value; $Y = $PosArrayY[$Key];
+         $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
+         $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
+         $Ticks  = $Series["Ticks"];
+         $Weight = $Series["Weight"];
 
-         $Force = $this->pChartObject->getLength($LastX,$LastY,$X,$Y)/5;
+         $PosArrayX = $this->getPosArray($SerieValuesX,$SerieXAxis);
+         if ( !is_array($PosArrayX) ) { $Value = $PosArrayX; $PosArrayX = ""; $PosArrayX[0] = $Value; }
+         $PosArrayY = $this->getPosArray($SerieValuesY,$SerieYAxis);
+         if ( !is_array($PosArrayY) ) { $Value = $PosArrayY; $PosArrayY = ""; $PosArrayY[0] = $Value; }
 
-         if ( $X != VOID && $Y != VOID )
-          { $WayPoints[] = array($X,$Y); $Forces[] = $Force; }
+         $SplineSettings = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
+         if ( $Ticks != 0 )  { $SplineSettings["Ticks"]  = $Ticks; }
+         if ( $Weight != 0 ) { $SplineSettings["Weight"] = $Weight; }
 
-         if ( $Y == VOID && $LastY != NULL )
-          { $SplineSettings["Forces"] = $Forces; $this->pChartObject->drawSpline($WayPoints,$SplineSettings); $WayPoints = ""; $Forces = "";}
+         $LastX = VOID; $LastY = VOID; $WayPoints = ""; $Forces = "";
+         foreach($PosArrayX as $Key => $Value)
+          {
+           $X = $Value; $Y = $PosArrayY[$Key];
+           $Force = $this->pChartObject->getLength($LastX,$LastY,$X,$Y)/5;
 
-         $LastX = $X; $LastY = $Y;
+           if ( $X != VOID && $Y != VOID )
+            { $WayPoints[] = array($X,$Y); $Forces[] = $Force; }
+
+           if ( $Y == VOID || $X == VOID )
+            { $SplineSettings["Forces"] = $Forces; $this->pChartObject->drawSpline($WayPoints,$SplineSettings); $WayPoints = ""; $Forces = "";}
+
+           $LastX = $X; $LastY = $Y;
+          }
+         $SplineSettings["Forces"] = $Forces; 
+         $this->pChartObject->drawSpline($WayPoints,$SplineSettings);
         }
-       $SplineSettings["Forces"] = $Forces; 
-       $this->pChartObject->drawSpline($WayPoints,$SplineSettings);
       }
     }
 
@@ -787,41 +795,112 @@
 
      foreach($Data["ScatterSeries"] as $Key => $Series)
       {
-       $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
-       $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
-
-       $Color = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
-       $Color["Ticks"] = $Ticks;
-
-       $PosArrayX = $Data["Series"][$Series["X"]]["Data"];
-       $PosArrayY = $Data["Series"][$Series["Y"]]["Data"];
-
-       $Sxy = 0; $Sx = 0; $Sy = 0; $Sxx = 0;
-       foreach($PosArrayX as $Key => $Value)
+       if ( $Series["isDrawable"] == TRUE )
         {
-         $X = $Value; $Y = $PosArrayY[$Key];
+         $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
+         $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
 
-         $Sxy = $Sxy + $X*$Y;
-         $Sx  = $Sx + $X;
-         $Sy  = $Sy + $Y;
-         $Sxx = $Sxx + $X*$X;
+         $Color = array("R"=>$Series["Color"]["R"],"G"=>$Series["Color"]["G"],"B"=>$Series["Color"]["B"],"Alpha"=>$Series["Color"]["Alpha"]);
+         $Color["Ticks"] = $Ticks;
+
+         $PosArrayX = $Data["Series"][$Series["X"]]["Data"];
+         $PosArrayY = $Data["Series"][$Series["Y"]]["Data"];
+
+         $Sxy = 0; $Sx = 0; $Sy = 0; $Sxx = 0;
+         foreach($PosArrayX as $Key => $Value)
+          {
+           $X = $Value; $Y = $PosArrayY[$Key];
+
+           $Sxy = $Sxy + $X*$Y;
+           $Sx  = $Sx + $X;
+           $Sy  = $Sy + $Y;
+           $Sxx = $Sxx + $X*$X;
+          }
+
+         $n = count($PosArrayX);
+         $M = (($n*$Sxy)-($Sx*$Sy)) / (($n*$Sxx)-($Sx*$Sx));
+         $B = (($Sy)-($M*$Sx))/($n);
+
+         $X1 = $this->getPosArray($Data["Axis"][$SerieXAxis]["ScaleMin"],$SerieXAxis);
+         $Y1 = $this->getPosArray($M * $Data["Axis"][$SerieXAxis]["ScaleMin"] + $B,$SerieYAxis);
+         $X2 = $this->getPosArray($Data["Axis"][$SerieXAxis]["ScaleMax"],$SerieXAxis);
+         $Y2 = $this->getPosArray($M * $Data["Axis"][$SerieXAxis]["ScaleMax"] + $B,$SerieYAxis);
+
+         if ( $Y1 < $this->pChartObject->GraphAreaY1 ) { $X1 = $X1 + ($this->pChartObject->GraphAreaY1-$Y1); $Y1 = $this->pChartObject->GraphAreaY1; }
+         if ( $Y1 > $this->pChartObject->GraphAreaY2 ) { $X1 = $X1 + ($Y1-$this->pChartObject->GraphAreaY2); $Y1 = $this->pChartObject->GraphAreaY2; }
+         if ( $Y2 < $this->pChartObject->GraphAreaY1 ) { $X2 = $X2 - ($this->pChartObject->GraphAreaY1-$Y2); $Y2 = $this->pChartObject->GraphAreaY1; }
+         if ( $Y2 > $this->pChartObject->GraphAreaY2 ) { $X2 = $X2 - ($Y2-$this->pChartObject->GraphAreaY2); $Y2 = $this->pChartObject->GraphAreaY2; }
+
+         $this->pChartObject->drawLine($X1,$Y1,$X2,$Y2,$Color);
         }
+      }
+    }
 
-       $n = count($PosArrayX);
-       $M = (($n*$Sxy)-($Sx*$Sy)) / (($n*$Sxx)-($Sx*$Sx));
-       $B = (($Sy)-($M*$Sx))/($n);
+   function writeScatterLabel($ScatterSerieID,$Points,$Format="")
+    {
+     $OverrideTitle	= isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
+     $DrawPoint		= isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
+     $Decimals		= isset($Format["Decimals"]) ? $Format["Decimals"] : NULL;
 
-       $X1 = $this->getPosArray($Data["Axis"][$SerieXAxis]["ScaleMin"],$SerieXAxis);
-       $Y1 = $this->getPosArray($M * $Data["Axis"][$SerieXAxis]["ScaleMin"] + $B,$SerieYAxis);
-       $X2 = $this->getPosArray($Data["Axis"][$SerieXAxis]["ScaleMax"],$SerieXAxis);
-       $Y2 = $this->getPosArray($M * $Data["Axis"][$SerieXAxis]["ScaleMax"] + $B,$SerieYAxis);
+     $Data    = $this->pDataObject->getData();
+     $Palette = $this->pDataObject->getPalette();
 
-       if ( $Y1 < $this->pChartObject->GraphAreaY1 ) { $X1 = $X1 + ($this->pChartObject->GraphAreaY1-$Y1); $Y1 = $this->pChartObject->GraphAreaY1; }
-       if ( $Y1 > $this->pChartObject->GraphAreaY2 ) { $X1 = $X1 + ($Y1-$this->pChartObject->GraphAreaY2); $Y1 = $this->pChartObject->GraphAreaY2; }
-       if ( $Y2 < $this->pChartObject->GraphAreaY1 ) { $X2 = $X2 - ($this->pChartObject->GraphAreaY1-$Y2); $Y2 = $this->pChartObject->GraphAreaY1; }
-       if ( $Y2 > $this->pChartObject->GraphAreaY2 ) { $X2 = $X2 - ($Y2-$this->pChartObject->GraphAreaY2); $Y2 = $this->pChartObject->GraphAreaY2; }
+     if ( !is_array($Points) ) { $Point = $Points; $Points = ""; $Points[0] = $Point; }
 
-       $this->pChartObject->drawLine($X1,$Y1,$X2,$Y2,$Color);
+     if ( !isset($Data["ScatterSeries"][$ScatterSerieID]) ) 
+      return(0);
+
+     $Series = $Data["ScatterSeries"][$ScatterSerieID];
+     $SerieX = $Series["X"]; $SerieValuesX = $Data["Series"][$SerieX]["Data"]; $SerieXAxis = $Data["Series"][$SerieX]["Axis"];
+     $SerieY = $Series["Y"]; $SerieValuesY = $Data["Series"][$SerieY]["Data"]; $SerieYAxis = $Data["Series"][$SerieY]["Axis"];
+
+     $PosArrayX = $this->getPosArray($SerieValuesX,$SerieXAxis);
+     if ( !is_array($PosArrayX) ) { $Value = $PosArrayX; $PosArrayX = ""; $PosArrayX[0] = $Value; }
+     $PosArrayY = $this->getPosArray($SerieValuesY,$SerieYAxis);
+     if ( !is_array($PosArrayY) ) { $Value = $PosArrayY; $PosArrayY = ""; $PosArrayY[0] = $Value; }
+
+     foreach($Points as $Key => $Point)
+      {
+       if ( isset($PosArrayX[$Point]) && isset($PosArrayY[$Point]) )
+        {
+         $X = floor($PosArrayX[$Point]);
+         $Y = floor($PosArrayY[$Point]);
+
+         if ( $DrawPoint == LABEL_POINT_CIRCLE )
+          $this->pChartObject->drawFilledCircle($X,$Y,3,array("R"=>255,"G"=>255,"B"=>255,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0));
+         elseif ( $DrawPoint == LABEL_POINT_BOX )
+          $this->pChartObject->drawFilledRectangle($X-2,$Y-2,$X+2,$Y+2,array("R"=>255,"G"=>255,"B"=>255,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0));
+
+         $Serie = "";
+         $Serie["R"] = $Series["Color"]["R"];
+         $Serie["G"] = $Series["Color"]["G"];
+         $Serie["B"] = $Series["Color"]["B"];
+         $Serie["Alpha"] = $Series["Color"]["Alpha"];
+
+         $XAxisMode   = $Data["Axis"][$SerieXAxis]["Display"];
+         $XAxisFormat = $Data["Axis"][$SerieXAxis]["Format"];
+         $XAxisUnit   = $Data["Axis"][$SerieXAxis]["Unit"];
+         if ( $Decimals == NULL ) { $XValue = $SerieValuesX[$Point]; } else { $XValue = round($SerieValuesX[$Point],$Decimals); }
+         $XValue      = $this->pChartObject->scaleFormat($XValue,$XAxisMode,$XAxisFormat,$XAxisUnit);
+
+         $YAxisMode   = $Data["Axis"][$SerieYAxis]["Display"];
+         $YAxisFormat = $Data["Axis"][$SerieYAxis]["Format"];
+         $YAxisUnit   = $Data["Axis"][$SerieYAxis]["Unit"];
+         if ( $Decimals == NULL ) { $YValue = $SerieValuesY[$Point]; } else { $YValue = round($SerieValuesY[$Point],$Decimals); }
+         $YValue      = $this->pChartObject->scaleFormat($YValue,$YAxisMode,$YAxisFormat,$YAxisUnit);
+
+         $Caption = $XValue." / ".$YValue;
+
+         if ( isset($Series["Description"]) )
+          $Description = $Series["Description"];
+         else
+          $Description = "No description";
+
+         $Series = "";
+         $Series[] = array("Format"=>$Serie,"Caption"=>$Caption);
+
+         $this->pChartObject->drawLabelBox($X,$Y-3,$Description,$Series,$Format);
+        }
       }
     }
   }

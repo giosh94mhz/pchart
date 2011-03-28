@@ -1,5 +1,5 @@
 <?php
- /* CAT:Bubble chart */
+ /* CAT:Labels */
 
  /* pChart library inclusions */
  include("../class/pData.class.php");
@@ -9,7 +9,7 @@
 
  /* Create and populate the pData object */
  $MyData = new pData();
- $MyData->loadPalette("../palettes/summer.color",TRUE);
+ $MyData->loadPalette("../palettes/blind.color",TRUE);
  $MyData->addPoints(array(34,55,15,62,38,42),"Probe1");
  $MyData->addPoints(array(5,10,8,9,15,10),"Probe1Weight");
  $MyData->addPoints(array(5,10,-5,-1,0,-10),"Probe2");
@@ -61,19 +61,27 @@
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30));
  $myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries);
 
+ /* Write a label over the chart */
+ $LabelSettings = array("TitleMode"=>LABEL_TITLE_BACKGROUND,"VerticalMargin"=>4,"HorizontalMargin"=>6,"DrawSerieColor"=>FALSE,"TitleR"=>255,"TitleG"=>255,"TitleB"=>255);
+ $myBubbleChart->writeBubbleLabel("Probe1","Probe1Weight",3,$LabelSettings);
+ $myBubbleChart->writeBubbleLabel("Probe2","Probe2Weight",4,$LabelSettings);
+
  /* Draw the 2nd scale */
  $myPicture->setShadow(FALSE);
  $myPicture->setGraphArea(500,60,670,190);
  $myPicture->drawFilledRectangle(500,60,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
  $myPicture->drawScale(array("Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE));
 
- /* Draw the 2nd stock chart */
+ /* Draw the 2nd bubble chart */
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30));
  $myBubbleChart->drawbubbleChart($bubbleDataSeries,$bubbleWeightSeries,array("DrawBorder"=>TRUE,"Surrounding"=>60,"BorderAlpha"=>100));
+
+ /* Write a label over the chart */
+ $myBubbleChart->writeBubbleLabel("Probe1","Probe1Weight",4,$LabelSettings);
 
  /* Write the chart legend */
  $myPicture->drawLegend(550,215,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawBubbleChart.png");
+ $myPicture->autoOutput("pictures/example.drawLabel.bubble.png");
 ?>

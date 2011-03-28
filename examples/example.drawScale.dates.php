@@ -17,6 +17,7 @@
  $MyData->addPoints(array(1230768000,1233446400,1235865600,1238544000,1241136000,1243814400),"Timestamp");
  $MyData->setSerieDescription("Timestamp","Sampled Dates");
  $MyData->setAbscissa("Timestamp");
+ $MyData->setAbscissaName("Dates");
  $MyData->setXAxisDisplay(AXIS_FORMAT_DATE);
 
  /* Create the pChart object */

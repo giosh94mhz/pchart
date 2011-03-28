@@ -17,6 +17,7 @@
 
  $MyData->addPoints(array("Dec 13","Dec 14","Dec 15","Dec 16","Dec 17", "Dec 20","Dec 21","Dec 22","Dec 23","Dec 24"),"Time");
  $MyData->setAbscissa("Time");
+ $MyData->setAbscissaName("Time");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);

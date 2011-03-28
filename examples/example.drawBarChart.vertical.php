@@ -13,6 +13,8 @@
  $MyData->addPoints(array("Firefox","Chrome","Internet Explorer","Opera","Safari","Mozilla","SeaMonkey","Camino","Lunascape"),"Browsers");
  $MyData->setSerieDescription("Browsers","Browsers");
  $MyData->setAbscissa("Browsers");
+ $MyData->setAbscissaName("Browsers");
+ $MyData->setAxisDisplay(0,AXIS_FORMAT_METRIC,1);
 
  /* Create the pChart object */
  $myPicture = new pImage(500,500,$MyData);

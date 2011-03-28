@@ -13,6 +13,7 @@
  $MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),"Labels");
  $MyData->setSerieDescription("Labels","Months");
  $MyData->setAbscissa("Labels");
+ $MyData->setAbscissaName("Months");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
