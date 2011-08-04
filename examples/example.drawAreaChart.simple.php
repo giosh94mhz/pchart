@@ -48,6 +48,7 @@
 
  /* Draw the area chart */
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+
  $myPicture->drawAreaChart();
 
  /* Render the picture (choose the best way) */

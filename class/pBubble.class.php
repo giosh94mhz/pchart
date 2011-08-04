@@ -2,9 +2,9 @@
  /*
      pBubble - class to draw bubble charts
 
-     Version     : 2.1.1
+     Version     : 2.1.2
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 28/03/11
+     Last Update : 03/08/11
 
      This file can be distributed under the license you can find at :
 
@@ -116,6 +116,7 @@
      $BorderG		= isset($Format["BorderG"]) ? $Format["BorderG"] : 0;
      $BorderB		= isset($Format["BorderB"]) ? $Format["BorderB"] : 0;
      $BorderAlpha	= isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 30;
+     $RecordImageMap	= isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 
      if ( !is_array($DataSeries) )	{ $DataSeries = array($DataSeries); }
      if ( !is_array($WeightSeries) )	{ $WeightSeries = array($WeightSeries); }
@@ -136,6 +137,8 @@
        $Mode	= $Data["Axis"][$AxisID]["Display"];
        $Format	= $Data["Axis"][$AxisID]["Format"];
        $Unit	= $Data["Axis"][$AxisID]["Unit"];
+
+       if (isset($Data["Series"][$SerieName]["Description"])) { $SerieDescription = $Data["Series"][$SerieName]["Description"]; } else { $SerieDescription = $SerieName; }
 
        $XStep	= ($this->pChartObject->GraphAreaX2-$this->pChartObject->GraphAreaX1-$XMargin*2)/$XDivs;
 
@@ -171,9 +174,15 @@
            $Y = floor($PosArray); $CircleRadius = floor(abs($PosArray - $WeightArray)/2);
 
            if ( $DrawSquare )
-            $this->pChartObject->drawFilledRectangle($X-$CircleRadius,$Y-$CircleRadius,$X+$CircleRadius,$Y+$CircleRadius,$Color);
+            {
+             if ( $RecordImageMap ) { $this->pChartObject->addToImageMap("RECT",floor($X-$CircleRadius).",".floor($Y-$CircleRadius).",".floor($X+$CircleRadius).",".floor($Y+$CircleRadius),$this->pChartObject->toHTMLColor($Palette[$Key]["R"],$Palette[$Key]["G"],$Palette[$Key]["B"]),$SerieDescription,$Data["Series"][$WeightSeries[$Key]]["Data"][$iKey]); }
+             $this->pChartObject->drawFilledRectangle($X-$CircleRadius,$Y-$CircleRadius,$X+$CircleRadius,$Y+$CircleRadius,$Color);
+            }
            else
-            $this->pChartObject->drawFilledCircle($X,$Y,$CircleRadius,$Color);
+            {
+             if ( $RecordImageMap ) { $this->pChartObject->addToImageMap("CIRCLE",floor($X).",".floor($Y).",".floor($CircleRadius),$this->pChartObject->toHTMLColor($Palette[$Key]["R"],$Palette[$Key]["G"],$Palette[$Key]["B"]),$SerieDescription,$Data["Series"][$WeightSeries[$Key]]["Data"][$iKey]); }
+             $this->pChartObject->drawFilledCircle($X,$Y,$CircleRadius,$Color);
+            }
 
            $X = $X + $XStep;
           }
@@ -183,9 +192,15 @@
            $X = floor($PosArray); $CircleRadius = floor(abs($PosArray - $WeightArray)/2);
 
            if ( $DrawSquare )
-            $this->pChartObject->drawFilledRectangle($X-$CircleRadius,$Y-$CircleRadius,$X+$CircleRadius,$Y+$CircleRadius,$Color);
+            {
+             if ( $RecordImageMap ) { $this->pChartObject->addToImageMap("RECT",floor($X-$CircleRadius).",".floor($Y-$CircleRadius).",".floor($X+$CircleRadius).",".floor($Y+$CircleRadius),$this->pChartObject->toHTMLColor($Palette[$Key]["R"],$Palette[$Key]["G"],$Palette[$Key]["B"]),$SerieDescription,$Data["Series"][$WeightSeries[$Key]]["Data"][$iKey]); }
+             $this->pChartObject->drawFilledRectangle($X-$CircleRadius,$Y-$CircleRadius,$X+$CircleRadius,$Y+$CircleRadius,$Color);
+            }
            else
-            $this->pChartObject->drawFilledCircle($X,$Y,$CircleRadius,$Color);
+            {
+             if ( $RecordImageMap ) { $this->pChartObject->addToImageMap("CIRCLE",floor($X).",".floor($Y).",".floor($CircleRadius),$this->pChartObject->toHTMLColor($Palette[$Key]["R"],$Palette[$Key]["G"],$Palette[$Key]["B"]),$SerieDescription,$Data["Series"][$WeightSeries[$Key]]["Data"][$iKey]); }
+             $this->pChartObject->drawFilledCircle($X,$Y,$CircleRadius,$Color);
+            }
 
            $Y = $Y + $XStep;
           }

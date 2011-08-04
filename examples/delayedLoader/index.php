@@ -17,7 +17,7 @@
 <body onscroll="scrollEvent();" onload="loaderInit();">
 
  <table style='border: 2px solid #FFFFFF;'><tr><td>
-  <div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 361px;'>&nbsp;Navigation</div>
+  <div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848;'>&nbsp;Navigation</div>
   <table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; border-top: 1px solid #FFFFFF;'><tr>
    <td width=16><img src='../resources/application_view_tile.png' width=16 height=16 alt=''/></td>
    <td width=95>&nbsp;<a class=smallLink href='../'>Examples</a></td>
@@ -25,6 +25,8 @@
    <td width=95>&nbsp;<a class=smallLink href='../sandbox/'>Sandbox</a></td>
    <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
    <td width=95>&nbsp;<b>Delayed loader</b></td>
+   <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
+   <td width=100>&nbsp;<a class=smallLink href='../imageMap/'>Image Map</a></td>
   </tr></table>
  </td></tr></table>
 
@@ -86,3 +88,4 @@
   occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
  </div>
 </body>
+</html>

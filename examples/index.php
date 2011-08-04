@@ -18,11 +18,12 @@
   a.smallLinkBlack:hover   { text-decoration: underline; color: #000000; }
  </style>
 </head>
+<?php checkPHPVersion(); ?>
 <body>
 
 <?php
  /* Files that we don't want to see in the tree */
- $Exclusion = array(".","..","index.php","buildAll.cmd","pictures","resources","delayedLoader","sandbox");
+ $Exclusion = array(".","..","index.php","buildAll.cmd","pictures","resources","delayedLoader","sandbox","imageMap");
 
  /* Determine the current package version */
  $FileHandle  = fopen("../readme.txt", "r");
@@ -67,7 +68,7 @@
 ?>
 
 <table style='border: 2px solid #FFFFFF;'><tr><td>
-<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 362px;'>&nbsp;Navigation</div>
+<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848;'>&nbsp;Navigation</div>
 <table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; border-top: 1px solid #FFFFFF;'><tr>
  <td width=16><img src='resources/application_view_tile.png' width=16 height=16 alt=''/></td>
  <td width=100>&nbsp;<b>Examples</b></td>
@@ -75,6 +76,8 @@
  <td width=100>&nbsp;<a class=smallLinkGrey href='sandbox/'>Sandbox</a></td>
  <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
  <td width=100>&nbsp;<a class=smallLinkGrey href='delayedLoader/'>Delayed loader</a></td>
+ <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
+ <td width=100>&nbsp;<a class=smallLinkGrey href='imageMap/'>Image Map</a></td>
 </tr></table>
 </td></tr></table>
 
@@ -299,6 +302,46 @@
 </script>
 </html>
 <?php
+ function checkPHPVersion()
+  {
+   $PHPVersion	= phpversion();
+   $Values	= preg_split("/\./",$PHPVersion);
+   $PHPMajor	= $Values[0];
+   $PHPMinor	= $Values[1];
+
+   $GDVersion	= NULL;
+   if (extension_loaded('gd'))
+    {
+     if (function_exists('gd_info'))
+      {
+       $GDVersionInfo = gd_info();
+       preg_match('/\d/', $GDVersionInfo['GD Version'], $Match);
+       $GDVersion = $Match[0];
+      }
+    }
+ 
+   if ( $PHPMajor < 4 || $GDVersion < 2 )
+    {
+?>
+<body>
+ <div style='width: 300px; background-color: #FB8B8E; border: 1px solid #CB5B5E; margin: 10px; font-family: tahoma;'>
+  <div style='background-color: #CB5B5E; color: #FFFFFF; padding: 4px; font-family: tahoma; font-size: 11px;'>
+   <B>Warning</B>
+  </div>
+  <div style='padding: 4px; font-family: tahoma; font-size: 11px;' align='justify'>
+   It seems that you're not meeting the pChart minimal server requirements:
+   <br><br>
+   &nbsp;&nbsp;-&nbsp;PHP must be at least <b>4.x</b><br/>
+   &nbsp;&nbsp;-&nbsp;GD version <b>2.x</b><br/>
+  </div>
+ </div>
+</body>
+<html>
+<?php
+     exit();
+    }
+  }
+
  function size($Value)
   {
    if ( $Value < 1024 ) { return($Value." o."); }

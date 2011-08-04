@@ -28,9 +28,16 @@
  /* Enable shadow computing */
  $myPicture->setShadow(TRUE,array("X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
+ /* Create some filling thresholds */
+ $Threshold = ""; 
+ $Threshold[] = array("MinX"=>100,"MaxX"=>60,"R"=>200,"G"=>200,"B"=>200,"Alpha"=>50); 
+ $Threshold[] = array("MinX"=>140,"MaxX"=>100,"R"=>220,"G"=>220,"B"=>220,"Alpha"=>50);
+ $Threshold[] = array("MinX"=>180,"MaxX"=>140,"R"=>240,"G"=>240,"B"=>240,"Alpha"=>50);
+
  /* Draw some polygons */
  $Step  = 8;
- $White = array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200);
+ $White = array("Threshold"=>$Threshold,"R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0,"BorderAlpha"=>100);
+
  for($i=1;$i<=4;$i++)
   {
    $Points = "";

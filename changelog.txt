@@ -3,11 +3,36 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.1.1                   ║
+ ║   Version     : 2.1.2                   ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 28/03/11                ║
+ ║   Last Update : 03/08/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
+
+ 2.1.2 ────────────────────────────────────────────────────────────────────────
+
+  o Added zone threshold support for filled area charts.
+  o Added zone threshold support for filled spline charts.
+  o Added the setScatterSerieShape() function.
+  o Added the getSerieMedian() function.
+  o Added the drawZoneChart() function.
+  o Added the getStandardDeviation() function.
+  o Added the getCoefficientOfVariation() function.
+  o Added the getGeometricMean() function.
+  o Added the getHarmonicMean() function.
+  o Introduced support for imageMap.
+  o Added the initialiseImageMap() function.
+  o Added the addToImageMap() function.
+  o Added the dumpImageMap() function.
+  o Added value writting supports to the radars & polars charts.
+  o Added the option to add an inner border to the reg. and stacked bar charts.
+  o Added the SERIE_SHAPE_DIAMOND and SERIE_SHAPE_FILLEDDIAMOND series shapes.
+  o Fixed a visual bug in the drawAreaChart function. (thks to dmiller)
+  o Added the BrowserExpire param to the stroke() function (thks to marquonis)
+  o Fixed a visual bug in the drawBarChart function when the Interleave is 0.
+  o Corrected a bug in the drawScatterBestFit() function (thks to ares)
+  o Fixed some bugs with the pie chart functions.
+
 
  2.1.1 ────────────────────────────────────────────────────────────────────────
 

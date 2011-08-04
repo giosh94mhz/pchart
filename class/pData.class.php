@@ -2,9 +2,9 @@
  /*
      pDraw - class to manipulate data arrays
 
-     Version     : 2.1.1
+     Version     : 2.1.2
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 28/03/11
+     Last Update : 03/08/11
 
      This file can be distributed under the license you can find at :
 
@@ -30,9 +30,11 @@
  define("SERIE_SHAPE_FILLEDCIRCLE"	, 681011);
  define("SERIE_SHAPE_FILLEDTRIANGLE"	, 681012);
  define("SERIE_SHAPE_FILLEDSQUARE"	, 681013);
+ define("SERIE_SHAPE_FILLEDDIAMOND"	, 681017);
  define("SERIE_SHAPE_CIRCLE"		, 681014);
  define("SERIE_SHAPE_TRIANGLE"		, 681015);
  define("SERIE_SHAPE_SQUARE"		, 681016);
+ define("SERIE_SHAPE_DIAMOND"		, 681018);
 
  /* Axis position */
  define("AXIS_X"			, 682001);
@@ -96,7 +98,7 @@
 
    /* Strip VOID values */
    function stripVOID($Values)
-    { $Result = ""; foreach($Values as $Key => $Value) { if ( $Value != VOID ) { $Result[] = $Value; } } return($Result); }
+    { $Result = array(); foreach($Values as $Key => $Value) { if ( $Value != VOID ) { $Result[] = $Value; } } return($Result); }
 
    /* Return the number of values contained in a given serie */
    function getSerieCount($Serie)
@@ -188,6 +190,10 @@
    function setScatterSerie($SerieX,$SerieY,$ID=0)
     { if (isset($this->Data["Series"][$SerieX]) && isset($this->Data["Series"][$SerieY]) ) { $this->initScatterSerie($ID); $this->Data["ScatterSeries"][$ID]["X"] = $SerieX; $this->Data["ScatterSeries"][$ID]["Y"] = $SerieY; } }
 
+   /* Set the shape of a given sctatter serie */
+   function setScatterSerieShape($ID,$Shape=SERIE_SHAPE_FILLEDCIRCLE)
+    { if (isset($this->Data["ScatterSeries"][$ID]) ) { $this->Data["ScatterSeries"][$ID]["Shape"] = $Shape; } }
+
    /* Set the description of a given scatter serie */
    function setScatterSerieDescription($ID,$Description="My serie")
     { if (isset($this->Data["ScatterSeries"][$ID]) ) { $this->Data["ScatterSeries"][$ID]["Description"] = $Description; } }
@@ -256,6 +262,87 @@
       {
        $SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
        return(array_sum($SerieData)/sizeof($SerieData));
+      }
+     else
+      return(NULL);
+    }
+
+   /* Return the geometric mean of the given serie */
+   function getGeometricMean($Serie)
+    {
+     if ( isset($this->Data["Series"][$Serie]) )
+      {
+       $SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+       $Seriesum  = 1; foreach($SerieData as $Key => $Value) { $Seriesum = $Seriesum * $Value; }
+       return(pow($Seriesum,1/sizeof($SerieData)));
+      }
+     else
+      return(NULL);
+    }
+
+   /* Return the harmonic mean of the given serie */
+   function getHarmonicMean($Serie)
+    {
+     if ( isset($this->Data["Series"][$Serie]) )
+      {
+       $SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+       $Seriesum  = 0; foreach($SerieData as $Key => $Value) { $Seriesum = $Seriesum + 1/$Value; }
+       return(sizeof($SerieData)/$Seriesum);
+      }
+     else
+      return(NULL);
+    }
+
+   /* Return the standard deviation of the given serie */
+   function getStandardDeviation($Serie)
+    {
+     if ( isset($this->Data["Series"][$Serie]) )
+      {
+       $Average   = $this->getSerieAverage($Serie);
+       $SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+
+       $DeviationSum = 0;
+       foreach($SerieData as $Key => $Value)
+        $DeviationSum = $DeviationSum + ($Value-$Average)*($Value-$Average);
+
+       $Deviation = sqrt($DeviationSum/count($SerieData));
+
+       return($Deviation);
+      }
+     else
+      return(NULL);
+    }
+
+   /* Return the Coefficient of variation of the given serie */
+   function getCoefficientOfVariation($Serie)
+    {
+     if ( isset($this->Data["Series"][$Serie]) )
+      {
+       $Average           = $this->getSerieAverage($Serie);
+       $StandardDeviation = $this->getStandardDeviation($Serie);
+
+       if ( $StandardDeviation != 0 )
+        return($StandardDeviation/$Average);
+       else
+        return(NULL);
+      }
+     else
+      return(NULL);
+    }
+
+   /* Return the median value of the given serie */
+   function getSerieMedian($Serie)
+    {
+     if ( isset($this->Data["Series"][$Serie]) )
+      {
+       $SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+       sort($SerieData);
+       $SerieCenter = floor(sizeof($SerieData)/2);
+
+       if ( isset($SerieData[$SerieCenter]) )
+        return($SerieData[$SerieCenter]);
+       else
+        return(NULL);
       }
      else
       return(NULL);

@@ -2,9 +2,9 @@
  /*
      pDraw - pChart core class
 
-     Version     : 2.1.1
+     Version     : 2.1.2
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 28/03/11
+     Last Update : 03/08/11
 
      This file can be distributed under the license you can find at :
 
@@ -20,46 +20,55 @@
    exit();
   }
 
+ define("IMAGE_MAP_STORAGE_FILE"	, 680001);
+ define("IMAGE_MAP_STORAGE_SESSION"	, 680002);
+
  class pImage extends pDraw
   {
    /* Image settings, size, quality, .. */
-   var $XSize             = NULL;			// Width of the picture
-   var $YSize             = NULL;			// Height of the picture
-   var $Picture           = NULL;			// GD picture object
-   var $Antialias         = TRUE;			// Turn antialias on or off
+   var $XSize		= NULL;				// Width of the picture
+   var $YSize		= NULL;				// Height of the picture
+   var $Picture		= NULL;				// GD picture object
+   var $Antialias	= TRUE;				// Turn antialias on or off
    var $AntialiasQuality  = 0;				// Quality of the antialiasing implementation (0-1)
-   var $Mask              = "";				// Already drawn pixels mask (Filled circle implementation)
+   var $Mask		= "";				// Already drawn pixels mask (Filled circle implementation)
    var $TransparentBackground = FALSE;			// Just to know if we need to flush the alpha channels when rendering
 
    /* Graph area settings */
-   var $GraphAreaX1       = NULL;			// Graph area X origin
-   var $GraphAreaY1       = NULL;			// Graph area Y origin
-   var $GraphAreaX2       = NULL;			// Graph area bottom right X position
-   var $GraphAreaY2       = NULL;			// Graph area bottom right Y position
+   var $GraphAreaX1	= NULL;				// Graph area X origin
+   var $GraphAreaY1	= NULL;				// Graph area Y origin
+   var $GraphAreaX2	= NULL;				// Graph area bottom right X position
+   var $GraphAreaY2	= NULL;				// Graph area bottom right Y position
 
    /* Scale settings */
    var $ScaleMinDivHeight = 20;				// Minimum height for scame divs
 
    /* Font properties */
-   var $FontName          = "fonts/GeosansLight.ttf";	// Default font file
-   var $FontSize          = 12;				// Default font size
-   var $FontBox           = NULL;			// Return the bounding box of the last written string
-   var $FontColorR        = 0;				// Default color settings
-   var $FontColorG        = 0;				// Default color settings
-   var $FontColorB        = 0;				// Default color settings
-   var $FontColorA        = 100;			// Default transparency
+   var $FontName	= "fonts/GeosansLight.ttf";	// Default font file
+   var $FontSize	= 12;				// Default font size
+   var $FontBox		= NULL;				// Return the bounding box of the last written string
+   var $FontColorR	= 0;				// Default color settings
+   var $FontColorG	= 0;				// Default color settings
+   var $FontColorB	= 0;				// Default color settings
+   var $FontColorA	= 100;				// Default transparency
 
    /* Shadow properties */
-   var $Shadow            = TRUE;			// Turn shadows on or off
-   var $ShadowX           = NULL;			// X Offset of the shadow
-   var $ShadowY           = NULL;			// Y Offset of the shadow
-   var $ShadowR           = NULL;			// R component of the shadow
-   var $ShadowG           = NULL;			// G component of the shadow
-   var $ShadowB           = NULL;			// B component of the shadow
-   var $Shadowa           = NULL;			// Alpha level of the shadow
+   var $Shadow		= TRUE;				// Turn shadows on or off
+   var $ShadowX		= NULL;				// X Offset of the shadow
+   var $ShadowY		= NULL;				// Y Offset of the shadow
+   var $ShadowR		= NULL;				// R component of the shadow
+   var $ShadowG		= NULL;				// G component of the shadow
+   var $ShadowB		= NULL;				// B component of the shadow
+   var $Shadowa		= NULL;				// Alpha level of the shadow
+
+   /* Image map */
+   var $ImageMap	= NULL;				// Aray containing the image map
+   var $ImageMapIndex	= "pChart";			// Name of the session array
+   var $ImageMapStorageMode = NULL;			// Save the current imagemap storage mode
+   var $ImageMapAutoDelete  = TRUE;			// Automatic deletion of the image map temp files
 
    /* Data Set */
-   var $DataSet           = NULL;			// Attached dataset
+   var $DataSet		= NULL;				// Attached dataset
 
    /* Class constructor */
    function __construct($XSize,$YSize,$DataSet=NULL,$TransparentBackground=FALSE)
@@ -132,9 +141,16 @@
     }
 
    /* Render the picture to a web browser stream */
-   function stroke()
+   function stroke($BrowserExpire=FALSE)
     {
      if ( $this->TransparentBackground ) { imagealphablending($this->Picture,false); imagesavealpha($this->Picture,true); }
+
+     if ( $BrowserExpire )
+      {
+       header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+       header("Cache-Control: no-cache");
+       header("Pragma: no-cache");
+      }
 
      header('Content-type: image/png');
      imagepng($this->Picture);
@@ -239,4 +255,88 @@
    /* Print attached dataset contents to STDOUT */
    function printDataSet()
     { print_r($this->DataSet); }
+
+   /* Initialise the image map methods */
+   function initialiseImageMap($Name="pChart",$StorageMode=IMAGE_MAP_STORAGE_SESSION,$UniqueID="imageMap",$StorageFolder="tmp")
+    {
+     $this->ImageMapIndex 		= $Name;
+     $this->ImageMapStorageMode		= $StorageMode;
+
+     if ($StorageMode == IMAGE_MAP_STORAGE_SESSION)
+      {
+       if(!isset($_SESSION)) { session_start(); }
+       $_SESSION[$this->ImageMapIndex]    = NULL;
+      }
+     elseif($StorageMode == IMAGE_MAP_STORAGE_FILE)
+      {
+       $this->ImageMapFileName 		= $UniqueID;
+       $this->ImageMapStorageFolder	= $StorageFolder;
+
+       if (file_exists($StorageFolder."/".$UniqueID.".map")) { unlink($StorageFolder."/".$UniqueID.".map"); }
+      }
+    }
+
+   /* Add a zone to the image map */
+   function addToImageMap($Type,$Plots,$Color=NULL,$Title=NULL,$Message=NULL)
+    {
+     if ( $this->ImageMapStorageMode == NULL ) { $this->initialiseImageMap(); }
+
+     if ( $this->ImageMapStorageMode == IMAGE_MAP_STORAGE_SESSION )
+      {
+       if(!isset($_SESSION)) { $this->initialiseImageMap(); }
+       $_SESSION[$this->ImageMapIndex][] = array($Type,$Plots,$Color,$Title,$Message);
+      }
+     elseif($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE)
+      {
+       $Handle = fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'a');
+       fwrite($Handle, $Type.";".$Plots.";".$Color.";".$Title.";".$Message."\r\n");
+       fclose($Handle);
+      }
+    }
+
+   /* Dump the image map */
+   function dumpImageMap($Name="pChart",$StorageMode=IMAGE_MAP_STORAGE_SESSION,$UniqueID="imageMap",$StorageFolder="tmp")
+    {
+     $this->ImageMapIndex 		= $Name;
+     $this->ImageMapStorageMode		= $StorageMode;
+
+     if ( $this->ImageMapStorageMode == IMAGE_MAP_STORAGE_SESSION )
+      {
+       if(!isset($_SESSION)) { session_start(); }
+       if ( $_SESSION[$Name] != NULL )
+        {
+         foreach($_SESSION[$Name] as $Key => $Params)
+          { echo $Params[0].";".$Params[1].";".$Params[2].";".$Params[3].";".$Params[4]."\r\n"; }
+        }
+      }
+     elseif( $this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE )
+      {
+       if (file_exists($StorageFolder."/".$UniqueID.".map"))
+        {
+         $Handle = @fopen($StorageFolder."/".$UniqueID.".map", "r");
+         if ($Handle) { while (($Buffer = fgets($Handle, 4096)) !== false) { echo $Buffer; } }
+         fclose($Handle);
+
+         if ( $this->ImageMapAutoDelete ) { unlink($StorageFolder."/".$UniqueID.".map"); }
+        }
+      }
+     exit();
+    }
+
+   /* Return the HTML converted color from the RGB composite values */
+   function toHTMLColor($R,$G,$B)
+    {
+     $R=intval($R); $G=intval($G); $B=intval($B);
+     $R=dechex($R<0?0:($R>255?255:$R)); $G=dechex($G<0?0:($G>255?255:$G));$B=dechex($B<0?0:($B>255?255:$B));
+     $Color="#".(strlen($R) < 2?'0':'').$R; $Color.=(strlen($G) < 2?'0':'').$G; $Color.= (strlen($B) < 2?'0':'').$B;
+     return($Color);
+    }
+
+   /* Reverse an array of points */
+   function reversePlots($Plots)
+    {
+     $Result = "";
+     for($i=count($Plots)-2;$i>=0;$i=$i-2) { $Result[] = $Plots[$i]; $Result[] = $Plots[$i+1]; }
+     return($Result);
+    }
   }

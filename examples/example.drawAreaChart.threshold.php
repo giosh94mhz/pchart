@@ -1,5 +1,5 @@
 <?php   
- /* CAT:Spline chart */
+ /* CAT:Area Chart */
 
  /* pChart library inclusions */
  include("../class/pData.class.php");
@@ -8,25 +8,15 @@
 
  /* Create and populate the pData object */
  $MyData = new pData();  
- $MyData->addPoints(array(-4,VOID,VOID,12,8,3),"Probe 1");
- $MyData->addPoints(array(3,12,15,8,5,-5),"Probe 2");
- $MyData->addPoints(array(2,7,5,18,19,22),"Probe 3");
+ for($i=0;$i<=30;$i++) { $MyData->addPoints(rand(1,15),"Probe 1"); }
  $MyData->setSerieTicks("Probe 2",4);
- $MyData->setSerieWeight("Probe 3",2);
  $MyData->setAxisName(0,"Temperatures");
- $MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
- $MyData->setSerieDescription("Labels","Months");
- $MyData->setAbscissa("Labels");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
 
  /* Turn of Antialiasing */
  $myPicture->Antialias = FALSE;
-
- /* Draw a background */
- $Settings = array("R"=>190, "G"=>213, "B"=>107, "Dash"=>1, "DashR"=>210, "DashG"=>223, "DashB"=>127); 
- $myPicture->drawFilledRectangle(0,0,700,230,$Settings); 
 
  /* Add a border to the picture */
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
@@ -45,15 +35,26 @@
  $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
  $myPicture->drawScale($scaleSettings);
 
+ /* Write the chart legend */
+ $myPicture->drawLegend(600,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+
  /* Turn on Antialiasing */
  $myPicture->Antialias = TRUE;
 
- /* Draw the line chart */
- $myPicture->drawSplineChart();
+ /* Enable shadow computing */
+ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
- /* Write the chart legend */
- $myPicture->drawLegend(540,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+ /* Draw the area chart */
+ $Threshold = "";
+ $Threshold[] = array("Min"=>0,"Max"=>5,"R"=>207,"G"=>240,"B"=>20,"Alpha"=>70);
+ $Threshold[] = array("Min"=>5,"Max"=>10,"R"=>240,"G"=>232,"B"=>20,"Alpha"=>70);
+ $Threshold[] = array("Min"=>10,"Max"=>20,"R"=>240,"G"=>191,"B"=>20,"Alpha"=>70);
+ $myPicture->drawAreaChart(array("Threshold"=>$Threshold));
 
+ /* Write the thresholds */
+ $myPicture->drawThreshold(5,array("WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255));
+ $myPicture->drawThreshold(10,array("WriteCaption"=>TRUE,"Caption"=>"Error Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255));
+  
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawSplineChart.simple.png");
+ $myPicture->autoOutput("pictures/example.drawAreaChart.threshold.png");
 ?>

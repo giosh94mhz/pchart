@@ -1,5 +1,5 @@
 <?php   
- /* CAT:Spline chart */
+ /* CAT:Mathematical */
 
  /* pChart library inclusions */
  include("../class/pData.class.php");
@@ -8,25 +8,15 @@
 
  /* Create and populate the pData object */
  $MyData = new pData();  
- $MyData->addPoints(array(-4,VOID,VOID,12,8,3),"Probe 1");
- $MyData->addPoints(array(3,12,15,8,5,-5),"Probe 2");
- $MyData->addPoints(array(2,7,5,18,19,22),"Probe 3");
- $MyData->setSerieTicks("Probe 2",4);
- $MyData->setSerieWeight("Probe 3",2);
+ for($i=0;$i<=20;$i++) { $MyData->addPoints(rand(10,30)+$i,"Probe 1"); }
  $MyData->setAxisName(0,"Temperatures");
- $MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
- $MyData->setSerieDescription("Labels","Months");
- $MyData->setAbscissa("Labels");
+ $MyData->setAbscissaName("Samples");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
 
  /* Turn of Antialiasing */
  $myPicture->Antialias = FALSE;
-
- /* Draw a background */
- $Settings = array("R"=>190, "G"=>213, "B"=>107, "Dash"=>1, "DashR"=>210, "DashG"=>223, "DashB"=>127); 
- $myPicture->drawFilledRectangle(0,0,700,230,$Settings); 
 
  /* Add a border to the picture */
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
@@ -48,12 +38,18 @@
  /* Turn on Antialiasing */
  $myPicture->Antialias = TRUE;
 
+ /* Draw the line of best fit */
+ $myPicture->drawThreshold($MyData->getSerieMedian("Probe 1"),array("WriteCaption"=>TRUE,"Caption"=>"Median value"));
+
+ /* Turn on shadows */
+ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+
  /* Draw the line chart */
- $myPicture->drawSplineChart();
+ $myPicture->drawPlotChart();
 
  /* Write the chart legend */
- $myPicture->drawLegend(540,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(580,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawSplineChart.simple.png");
+ $myPicture->autoOutput("pictures/example.median.png");
 ?>

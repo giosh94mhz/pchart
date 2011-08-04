@@ -3,9 +3,9 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.1.1                   ║
+ ║   Version     : 2.1.2                   ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 28/03/11                ║
+ ║   Last Update : 03/08/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
 
@@ -38,6 +38,7 @@
  ├─ /examples			This folder contains some PHP examples.
  │   │
  │   ├─ delayedLoader		Delayed loader script example.
+ │   ├─ imageMap		Image map script example.
  │   └─ sandbox			Powerful dev. tool to design your charts.
  │
  ├─ /fonts			This folder contains some TTF fonts.
