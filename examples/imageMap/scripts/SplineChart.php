@@ -65,7 +65,8 @@
  /* Draw the line chart */
  $Settings = array("RecordImageMap"=>TRUE);
  $myPicture->drawSplineChart($Settings);
-
+ $myPicture->drawPlotChart(array("PlotBorder"=>TRUE,"PlotSize"=>3,"BorderSize"=>1,"Surrounding"=>-60,"BorderAlpha"=>80));
+ 
  /* Write the chart legend */
  $myPicture->drawLegend(540,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 

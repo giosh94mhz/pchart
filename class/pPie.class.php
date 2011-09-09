@@ -2,9 +2,9 @@
  /*
      pPie - class to draw pie charts
 
-     Version     : 2.1.2
+     Version     : 2.1.3
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 03/08/11
+     Last Update : 09/09/11
 
      This file can be distributed under the license you can find at :
 
@@ -49,6 +49,7 @@
    function draw2DPie($X,$Y,$Format="")
     {
      $Radius		= isset($Format["Radius"]) ? $Format["Radius"] : 60;
+     $Precision		= isset($Format["Precision"]) ? $Format["Precision"] : 0;
      $DataGapAngle	= isset($Format["DataGapAngle"]) ? $Format["DataGapAngle"] : 0;
      $DataGapRadius	= isset($Format["DataGapRadius"]) ? $Format["DataGapRadius"] : 0;
      $SecondPass	= isset($Format["SecondPass"]) ? $Format["SecondPass"] : TRUE;
@@ -277,7 +278,7 @@
           }
 
          if ( $WriteValues == PIE_VALUE_PERCENTAGE )
-          $Display = round(( 100 / $SerieSum ) * $Value)."%";
+          $Display = round(( 100 / $SerieSum ) * $Value,$Precision)."%";
          elseif ( $WriteValues == PIE_VALUE_NATURAL )
           $Display = $Value.$ValueSuffix;
 
@@ -299,6 +300,7 @@
     {
      /* Rendering layout */
      $Radius		= isset($Format["Radius"]) ? $Format["Radius"] : 80;
+     $Precision		= isset($Format["Precision"]) ? $Format["Precision"] : 0;
      $SkewFactor	= isset($Format["SkewFactor"]) ? $Format["SkewFactor"] : .5;
      $SliceHeight	= isset($Format["SliceHeight"]) ? $Format["SliceHeight"] : 20;
      $DataGapAngle	= isset($Format["DataGapAngle"]) ? $Format["DataGapAngle"] : 0;
@@ -646,7 +648,7 @@
           }
 
          if ( $WriteValues == PIE_VALUE_PERCENTAGE )
-          $Display = round(( 100 / $SerieSum ) * $Value)."%";
+          $Display = round(( 100 / $SerieSum ) * $Value,$Precision)."%";
          elseif ( $WriteValues == PIE_VALUE_NATURAL )
           $Display = $Value.$ValueSuffix;
 
@@ -884,6 +886,7 @@
    function draw2DRing($X,$Y,$Format="")
     {
      $OuterRadius	= isset($Format["Radius"]) ? $Format["Radius"] : 60;
+     $Precision		= isset($Format["Precision"]) ? $Format["Precision"] : 0;
      $InnerRadius	= isset($Format["Radius"]) ? $Format["Radius"] : 30;
      $Border		= isset($Format["Border"]) ? $Format["Border"] : FALSE;
      $BorderR		= isset($Format["BorderR"]) ? $Format["BorderR"] : 255;
@@ -1071,9 +1074,11 @@
           }
 
          if ( $WriteValues == PIE_VALUE_PERCENTAGE )
-          $Display = round(( 100 / $SerieSum ) * $Value)."%";
+          $Display = round(( 100 / $SerieSum ) * $Value,$Precision)."%";
          elseif ( $WriteValues == PIE_VALUE_NATURAL )
           $Display = $Value.$ValueSuffix;
+         else
+          $Label = "";
 
          $this->pChartObject->drawText($Xc,$Yc,$Display,array("Align"=>$Align,"R"=>$ValueR,"G"=>$ValueG,"B"=>$ValueB));
          $Offset = $EndAngle;
@@ -1088,8 +1093,8 @@
    /* Draw a 3D ring chart */
    function draw3DRing($X,$Y,$Format="")
     {
-     /* Rendering layout */
      $OuterRadius	= isset($Format["OuterRadius"]) ? $Format["OuterRadius"] : 100;
+     $Precision		= isset($Format["Precision"]) ? $Format["Precision"] : 0;
      $InnerRadius	= isset($Format["InnerRadius"]) ? $Format["InnerRadius"] : 30;
      $SkewFactor	= isset($Format["SkewFactor"]) ? $Format["SkewFactor"] : .6;
      $SliceHeight	= isset($Format["SliceHeight"]) ? $Format["SliceHeight"] : 10;
@@ -1105,7 +1110,7 @@
      $LabelB		= isset($Format["LabelB"]) ? $Format["LabelB"] : 0;
      $LabelAlpha	= isset($Format["LabelAlpha"]) ? $Format["LabelAlpha"] : 100;
      $Cf		= isset($Format["Cf"]) ? $Format["Cf"] : 20;
-     $WriteValues	= isset($Format["WriteValues"]) ? $Format["WriteValues"] : NULL;
+     $WriteValues	= isset($Format["WriteValues"]) ? $Format["WriteValues"] : PIE_VALUE_NATURAL;
      $ValuePadding	= isset($Format["ValuePadding"]) ? $Format["ValuePadding"] : $SliceHeight + 15;
      $ValuePosition	= isset($Format["ValuePosition"]) ? $Format["ValuePosition"] : PIE_VALUE_OUTSIDE;
      $ValueSuffix	= isset($Format["ValueSuffix"]) ? $Format["ValueSuffix"] : "";
@@ -1301,7 +1306,6 @@
         { $InnerPlots = array_merge($InnerPlotsA,$this->arrayReverse($InnerPlotsB)); $this->pChartObject->drawPolygon($InnerPlots,$Settings); }
       }
 
-
      /* Draw the splice top and left poly */
      foreach($Slices as $SliceID => $Plots)
       {
@@ -1399,8 +1403,6 @@
  
        $this->pChartObject->drawPolygon($Plots["TopPoly"],$Settings);
 
-//print_r($Data["Series"][$Data["Abscissa"]]["Data"]);
-//exit();
        if ( $RecordImageMap ) { $this->pChartObject->addToImageMap("POLY",$this->arraySerialize($Plots["TopPoly"]),$this->pChartObject->toHTMLColor($Settings["R"],$Settings["G"],$Settings["B"]),$Data["Series"][$Data["Abscissa"]]["Data"][$SliceID],$Data["Series"][$DataSerie]["Data"][count($Slices)-$SliceID-1]); }
 
        foreach($Plots["AA"] as $Key => $Pos)
@@ -1427,7 +1429,12 @@
          $Xc = cos(($Angle-90)*PI/180) * ($OuterRadius+$DataGapRadius) + $X;
          $Yc = sin(($Angle-90)*PI/180) * ($OuterRadius+$DataGapRadius)*$SkewFactor + $Y;
 
-         $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+         if ( $WriteValues == PIE_VALUE_PERCENTAGE )
+          $Label = $Display = round(( 100 / $SerieSum ) * $Value,$Precision)."%";
+         elseif ( $WriteValues == PIE_VALUE_NATURAL )
+          $Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+         else
+          $Label = "";
 
          if ( $LabelStacked )
           $this->writePieLabel($Xc,$Yc-$SliceHeight,$Label,$Angle,$Settings,TRUE,$X,$Y,$OuterRadius);

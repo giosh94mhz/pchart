@@ -152,7 +152,6 @@
   {
    document.getElementById("render").innerHTML = "<img src='scripts/"+FileName+".php?Seed="+Math.random(100)+"' id='testPicture' alt='' class='pChartPicture'/>";
    viewPHP("scripts/"+FileName+".php");
-   // viewHTML("scripts/"+FileName+".php");
 
    addImage('testPicture','pictureMap','scripts/'+FileName+'.php?ImageMap=get');
   }
@@ -176,28 +175,6 @@
    xmlhttp.open("GET", URL,true);
 
    xmlhttp.onreadystatechange=function() { if (xmlhttp.readyState==4) { Result = xmlhttp.responseText; document.getElementById("source").innerHTML = Result.replace("/\<BR\>/");  } }   
-   xmlhttp.send(null)   
-  }
-
- function viewHTML(URL)
-  {
-   var xmlhttp=false;   
-   /*@cc_on @*/  
-   /*@if (@_jscript_version >= 5)  
-    try { xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { try { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); } catch (E) { xmlhttp = false; } }  
-   @end @*/  
-  
-   URL = "index.php?Action=ViewHTML&Script=" + URL;
-
-   if (!xmlhttp && typeof XMLHttpRequest!='undefined')   
-    { try { xmlhttp = new XMLHttpRequest(); } catch (e) { xmlhttp=false; } }   
-  
-   if (!xmlhttp && window.createRequest)   
-    { try { xmlhttp = window.createRequest(); } catch (e) { xmlhttp=false; } }   
-  
-   xmlhttp.open("GET", URL,true);
-
-   xmlhttp.onreadystatechange=function() { if (xmlhttp.readyState==4) { Result = xmlhttp.responseText; document.getElementById("htmlsource").innerHTML = Result.replace("/\<BR\>/");  } }   
    xmlhttp.send(null)   
   }
 </script>

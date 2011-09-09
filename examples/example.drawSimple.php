@@ -29,8 +29,12 @@
  $myPicture->setGraphArea(60,40,670,190);
  $myPicture->drawFilledRectangle(60,40,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
  $myPicture->drawScale(array("GridR"=>180,"GridG"=>180,"GridB"=>180));
- $myPicture->setShadow(TRUE,array("X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+
+ /* Draw a spline chart on top */
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
+ $myPicture->drawFilledSplineChart();
+
+ $myPicture->setShadow(TRUE,array("X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
  $myPicture->drawSplineChart();
  $myPicture->setShadow(FALSE);
 

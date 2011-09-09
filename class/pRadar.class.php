@@ -2,9 +2,9 @@
  /*
      pRadar - class to draw radar charts
 
-     Version     : 2.1.2
+     Version     : 2.1.3
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 03/08/11
+     Last Update : 09/09/11
 
      This file can be distributed under the license you can find at :
 
@@ -35,6 +35,7 @@
     {
      $this->pChartObject = $Object;
 
+     $FixedMax		= isset($Format["FixedMax"]) ? $Format["FixedMax"] : VOID;
      $AxisR		= isset($Format["AxisR"]) ? $Format["AxisR"] : 60;
      $AxisG		= isset($Format["AxisG"]) ? $Format["AxisG"] : 60;
      $AxisB		= isset($Format["AxisB"]) ? $Format["AxisB"] : 60;
@@ -122,12 +123,17 @@
      /* Determine the scale if set to automatic */
      if ( $SegmentHeight == SEGMENT_HEIGHT_AUTO)
       {
-       $Max = 0;
-       foreach($Data["Series"] as $SerieName => $DataArray)
+       if ( $FixedMax != VOID )
+        $Max = $FixedMax;
+       else
         {
-         if ( $SerieName != $LabelSerie )
+         $Max = 0;
+         foreach($Data["Series"] as $SerieName => $DataArray)
           {
-           if ( max($DataArray["Data"]) > $Max ) { $Max = max($DataArray["Data"]); }
+           if ( $SerieName != $LabelSerie )
+            {
+             if ( max($DataArray["Data"]) > $Max ) { $Max = max($DataArray["Data"]); }
+            }
           }
         }
        $MaxSegments = $EdgeHeight/20;
@@ -394,6 +400,7 @@
     {
      $this->pChartObject = $Object;
 
+     $FixedMax		= isset($Format["FixedMax"]) ? $Format["FixedMax"] : VOID;
      $AxisR		= isset($Format["AxisR"]) ? $Format["AxisR"] : 60;
      $AxisG		= isset($Format["AxisG"]) ? $Format["AxisG"] : 60;
      $AxisB		= isset($Format["AxisB"]) ? $Format["AxisB"] : 60;
@@ -481,14 +488,19 @@
      /* Determine the scale if set to automatic */
      if ( $SegmentHeight == SEGMENT_HEIGHT_AUTO)
       {
-       $Max = 0;
-       foreach($Data["Series"] as $SerieName => $DataArray)
+       if ( $FixedMax != VOID )
+        $Max = $FixedMax;
+       else
         {
-         if ( $SerieName != $LabelSerie )
+         $Max = 0;
+         foreach($Data["Series"] as $SerieName => $DataArray)
           {
-           if ( max($DataArray["Data"]) > $Max ) { $Max = max($DataArray["Data"]); }
+           if ( $SerieName != $LabelSerie )
+            {
+             if ( max($DataArray["Data"]) > $Max ) { $Max = max($DataArray["Data"]); }
+            }
           }
-        }
+         }
        $MaxSegments = $EdgeHeight/20;
        $Scale = $Object->computeScale(0,$Max,$MaxSegments,array(1,2,5));
 

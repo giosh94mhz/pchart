@@ -48,15 +48,16 @@
  $myPicture->drawText(10,13,"drawScale() - draw the X-Y scales",array("R"=>255,"G"=>255,"B"=>255));
 
  /* Set the default font */
- $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
-
- /* Write the chart title */
- $myPicture->setGraphArea(90,60,660,190);
- $myPicture->drawText(350,55,"My chart title",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
- $myPicture->drawFilledRectangle(90,60,660,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
 
  /* Draw the scale */
+ $myPicture->setGraphArea(90,60,660,190);
+ $myPicture->drawFilledRectangle(90,60,660,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
  $myPicture->drawScale(array("DrawYLines"=>array(0),"Pos"=>SCALE_POS_LEFTRIGHT));
+
+ /* Write the chart title */
+ $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
+ $myPicture->drawText(350,55,"My chart title",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
  /* Render the picture (choose the best way) */
  $myPicture->autoOutput("pictures/example.drawScale.multiple.png");

@@ -21,7 +21,6 @@
  $myPicture->drawGradientArea(0,0,60,230,DIRECTION_HORIZONTAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100));
 
  /* Do some cosmetics */
- $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
  $myPicture->drawLine(60,0,60,230,array("R"=>70,"G"=>70,"B"=>70));
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
  $myPicture->setFontProperties(array("FontName"=>"../fonts/Forgotte.ttf","FontSize"=>11));
@@ -34,13 +33,17 @@
  $myPicture->drawScale(array("AxisR"=>255,"AxisG"=>255,"AxisB"=>255,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE));
 
  /* Write two thresholds over the chart */
- $myPicture->drawThreshold(10,array("WriteCaption"=>TRUE,"Caption"=>"Agreed SLA"));
- $myPicture->drawThreshold(15,array("WriteCaption"=>TRUE,"Caption"=>"Best effort"));
+ $myPicture->drawThreshold(10,array("WriteCaption"=>TRUE,"Caption"=>"Agreed SLA","NoMargin"=>TRUE));
+ $myPicture->drawThreshold(15,array("WriteCaption"=>TRUE,"Caption"=>"Best effort","NoMargin"=>TRUE));
+
+ /* Draw one static X threshold area */
+ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30));
+ $myPicture->drawXThresholdArea(3,5,array("AreaName"=>"Service closed","R"=>226,"G"=>194,"B"=>54,"Alpha"=>40));
+ $myPicture->setShadow(FALSE);
 
  /* Draw the chart */
  $myPicture->drawSplineChart();
- $myPicture->drawPlotChart();
-
+ $myPicture->drawPlotChart(array("PlotSize"=>3,"PlotBorder"=>TRUE));
 
  /* Write the data bounds */
  $myPicture->writeBounds();

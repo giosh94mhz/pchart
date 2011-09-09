@@ -11,6 +11,7 @@
  for($i=0;$i<=20;$i++) { $MyData->addPoints(rand(0,20),"Probe 1"); }
  for($i=0;$i<=20;$i++) { $MyData->addPoints(rand(0,20),"Probe 2"); }
  $MyData->setSerieShape("Probe 1",SERIE_SHAPE_FILLEDTRIANGLE); 
+ $MyData->setSerieWeight("Probe 1",2);
  $MyData->setSerieShape("Probe 2",SERIE_SHAPE_FILLEDSQUARE);
  $MyData->setAxisName(0,"Temperatures");
 

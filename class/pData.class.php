@@ -2,9 +2,9 @@
  /*
      pDraw - class to manipulate data arrays
 
-     Version     : 2.1.2
+     Version     : 2.1.3
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 03/08/11
+     Last Update : 09/09/11
 
      This file can be distributed under the license you can find at :
 
@@ -19,6 +19,7 @@
  define("AXIS_FORMAT_DATE"		, 680003);
  define("AXIS_FORMAT_METRIC"		, 680004);
  define("AXIS_FORMAT_CURRENCY"		, 680005);
+ define("AXIS_FORMAT_CUSTOM"		, 680006);
 
  /* Axis position */
  define("AXIS_POSITION_LEFT"		, 681001);
@@ -47,6 +48,9 @@
  /* Replacement to the PHP NULL keyword */
  define("VOID"                  	, 0.123456789);
 
+ /* Euro symbol for GD fonts */
+ define("EURO_SYMBOL"			, utf8_encode("&#8364;"));
+
  /* pData class definition */
  class pData
   {
@@ -65,11 +69,13 @@
    function __construct()
     {
      $this->Data = "";
-     $this->Data["XAxisDisplay"] = AXIS_FORMAT_DEFAULT;
-     $this->Data["XAxisFormat"]  = NULL;
-     $this->Data["XAxisName"]    = NULL;
-     $this->Data["XAxisUnit"]    = NULL;
-     $this->Data["Abscissa"]     = NULL;
+     $this->Data["XAxisDisplay"]	= AXIS_FORMAT_DEFAULT;
+     $this->Data["XAxisFormat"]		= NULL;
+     $this->Data["XAxisName"]		= NULL;
+     $this->Data["XAxisUnit"]		= NULL;
+     $this->Data["Abscissa"]		= NULL;
+     $this->Data["AbsicssaPosition"]	= AXIS_POSITION_BOTTOM;
+
      $this->Data["Axis"][0]["Display"]  = AXIS_FORMAT_DEFAULT;
      $this->Data["Axis"][0]["Position"] = AXIS_POSITION_LEFT;
      $this->Data["Axis"][0]["Identity"] = AXIS_Y;
@@ -91,14 +97,16 @@
 
      if ( $Values != VOID )
       {
-       $this->Data["Series"][$SerieName]["Max"] = max($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
-       $this->Data["Series"][$SerieName]["Min"] = min($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
+       $StrippedData = $this->stripVOID($this->Data["Series"][$SerieName]["Data"]);
+       if ( empty($StrippedData) ) { $this->Data["Series"][$SerieName]["Max"] = 0; $this->Data["Series"][$SerieName]["Min"] =0; return(0); }
+       $this->Data["Series"][$SerieName]["Max"] = max($StrippedData);
+       $this->Data["Series"][$SerieName]["Min"] = min($StrippedData);
       }
     }
 
    /* Strip VOID values */
    function stripVOID($Values)
-    { $Result = array(); foreach($Values as $Key => $Value) { if ( $Value != VOID ) { $Result[] = $Value; } } return($Result); }
+    { if (!is_array($Values)) { return(array()); } $Result = array(); foreach($Values as $Key => $Value) { if ( $Value != VOID ) { $Result[] = $Value; } } return($Result); }
 
    /* Return the number of values contained in a given serie */
    function getSerieCount($Serie)
@@ -181,6 +189,9 @@
    /* Set the serie that will be used as abscissa */
    function setAbscissa($Serie)
     { if (isset($this->Data["Series"][$Serie])) { $this->Data["Abscissa"] = $Serie; } }
+
+   function setAbsicssaPosition($Position = AXIS_POSITION_BOTTOM)
+    { $this->Data["AbsicssaPosition"] = $Position; }
 
    /* Set the name of the abscissa axis */
    function setAbscissaName($Name)
@@ -688,6 +699,55 @@
       }
     }
 
+   /* Create a dataset based on a formula */
+   function createFunctionSerie($SerieName,$Formula="",$Options="")
+    {
+     $MinX		= isset($Options["MinX"]) ? $Options["MinX"] : -10;
+     $MaxX		= isset($Options["MaxX"]) ? $Options["MaxX"] : 10;
+     $XStep		= isset($Options["XStep"]) ? $Options["XStep"] : 1;
+     $AutoDescription	= isset($Options["AutoDescription"]) ? $Options["AutoDescription"] : FALSE;
+     $RecordAbscissa	= isset($Options["RecordAbscissa"]) ? $Options["RecordAbscissa"] : FALSE;
+     $AbscissaSerie	= isset($Options["AbscissaSerie"]) ? $Options["AbscissaSerie"] : "Abscissa";
+
+     if ( $Formula == "" ) { return(0); }
+
+     $Result = ""; $Abscissa = "";
+     for($i=$MinX; $i<=$MaxX; $i=$i+$XStep)
+      {
+       $Expression = "\$return = '!'.(".str_replace("z",$i,$Formula).");";
+       if ( @eval($Expression) === FALSE ) { $return = VOID; }
+       if ( $return == "!" ) { $return = VOID; } else { $return = $this->right($return,strlen($return)-1); }
+       if ( $return == "NAN" ) { $return = VOID; }
+       if ( $return == "INF" ) { $return = VOID; }
+       if ( $return == "-INF" ) { $return = VOID; }
+
+       $Abscissa[] = $i;
+       $Result[]   = $return;
+      }
+
+     $this->addPoints($Result,$SerieName);
+     if ( $AutoDescription ) { $this->setSerieDescription($SerieName,$Formula); }
+     if ( $RecordAbscissa ) { $this->addPoints($Abscissa,$AbscissaSerie); }
+    }
+
+   function negateValues($Series)
+    {
+     if ( !is_array($Series) ) { $Series = $this->convertToArray($Series); }
+     foreach($Series as $Key => $SerieName)
+      {
+       if (isset($this->Data["Series"][$SerieName]))
+        {
+         $Data = "";
+         foreach($this->Data["Series"][$SerieName]["Data"] as $Key => $Value)
+          { if ( $Value == VOID ) { $Data[] = VOID; } else { $Data[] = -$Value; } }
+         $this->Data["Series"][$SerieName]["Data"] = $Data;
+
+         $this->Data["Series"][$SerieName]["Max"] = max($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
+         $this->Data["Series"][$SerieName]["Min"] = min($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
+        }
+      }
+    }
+
    /* Return the data & configuration of the series */
    function getData()
     { return($this->Data); }
@@ -719,4 +779,8 @@
    /* Class string wrapper */
    function __toString()
     { return("pData object."); }
+
+   function left($value,$NbChar)	{ return substr($value,0,$NbChar); }  
+   function right($value,$NbChar)	{ return substr($value,strlen($value)-$NbChar,$NbChar); }  
+   function mid($value,$Depart,$NbChar)	{ return substr($value,$Depart-1,$NbChar); }  
   }

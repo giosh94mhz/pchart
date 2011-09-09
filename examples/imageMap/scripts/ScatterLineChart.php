@@ -80,6 +80,7 @@
 
  /* Draw a scatter plot chart */
  $myScatter->drawScatterLineChart(array("RecordImageMap"=>TRUE));
+ $myScatter->drawScatterPlotChart();
 
  /* Draw the legend */
  $myScatter->drawScatterLegend(260,375,array("Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND_NOBORDER));

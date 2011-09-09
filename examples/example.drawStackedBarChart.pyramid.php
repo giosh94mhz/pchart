@@ -8,16 +8,13 @@
 
  /* Create and populate the pData object */
  $MyData = new pData();  
- $MyData->addPoints(array(-4,VOID,VOID,12,8,3),"Frontend #1");
- $MyData->addPoints(array(3,12,15,8,5,-5),"Frontend #2");
- $MyData->addPoints(array(2,7,5,18,19,22),"Frontend #3");
- $MyData->setAxisName(0,"Average Usage");
- $MyData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
- $MyData->setSerieDescription("Labels","Months");
+ $MyData->addPoints(array(20,40,65,100,70,55,40,22,12),"Male");
+ $MyData->addPoints(array(-22,-44,-61,-123,-74,-60,-52,-34,-21),"Female");
+ $MyData->setAxisName(0,"Community members");
+ $MyData->addPoints(array("0-10","10-20","20-30","30-40","40-50","50-60","60-70","70-80","80-90"),"Labels");
+ $MyData->setSerieDescription("Labels","Ages");
  $MyData->setAbscissa("Labels");
-
- /* Normalize all the data series to 100% */
- $MyData->normalize(100,"%");
+ $MyData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
@@ -30,13 +27,14 @@
  /* Draw the scale and the chart */
  $myPicture->setGraphArea(60,20,680,190);
  $myPicture->drawScale(array("DrawSubTicks"=>TRUE,"Mode"=>SCALE_MODE_ADDALL));
- $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
- $myPicture->drawStackedBarChart(array("DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"Gradient"=>TRUE,"Surrounding"=>30,"InnerSurrounding"=>20));
  $myPicture->setShadow(FALSE);
+ $myPicture->drawStackedBarChart(array("DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"Gradient"=>TRUE,"Surrounding"=>-20,"InnerSurrounding"=>20));
 
  /* Write the chart legend */
- $myPicture->drawLegend(480,210,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+ $myPicture->drawLegend(600,210,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawStackedBarChart.shaded.png");
+ $myPicture->autoOutput("pictures/example.drawStackedBarChart.pyramid.png");
+
+ function YAxisFormat($Value) { return(abs($Value)); } 
 ?>

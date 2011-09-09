@@ -120,7 +120,7 @@
         echo "  <td><img src='resources/".$SubIcon."' width=16 height=20 alt=''/></td>\r\n";
         echo "  <td><img src='resources/".$Icon."' width=16 height=20 alt=''/></td>\r\n";
         echo "  <td><img src='resources/application_view_tile.png' width=16 height=16 alt=''/></td>\r\n";
-        echo "  <td>&nbsp;<a class=smallLinkGrey href='#' onclick='render(".chr(34).$FileName.chr(34).");'>".$FileShortName."</a></td>\r\n";
+        echo "  <td><div id='".$FileName."'>&nbsp;<a class=smallLinkGrey href='#' onclick='render(".chr(34).$FileName.chr(34).");'>".$FileShortName."</a></div></td>\r\n";
         echo " </tr>\r\n";
        }
       echo "</table>\r\n";
@@ -165,6 +165,7 @@
  URL        = "";
  SourceURL  = "";
  LastOpened = "";
+ LastScript = "";
 
  function showHideMenu(Element)
   {
@@ -187,6 +188,10 @@
 
  function render(PictureName)
   {
+   if ( LastScript != "" ) { document.getElementById(LastScript).style.fontWeight = "normal"; }
+   document.getElementById(PictureName).style.fontWeight = "bold";
+   LastScript = PictureName;
+
    opacity("render",100,0,100);
 
    RandomKey = Math.random(100);

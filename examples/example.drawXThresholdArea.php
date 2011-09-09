@@ -45,7 +45,7 @@
  /* Draw one static threshold area */
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1));
  $myPicture->setFontProperties(array("FontName"=>"../fonts/MankSans.ttf","FontSize"=>10));
- $myPicture->drawThresholdArea(0,100,array("AreaName"=>"Test Zone","R"=>226,"G"=>194,"B"=>54,"Alpha"=>40));
+ $myPicture->drawXThresholdArea(2,3,array("AreaName"=>"Test Zone","R"=>226,"G"=>194,"B"=>54,"Alpha"=>40));
  $myPicture->setShadow(FALSE);
 
  /* Set the font properties */
@@ -59,9 +59,9 @@
  /* Draw one static threshold area */
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1));
  $myPicture->setFontProperties(array("FontName"=>"../fonts/MankSans.ttf","FontSize"=>10));
- $myPicture->drawThresholdArea(5,15,array("NameR"=>0,"NameG"=>0,"NameB"=>0,"AreaName"=>"Test Zone","R"=>206,"G"=>231,"B"=>64,"Alpha"=>20));
+ $myPicture->drawXThresholdArea(2,3,array("NameR"=>0,"NameG"=>0,"NameB"=>0,"AreaName"=>"Test Zone","R"=>206,"G"=>231,"B"=>64,"Alpha"=>20));
  $myPicture->setShadow(FALSE);
 
  /* Render the picture (choose the best way) */
- $myPicture->autoOutput("pictures/example.drawThresholdArea.png");
+ $myPicture->autoOutput("pictures/example.drawXThresholdArea.png");
 ?>

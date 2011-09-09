@@ -1,9 +1,9 @@
  /*
      imageMap - JS to handle image maps over pChart graphix
 
-     Version     : 2.1.2
+     Version     : 2.1.3
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 08/04/11
+     Last Update : 22/08/11
 
      This file can be distributed under the license you can find at :
 
@@ -31,6 +31,8 @@
  var timerLock			= false;
  var SmoothMove			= false;
  var SmoothMoveFactor		= 5;
+ var imageMapRandomSeed		= true;
+ var delimiter			= String.fromCharCode(1);
 
  /* Create an image map */
  function createMap(imageMapID)
@@ -229,6 +231,12 @@ if(document.all)
    if (!xmlhttp && window.createRequest)   
     { try { xmlhttp = window.createRequest(); } catch (e) { xmlhttp=false; } }   
   
+   if ( imageMapRandomSeed )
+    {
+     randomSeed = "Seed=" + Math.floor(Math.random()*1000);
+     if ( ImageMapURL.indexOf("?",0) != -1 ) { ImageMapURL = ImageMapURL + "&" + randomSeed; } else { ImageMapURL = ImageMapURL + "?" + randomSeed; }
+    }
+
    xmlhttp.open("GET", ImageMapURL,true);
 
    xmlhttp.onreadystatechange=function()
@@ -243,7 +251,7 @@ if(document.all)
 
    for(i=0;i<=Zones.length-2;i++)
     {
-     var Options = Zones[i].split(";");
+     var Options = Zones[i].split(delimiter);
      addArea(ImageMapID,Options[0],Options[1],'showDiv("testDiv","'+Options[2]+'","'+Options[3]+'","'+Options[4].replace('"','')+'");','hideDiv("testDiv");');
     }
   }

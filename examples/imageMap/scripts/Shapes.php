@@ -50,7 +50,7 @@
  /* Draw a customized polygon */
  $Plots           = array(402,62,460,80,420,190,360,168);
  $PolygonSettings = array("R"=>71,"G"=>87,"B"=>145,"Dash"=>TRUE,"BorderR"=>255,"BorderG"=>255,"BorderB"=>255);
- $myPicture->drawPolygon_0($Plots,$PolygonSettings);
+ $myPicture->drawPolygon($Plots,$PolygonSettings);
  $myPicture->addToImageMap("POLY","402,62,460,80,420,190,360,168",$myPicture->toHTMLColor(71,87,145),"Polygon","My Message");
 
  /* Turn of Antialiasing */

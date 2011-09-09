@@ -11,7 +11,7 @@
  for($i=0; $i<=10;$i=$i+.2)
   {
    $MyData->addPoints(log($i+1)*10,"Bounds 1");
-   $MyData->addPoints(log($i+3)*10+rand(0,2)-1,"Probe");
+   $MyData->addPoints(log($i+3)*10+rand(0,2)-1,"Probe 1");
    $MyData->addPoints(log($i+6)*10,"Bounds 2");
    $MyData->addPoints($i*10,"Labels");
   }
@@ -26,7 +26,9 @@
  /* Turn of Antialiasing */
  $myPicture->Antialias = FALSE;
 
- /* Add a border to the picture */
+ /* Draw the background and the border  */
+ $myPicture->drawFilledRectangle(0,0,699,229,array("R"=>200,"G"=>200,"B"=>200));
+ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,array("StartR"=>220,"StartG"=>220,"StartB"=>220,"EndR"=>100,"EndG"=>100,"EndB"=>100,"Alpha"=>30));
  $myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
  
  /* Write the chart title */ 
@@ -40,18 +42,19 @@
  $myPicture->setGraphArea(40,40,680,200);
 
  /* Draw the scale */
- $scaleSettings = array("LabelSkip"=>4,"XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
+ $scaleSettings = array("LabelSkip"=>4,"XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridAlpha"=>30,"GridR"=>140,"GridG"=>140,"GridB"=>140,"DrawSubTicks"=>TRUE);
  $myPicture->drawScale($scaleSettings);
 
  /* Turn on Antialiasing */
  $myPicture->Antialias = TRUE;
 
  /* Draw the line chart */
- $myPicture->drawZoneChart("Bounds 1","Bounds 2");
+ $myPicture->drawZoneChart("Bounds 1","Bounds 2",array("LineAlpha"=>100,"AreaR"=>230,"AreaG"=>230,"AreaB"=>230,"AreaAlpha"=>20,"LineTicks"=>3));
  $MyData->setSerieDrawable(array("Bounds 1","Bounds 2"),FALSE);
 
  /* Draw the line chart */
- $myPicture->drawStepChart();
+ $myPicture->drawLineChart();
+ $myPicture->drawPlotChart(array("PlotBorder"=>TRUE,"PlotSize"=>2,"BorderSize"=>3,"Surrounding"=>60,"BorderAlpha"=>50));
 
  /* Write the chart legend */
  $myPicture->drawLegend(640,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));

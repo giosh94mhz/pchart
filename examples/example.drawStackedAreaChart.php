@@ -46,7 +46,10 @@
  $myPicture->drawScale(array("DrawSubTicks"=>TRUE,"Mode"=>SCALE_MODE_ADDALL));
  $myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
  $myPicture->setShadow(FALSE);
- $myPicture->drawStackedAreaChart(array("DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"Surrounding"=>20));
+ $myPicture->drawStackedAreaChart(array("DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"DrawPlot"=>TRUE,"DrawLine"=>TRUE,"LineSurrounding"=>-250));
+
+ /* Draw one static threshold */ 
+ $myPicture->drawThreshold(0,array("Alpha"=>70,"Ticks"=>1,"NoMargin"=>TRUE));
 
  /* Draw the scale and the 2nd chart */
  $myPicture->setGraphArea(500,60,670,190);
@@ -54,6 +57,9 @@
  $myPicture->drawScale(array("Pos"=>SCALE_POS_TOPBOTTOM,"Mode"=>SCALE_MODE_ADDALL,"DrawSubTicks"=>TRUE));
  $myPicture->setShadow(FALSE);
  $myPicture->drawStackedAreaChart(array("Surrounding"=>10));
+
+ /* Draw one static threshold */ 
+ $myPicture->drawThreshold(0,array("Alpha"=>70,"Ticks"=>1,"NoMargin"=>TRUE));
 
  /* Write the chart legend */
  $myPicture->drawLegend(510,205,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));

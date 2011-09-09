@@ -29,11 +29,13 @@
 
  /* Draw the scale and the chart */ 
  $myPicture->setGraphArea(60,20,680,190);
- $myPicture->drawScale(array("XMargin"=>2,"DrawSubTicks"=>TRUE,"Mode"=>SCALE_MODE_ADDALL));
- $myPicture->drawStackedAreaChart(array("Surrounding"=>60));
+ $myPicture->drawScale(array("XMargin"=>1,"DrawSubTicks"=>TRUE,"Mode"=>SCALE_MODE_ADDALL_START0));
 
  /* Turn on shadow processing */
  $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+
+ /* Draw the stacked area chart */
+ $myPicture->drawStackedAreaChart(array("DrawPlot"=>TRUE,"DrawLine"=>TRUE,"LineSurrounding"=>-20));
 
  /* Write the chart legend */ 
  $myPicture->drawLegend(480,210,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));

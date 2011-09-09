@@ -10,11 +10,15 @@
  $MyData = new pData(); 
  $MyData->addPoints(array(30,24,32),"This year");
  $MyData->addPoints(array(28,20,27),"Last year");
+ $MyData->setSerieTicks("Last year",4);
  $MyData->addPoints(array("Year","Month","Day"),"Labels");
  $MyData->setAbscissa("Labels");
 
  /* Create the pChart object */
  $myPicture = new pImage(700,230,$MyData);
+
+ /* Turn on antialiasing */
+ $myPicture->Antialias = FALSE;
 
  /* Create a solid background */
  $Settings = array("R"=>179, "G"=>217, "B"=>91, "Dash"=>1, "DashR"=>199, "DashG"=>237, "DashB"=>111);
@@ -48,16 +52,23 @@
  $MyData->setSerieDrawable("Last year",FALSE);
  $myPicture->drawBarChart();
 
+ /* Turn on antialiasing */
+ $myPicture->Antialias = TRUE;
+
  /* Draw the line and plot chart */
  $MyData->setSerieDrawable("Last year",TRUE);
  $MyData->setSerieDrawable("This year",FALSE);
+ $myPicture->setShadow(TRUE,array("X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
  $myPicture->drawSplineChart();
- $myPicture->drawPlotChart();
+
+ $myPicture->setShadow(FALSE);
+ $myPicture->drawPlotChart(array("PlotSize"=>3,"PlotBorder"=>TRUE,"BorderSize"=>3,"BorderAlpha"=>20));
 
  /* Make sure all series are drawable before writing the scale */
  $MyData->drawAll();
 
  /* Write the legend */
+ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
  $myPicture->drawLegend(580,35,array("Style"=>LEGEND_ROUND,"Alpha"=>20,"Mode"=>LEGEND_HORIZONTAL));
 
  /* Render the picture (choose the best way) */

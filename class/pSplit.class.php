@@ -2,9 +2,9 @@
  /*
      pSplit - class to draw spline splitted charts
 
-     Version     : 2.1.2
+     Version     : 2.1.3
      Made by     : Jean-Damien POGOLOTTI
-     Last Update : 03/08/11
+     Last Update : 09/09/11
 
      This file can be distributed under the license you can find at :
 

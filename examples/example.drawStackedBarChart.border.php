@@ -31,6 +31,9 @@
  $myPicture->setShadow(FALSE);
  $myPicture->drawStackedBarChart(array("Surrounding"=>-15,"InnerSurrounding"=>15));
 
+ /* Write a label */
+ $myPicture->writeLabel(array("Frontend #1","Frontend #2","Frontend #3"),1,array("DrawVerticalLine"=>TRUE)); 
+
  /* Write the chart legend */
  $myPicture->drawLegend(480,210,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 

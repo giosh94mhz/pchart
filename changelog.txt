@@ -3,11 +3,43 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.1.2                   ║
+ ║   Version     : 2.1.3                   ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 03/08/11                ║
+ ║   Last Update : 09/09/11                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
+
+ 2.1.3 ────────────────────────────────────────────────────────────────────────
+
+  o Updated drawPlotChart() to size the plot based on the serie weight.
+  o Added the drawXThreshold() function.
+  o Added the drawXThresholdArea() function.
+  o Added the AreaName param. to drawXThresholdArea() and drawThresholdArea().
+  o Various visual enhancements.
+  o Fixed a bug in the drawPlotChart() function.
+  o Added shadow support for the Area charts.
+  o Added the BorderWidth parameter to the drawBubbleChart() function.
+  o Added the Shape parameter to the drawBubbleChart() function.
+  o Added the AXIS_FORMAT_CUSTOM for user callback handling.
+  o Rewritten the drawStackedAreaChart() function.
+  o Added support for labels on stacked charts.
+  o Added the createFunctionSerie() function to the pData class.
+  o Added the drawScatterThreshold() function to the pScatter class.
+  o Added the drawScatterThresholdArea() function to the pScatter class.
+  o Added the setAbsicssaPosition() function to the pData class.
+  o Added the NegateValues() function to the pData class.
+  o Added the NoMargin parameter to the drawThresholdArea & drawThreshold fcts.
+  o Added the drawAreaMirror() function.
+  o Added the EURO_SYMBOL constant.
+  o Added the replaceImageMapValues() function.
+  o Added the replaceImageMapTitle() function.
+  o Thresholds functions can now accept an array of points.
+  o Added the FixedMax parameter to both the Radar and Polar charts.
+  o Added the Precision parameter to the pie and ring charts.
+  o Added the DisplayOrientation parameter to the bar & stacked bar charts.
+  o Fixed a bug while using the drawBestFit function with VOID datasets.
+  o Added the RemoveXAxis option to the drawScale() function.
+
 
  2.1.2 ────────────────────────────────────────────────────────────────────────
 

@@ -10,6 +10,8 @@
  $MyData = new pData();  
  for($i=0;$i<=20;$i++) { $MyData->addPoints(rand(10,30)+$i,"Probe 1"); }
  for($i=0;$i<=20;$i++) { $MyData->addPoints(rand(0,10)+$i,"Probe 2"); }
+
+ /* Give a name to the Y axis */
  $MyData->setAxisName(0,"Temperatures");
 
  /* Create the pChart object */
