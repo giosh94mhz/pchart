@@ -3,11 +3,21 @@
  ║                                         ║
  ║   pChart - a PHP Charting library       ║
  ║                                         ║
- ║   Version     : 2.1.3                   ║
+ ║   Version     : 2.1.4                   ║
  ║   Made by     : Jean-Damien POGOLOTTI   ║
- ║   Last Update : 09/09/11                ║
+ ║   Last Update : 19/01/14                ║
  ║                                         ║
  ╚═════════════════════════════════════════╝
+
+ 2.1.4 ────────────────────────────────────────────────────────────────────────
+
+  o Added the AXIS_FORMAT_TRAFFIC format.
+  o Added the RemoveSkippedAxis parameter to the drawScale() function.
+  o Enhanced the title field of the floating labels.
+  o Replaced the date() calles by gmdate() ones.
+  o Added the $BoxAlpha parameter to the drawLabel(s) functions.
+  o Fixed a labelling bug on the pie charts. (Thanks to François LE QUEMENER)
+  o Fixed a security issue with the /examples folder. (Thanks to Nicolas CHATELAIN)
 
  2.1.3 ────────────────────────────────────────────────────────────────────────
 

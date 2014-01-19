@@ -3,9 +3,9 @@
  ║                                                                            ║
  ║   pChart - a PHP Charting library                                          ║
  ║                                                                            ║
- ║   Version     : 2.1.3                                                      ║
+ ║   Version     : 2.1.4                                                      ║
  ║   Made by     : Jean-Damien POGOLOTTI                                      ║
- ║   Last Update : 09/09/2011                                                 ║
+ ║   Last Update : 19/01/2014                                                 ║
  ║                                                                            ║
  ╚════════════════════════════════════════════════════════════════════════════╝
 
@@ -31,7 +31,7 @@
  │   ├─ pBarcode39.class	Class to draw Code 39 barcodes.
  │   ├─ pBarcode128.class	Class to draw Code 128 barcodes.
  │   ├─ pBubble.class		Class to draw bubble charts.
- │   ├─ pCache.class		Class enable chart caching functionalities.
+ │   ├─ pCache.class		Class enabling chart caching functionalities.
  │   ├─ pData.class		Class to manipulate chart data.
  │   ├─ pDraw.class		Extended drawing functions.
  │   ├─ pIndicator.class	Class to draw indicators.
@@ -107,14 +107,17 @@
 
  ≡ EXTERNAL COPYRiGHTS ────────────────────────────────────────────────────────
 
-  Famfamfam icons has been made by Mark James, Rounded corners lite has been
-  coded by Cameron Cooke and Tim Hutchison, Javascript Color Picker has been
+  Those external  components are  only provided as a  base to run examples. The
+  pChart library does not depends on any of them to be used.
+
+  Famfamfam  icons has  been made by Mark James,  Rounded corners lite has been
+  coded by  Cameron Cooke and  Tim Hutchison, Javascript  Color Picker has been
   written by Honza Odvarko.
 
   The provided font files are licensed under their own terms :
 
    │
-   ├─ dvent_light.ttf	Copyright Andreas K. inde
+   ├─ advent_light.ttf	Copyright Andreas K. inde
    ├─ Bedizen.ttf	Copyright Tepid Monkey Fonts
    ├─ calibri.ttf	Copyright Microsoft
    ├─ Forgotte.ttf	Copyright Ray Larabie
@@ -137,4 +140,4 @@
 
 
  ---
- (c)2011 Jean-Damien POGOLOTTI - 13k lines of codes
+ (c)2014 Jean-Damien POGOLOTTI - 13k lines of codes
